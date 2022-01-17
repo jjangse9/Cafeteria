@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -22,6 +24,33 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.cafe.teria" />
+	
+	
+	
+	
+	 
+      <!-- DB 접속 정보(Context.xml 작성과 유사) -->
+    <beans:bean name="datasource" class="org.apache.commons.dbcp.BasicDataSource">
+       <beans:property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+       <beans:property name="url" value="jdbc:mariadb://61.75.28.215:1522/cafeteria"/>
+       <beans:property name="username" value="root"/>
+       <beans:property name="password" value="1111"/>
+    </beans:bean>
+    
+    <!-- 사용 설정 -->
+    <!-- name = 이름이 정해져있음, id = 내맘대로 정할 수 있음 -->
+    <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       <!-- 위에서 설정한 datasource 불러오기 -->
+       <beans:property name="dataSource" ref="datasource"/>
+       <!-- 쿼리를 저장할 xml 위치를 지정(지정된 패키지가 만들어지지 않았으면 오류가 발생) -->
+       <beans:property name="mapperLocations" value="classpath:com/cafe/teria/dao/*.xml"/>
+    </beans:bean>
+    
+    <!-- 마이바티스를 별다른 코드없이 사용할 수 있도록 빈 등록 -->
+    <mybatis-spring:scan base-package="com.cafe.teria.dao"/>
+    
+   
+	
 	
 	
 	
