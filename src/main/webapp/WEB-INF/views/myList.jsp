@@ -39,7 +39,6 @@ table, th, td{
                 <th>글번호</th>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>등록일</th>
                 <th>좋아요</th>
                 <th>조회수</th>
             
