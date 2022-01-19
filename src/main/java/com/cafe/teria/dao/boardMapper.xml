@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+   >
+<!--    이게 없으면 특정 태그가 없으면 무슨 의미 인지 알아먹을 수가 없어 그래서 이게 꼭 필요해. 
+   메퍼 태그이잖아. 매퍼 태그로 열어줬으니 매퍼 태그로 닫아줘야 하잖아!! -->
+   
+   <!-- 네임스페이스는 이 xml이 어떤 인터페이스와 연결되는지 설정해주는거야. -->
+   <!-- 인터페이스는 멤버다오.java 였어 왼쪽에보면 조그맣게 I라고 적혀있잖아.  그래서 맴버다오가 이리로 들어오는거야 이거 확인해봐 -->
+<mapper namespace="com.cafe.teria.dao.BoardDAO">
+
+
+
+
+ <select id="myList" resultType="com.cafe.teria.dto.BoardDTO">
+      SELECT * FROM bmember where mem_id = #{param1}
+  </select>
+   
+   
+   
+    <insert id="blamewrite" parameterType="hashmap">
+    INSERT INTO boardblame(mem_id,blame_title,blame_content)
+    VALUES(#{mem_id},#{blame_title},#{blame_content})
+    </insert>
+    
+    
+    
+        <select id="blameList" resultType="com.cafe.teria.dto.BoardDTO">
+       select blame_idx,blame_title,mem_id,blame_cnt
+          from boardblame order by blame_idx desc 
+    	</select>
+    
+    
+
+   
+
+</mapper>

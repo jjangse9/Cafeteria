@@ -25,6 +25,7 @@ public class HomeController {
 	
 	@Autowired CafeService service;
 
+
     @RequestMapping(value = "/testlist", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("임시 리스트 페이지 이동");

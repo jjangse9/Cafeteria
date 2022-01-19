@@ -1,7 +1,11 @@
 package com.cafe.teria.controller;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,48 +16,94 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafe.teria.service.CafeService;
+
+import com.cafe.teria.dto.BoardDTO;
+import com.cafe.teria.dto.JoinMemberDTO;
+import com.cafe.teria.service.BoardService;
 
 @Controller
-@RequestMapping(value="/board")
 public class BoardController {
-   
-   @Autowired 
-   CafeService service;
-   
-   private Logger logger = LoggerFactory.getLogger(this.getClass());
-   
-   @RequestMapping(value = "/board", method = RequestMethod.GET)
-   public String board( Model model) {
-      logger.info("상세 페이지 이동");
-      return "board";
-   }
-   
-   @RequestMapping(value = "/boardReply", method = RequestMethod.GET)
-   public String boardReply( Model model) {
-      logger.info("상세 페이지 이동");
-      return "board/board_reply";
-   }
-   
-   @RequestMapping(value = "/cafe_write", method = RequestMethod.GET)
-   public String write( Model model , @RequestParam("idx") String cafe_idx ) {
-      logger.info("글쓰기 페이지 이동");
-      
-      HashMap<String, String> cafeBmem = service.cafeBmem(cafe_idx);
-      List<HashMap<String, String>>diet = service.detail(cafe_idx,"detail");
-      //List<HashMap<String, String>>detail_diet = service.detail_diet(cafe_idx,"detail_diet");
-      List<HashMap<String, String>> cafeReply = service.cafeReply(cafe_idx);
-      List<HashMap<String, String>> recomment = service.recomment(cafe_idx);
-      
-      model.addAttribute("cafe",cafeBmem);
-      model.addAttribute("diet_detail",diet);
-      //model.addAttribute("diet",detail_diet);
-      model.addAttribute("reply",cafeReply);
-      model.addAttribute("recomment",recomment);
-      
-      System.out.println(diet);
-      
-      return "cafe_write";
-   }
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired BoardService service;
+	
+	
+	//내 글 조회 (업주용)
+	@RequestMapping(value="/myList", method = RequestMethod.GET)
+	public String myList(Model model, HttpSession session) {
+		logger.info("myList.jsp 로 이동");
+		
+		String page = "redirect:/";
+	
+		String loginId = (String) session.getAttribute("loginId");
+		
+		logger.info("찍히냐");
+		
+		if(loginId != null) {
+			ArrayList<JoinMemberDTO> myList = service.myList(loginId);
+			
+			model.addAttribute("myList", myList);
 
+			page = "myList";
+		}
+		
+		return page;
+		
+	}
+	
+	
+	
+	
+	//신고 리스트
+	@RequestMapping(value = "/blameList", method = RequestMethod.GET)
+	public String blameList(Model model) {
+		logger.info("list 요청");
+		
+		ArrayList<BoardDTO>list = service.blameList();
+		
+		logger.info("글의 수 : {}", list.size());
+		
+		model.addAttribute("size", list.size());
+		model.addAttribute("list", list);
+		
+		
+		return "blameList";
+	}
+	
+	
+	
+	//신고 글쓰기로 가기
+	  @RequestMapping(value="/blameWriteForm", method = RequestMethod.GET)
+	  
+	  public String blameWriteForm(Model model, HttpSession session) {
+	  
+	  logger.info("blameWriteForm.jsp 로 이동");
+	  
+	  String loginId = (String) session.getAttribute("loginId");
+	  
+	  model.addAttribute("loginId", (String)session.getAttribute("loginId"));
+	 
+	  return "blameWriteForm";
+	 
+	  }
+	  
+
+	  //신고 글쓰기
+		@RequestMapping(value = "/blameWrite", method = RequestMethod.POST)
+		public String blameWrite(Model model, @RequestParam HashMap<String, String> params) {
+			
+			logger.info("blameWrite 요청 : {}", params);
+			
+			service.blameWrite(params);
+	
+			return "redirect:/blameList";
+		}
+	  
+	  
+	
+
+	
 }
+	
+

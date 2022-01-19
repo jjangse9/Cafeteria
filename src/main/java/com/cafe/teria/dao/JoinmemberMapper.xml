@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+   >
+
+<mapper namespace="com.cafe.teria.dao.JoinMemberDAO">
+
+
+
+   <select id="overlay" resultType="String">
+ 
+   	 SELECT #{param1} FROM member WHERE mem_id = #{param1}
+   	 
+   </select>
+   
+  
+    <insert id="join" parameterType="hashmap">
+   	INSERT INTO member (mem_id,mem_pw,mem_nick, mem_stat, mem_emailchk, mem_bcode,mem_grade,mem_perm_yn) VALUES
+   		(#{mem_id},#{mem_pw},#{mem_nick}, 1, #{mem_emailchk}, 1, 1, #{mem_perm_yn})
+   		
+   		
+   		<!-- INSERT INTO member (mem_id,mem_pw,mem_pwchk,mem_nick, mem_stat, mem_emailchk, mem_bcode,mem_grade,mem_perm_yn) VALUES
+   		(#{mem_id},#{mem_pw},#{mem_pwchk},#{mem_nick}, 1, #{mem_emailchk}, 1, 1, #{mem_perm_yn}) -->
+   </insert>
+    
+    
+   <select id="login" resultType="int">
+   SELECT COUNT(mem_id) 
+   FROM member 
+   WHERE mem_id = #{param1} AND mem_pw = #{param2}
+   </select>
+   
+   
+   
+   <select id="list" resultType="com.cafe.teria.dto.JoinMemberDTO">
+	 select mem_id, mem_nick from member
+	 
+</select>
+   
+   
+   
+   
+ <select id="mydetail" resultType="com.cafe.teria.dto.JoinMemberDTO">
+      SELECT * FROM member where mem_id = #{param1}
+   </select>
+   
+   
+
+<update id="update">
+UPDATE member SET
+	mem_pw = #{mem_pw}
+	,mem_nick = #{mem_nick}
+	,mem_stat = #{mem_stat}
+	,mem_emailchk = #{mem_emailchk}
+	, mem_bcode = #{mem_bcode}
+	,mem_grade = #{mem_grade}
+	,mem_perm_yn = #{mem_perm_yn}
+WHERE mem_id = #{mem_id}
+</update>
+
+
+
+
+
+</mapper>
