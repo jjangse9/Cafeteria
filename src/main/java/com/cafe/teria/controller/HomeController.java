@@ -25,7 +25,7 @@ public class HomeController {
 	
 	@Autowired CafeService service;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/testlist", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("임시 리스트 페이지 이동");
 		
@@ -39,12 +39,13 @@ public class HomeController {
 	@RequestMapping(value = "/detail")
 	public String detail(Model model, @RequestParam("idx") String cafe_idx) {
 		
-		logger.info("detail 요청 : {}",cafe_idx);
+		//logger.info("detail 요청 : {}",cafe_idx);
 		
 		HashMap<String, String> cafeBmem = service.cafeBmem(cafe_idx);
 		List<HashMap<String, String>>diet = service.detail(cafe_idx,"detail");
 		List<HashMap<String, String>> cafeReply = service.cafeReply(cafe_idx);
 		List<HashMap<String, String>> recomment = service.recomment(cafe_idx);
+		
 		
 		//System.out.println(cafeBmem);
 		//System.out.println(diet);
@@ -69,7 +70,7 @@ public class HomeController {
 		
 		List<HashMap<String, Object>> map = service.replyList(idx);
 		
-		logger.info("컨트롤러에서 받아온 ReplyList : {}",map);
+		//logger.info("컨트롤러에서 받아온 ReplyList : {}",map);
 		
 		return map;
 	}
@@ -151,7 +152,7 @@ public class HomeController {
 	@ResponseBody
 	public HashMap<String, Object> replyDel(@RequestParam int idx) {
 		
-		service.replyDel(idx,"replyDel");
+		service.replyDel(idx);
 
 		HashMap<String, Object> success = new  HashMap<String, Object>();
 		 
@@ -160,6 +161,39 @@ public class HomeController {
 		return success; 
 	
 	}
+	
+	@RequestMapping(value = "/updateRecom", method = RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> updateRecom(@RequestParam HashMap<String, String> param) {
+		
+		//logger.info("컨트롤러에서 받아온 정보 : {}",param);
+		
+		service.updateRecom(param);
+		
+		HashMap<String, Object> success = new  HashMap<String, Object>();
+		 
+		success.put("success", 1);
+
+		return success; 
+	
+	}
+	
+	@RequestMapping(value = "/recoDel", method = RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> recoDel(@RequestParam HashMap<String, String> param) {
+		
+		service.recoDel(param,"disrewritecnt");
+
+		HashMap<String, Object> success = new  HashMap<String, Object>();
+		 
+		 success.put("success", 1);
+
+		return success; 
+	
+	}
+	
+	
+	
 	
 	
 	

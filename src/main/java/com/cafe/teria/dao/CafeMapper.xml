@@ -78,8 +78,8 @@
  	
  	
  	<insert id="addreply" parameterType="HashMap">
- 		insert into cafereply(cafereply_content, cafe_idx)
- 		values(#{recon}, #{idx})
+ 		insert into cafereply(cafereply_content, cafe_idx, cafereply_ratestar)
+ 		values(#{recon}, #{idx}, #{rate})
  	</insert>
  	
  	
@@ -88,32 +88,54 @@
  		values(#{recoBox},#{Ridx},#{Cidx})
  	</insert>
  	
-   <update id="recocnt">
+   <update id="recocnt" parameterType="HashMap">
 		update cafereply
 		set cafereply_recommentcnt = cafereply_recommentcnt + 1 
 		where cafereply_idx = #{Ridx}
    </update>
    
    
-   <update id="rewritecnt">
+   <update id="rewritecnt" parameterType="HashMap">
    		update cafereply
 		set cafereply_rewritechk = 1 
 		where cafereply_idx = #{Ridx}
    </update>
  	
  	
- 	<update id="updateReply">
+ 	<update id="updateReply" parameterType="HashMap">
    		update cafereply
 		set cafereply_content = #{newContent}
 		where cafereply_idx = #{Ridx}
    </update>
    
    
+   <update id="replyDel" parameterType="int">
+   		update cafereply
+		set cafereply_stat = 3
+		where cafereply_idx = #{param1}
+   </update>
    
-   <delete id="replyDel">
-   		delete from cafereply
-   		where cafereply_idx = #{idx}
-   </delete>
+   
+	<update id="updateRecom" parameterType="HashMap">
+   		update recomment
+		set recomment_content = #{newcontent}, recomment_rewritechk = 1
+		where recomment_idx = #{recoIdx}
+   </update>
+   
+   
+	<update id="recoDel" parameterType="HashMap">
+   		update recomment
+		set recomment_stat = 3
+		where recomment_idx = #{Cidx}
+   </update>
+   
+   
+	<update id="disrewritecnt" parameterType="HashMap">
+   		update cafereply
+		set cafereply_rewritechk = -1 
+		where cafereply_idx = #{Ridx}
+   </update>
+   
    
 	
 </mapper>

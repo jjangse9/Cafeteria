@@ -111,9 +111,24 @@ public class CafeService {
 		
 	}
 
-	public void replyDel(int idx, String string) {
+	public void replyDel(int idx) {
 		
 		dao.replyDel(idx);
+	}
+
+	public void updateRecom(HashMap<String, String> param) {
+		
+		dao.updateRecom(param);
+	}
+
+	public void recoDel(HashMap<String, String> param, String string) {
+		
+		
+		if(string.equals("disrewritecnt")){
+			dao.disrewritecnt(param);		
+		}
+		dao.recoDel(param);
+		
 	}
 
 	

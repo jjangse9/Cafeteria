@@ -37,5 +37,11 @@ public interface CafeDAO {
 
 	void replyDel(int idx);
 
+	void updateRecom(HashMap<String, String> param);
+
+	void recoDel(HashMap<String, String> param);
+
+	void disrewritecnt(HashMap<String, String> param);
+
 
 }
