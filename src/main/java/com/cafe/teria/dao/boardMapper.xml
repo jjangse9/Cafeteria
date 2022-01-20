@@ -33,6 +33,30 @@
     	</select>
     
     
+   
+    <!-- 20220117 내 댓글 보기SI -->
+<select id="myReply" resultType="com.cafe.teria.dto.ReplyDTO">
+   select *
+   from cafereply
+   where mem_id = #{param1}
+</select>
+<select id="myRecomment" resultType="com.cafe.teria.dto.RecommentDTO">
+   select *
+   from recomment
+   where mem_id = #{param1}
+</select>
+<!-- 20220117 내 댓글 보기SI -->
+
+<!-- 20220117 내글보기SI -->
+<select id="myPost" resultType="com.cafe.teria.dto.CafeDTO">
+   select * from cafe where mem_id = #{param1}
+</select>
+<!--  <select id="myList" resultType="com.cafe.teria.dto.BoardDTO">
+      SELECT * FROM bmember where mem_id = #{param1}
+  </select> -->
+<!-- 20220117 내글보기SI -->
+    
+    
 
    
 

@@ -124,17 +124,18 @@ $('#login').click(function(){
 		type:'POST',
 		url:'login',
 		data:{'mem_id':mem_id,'mem_pw':mem_pw},
-		dateType:'JSON',
+		dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
 		success:function(data){
-			console.log(data);
-			if(data.success>0){
-				alert(data.loginId+'님 반갑습니다.');
+			console.log("안녕하세요"+data.memInfo);
+			if(data.memInfo != null){
+				alert(data.memInfo.mem_nick+'님 반갑습니다.');
 				location.href='./main';
-			}else{
-			alert('아이디 또는 패스워드를 확인하세요.')
+			}else if(data.memInfo === null){
+				alert('아이디 또는 패스워드를 확인하세요.')
 			}
 		},
 		error:function(e){
+			
 			console.log(e);
 		}
 		
