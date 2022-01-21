@@ -11,6 +11,7 @@
 
 
 
+
    <select id="overlay" resultType="String">
  
    	 SELECT #{param1} FROM member WHERE mem_id = #{param1}

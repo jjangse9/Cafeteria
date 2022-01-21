@@ -172,6 +172,14 @@ public class CafeService {
 		return dao.imgChk();
 	}
 
+// 20210121 - 문의하기 글쓰기
+	public int writeQst(HashMap<String, Object> params) {
+		
+		int result = dao.writeQst(params);
+		
+		return 0;
+	}
+
 	
 
 

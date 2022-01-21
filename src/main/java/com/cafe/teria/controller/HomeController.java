@@ -25,7 +25,44 @@ public class HomeController {
 	
 	@Autowired CafeService service;
 
+	// String int // 
+	// 뷰 => 컨트롤러 => 서비스 => DAO(인터페이스) => MAPPER.xml [흐름]
+	
+// 20220121 문의 글쓰기 페이지 요청
+	@RequestMapping(value = "/qstPage", method = RequestMethod.GET)
+	public String qstPage(Model model) {
+		logger.info("확인해보기");
+		
+		// 1. 페이지 이동		
+		return "qstWrite";
+		
+		// 2. 여기까지 하고 한번 확인하기
+	}
 
+
+// 20220121 문의 글쓰기
+	@RequestMapping(value = "/qstWrite", method = RequestMethod.POST)
+	public String qstWrite(
+			Model model, 
+			@RequestParam HashMap<String, Object> params) 
+	{
+		logger.info("글쓰기 요청 도착");
+		// 왔냐?
+		logger.info("파라미터 잘 왔나? : {}", params.size());
+		
+		// 이것도 외우는게 편함
+		// DB 연결 구문 4개 - SELECT / INSERT / UPDATE / DELETE
+		// SELECT 반환값 => DTO or String or INT
+		// 나머지 세개 => int
+		
+		int result = service.writeQst(params);
+		
+		return "main";
+	}
+	
+	
+	
+	
     @RequestMapping(value = "/testlist", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("임시 리스트 페이지 이동");

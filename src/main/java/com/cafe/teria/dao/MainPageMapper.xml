@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.cafe.teria.dao.MainPageDAO">
+	<!-- 반반리뷰 -->
+	<select id="halfReply" resultType="com.cafe.teria.dto.MainPageReplyDTO">
+		select a.*, b.replyphoto_oriname, b.replyphoto_newname
+		from cafereply a
+			left outer join replyphoto b 
+			on a.cafereply_idx = b.cafereply_idx
+		where a.cafereply_stat = 1
+		order by a.cafereply_likecnt desc
+		limit 2
+	</select>
+	
+	<!-- 포토리뷰 -->
+	<select id="photoReply" resultType="com.cafe.teria.dto.MainPageReplyDTO">
+		select a.*, b.replyphoto_oriname, b.replyphoto_newname
+		from cafereply a
+			left outer join replyphoto b 
+			on a.cafereply_idx = b.cafereply_idx
+		where a.cafereply_stat = 1 and cafereply_ratestar >= 4.0
+		order by a.cafereply_ratestar desc;
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 20220113~ 20220117 마무리 / 메인 검색 sql -->
+	<!-- 결정된 날짜의 아점저를 포함한 7일의 데이터 쿼리 -->
+	<select id="mainSearchList" resultType="com.cafe.teria.dto.MainPageDTO">
+		select a.*, b.bmem_area_name, b.bmem_image1, c.diet_date, c.diet_code, c.diet_date_name
+		from cafe a
+			left outer join bmember b
+				on a.mem_id = b.mem_id
+			left outer join diet c
+				on a.cafe_idx = c.cafe_idx
+					and 
+				c.diet_menu like CONCAT('%',#{param1},'%')
+		where a.mem_id in
+			(select mem_id 
+			from bmember b
+			where bmem_area_name like CONCAT('%',#{param1},'%'))
+		or a.cafe_title like CONCAT('%',#{param1},'%')
+		or a.cafe_idx in
+			(select c.cafe_idx
+			from diet c
+			where c.diet_menu like CONCAT('%',#{param1},'%')
+				and
+				  c.diet_date between #{param2} and #{param3}
+			)
+		order by REPLACE(${param4},'"','') desc
+	</select>
+	
+	<select id="mainReplyList" resultType="com.cafe.teria.dto.MainPageReplyDTO">
+		select *, max(cafereply_likecnt) as maxcnt
+		from cafereply
+		where cafereply_stat = 1
+		group by mem_id
+	</select>
+	<!-- 20220115 정렬기능 => order by에 REPLACE 함수 사용 -->
+	
+	
+	<!-- 댓글 리스트 최종 sql
+		select *, max(cafereply_likecnt) as maxcnt
+		from cafereply
+		where cafereply_stat = 1
+		group by mem_id
+	 -->
+	
+	
+	<!-- 검색 결과 최종 sql
+	select a.*, b.bmem_area_name, b.bmem_image3, c.diet_date, c.diet_code, c.diet_date_name, 
+		from cafe a
+			left outer join bmember b
+				on a.mem_id = b.mem_id
+			left outer join diet c
+				on a.cafe_idx = c.cafe_idx
+					and 
+				c.diet_menu like CONCAT('%',#{param1},'%')
+		where a.mem_id in
+			(select mem_id 
+			from bmember b
+			where bmem_area_name like CONCAT('%',#{param1},'%'))
+		or a.cafe_title like CONCAT('%',#{param1},'%')
+		or a.cafe_idx in
+			(select c.cafe_idx
+			from diet c
+			where c.diet_menu like CONCAT('%',#{param1},'%')
+				and
+				  c.diet_date between '2022-01-10' and #{param3}
+			)
+	 -->
+	
+	<!-- 28번라인 #{param2} => 20220110
+		테스트위해..
+	 -->
+	
+	<!-- SUBSTRING_INDEX(bmem_area_name, ' ', -1)
+		원래 21라인에 where 뒤에 있었다( 서울 강서구 받으면 뒤에 강서구만 받으려고 했던 구문. 지금은 필요 X )
+	 -->			
+
+	<!-- 내 db test 쿼리 
+	select a.*, b.bmem_area_name, c.diet_date, c.diet_code, c.diet_date_name 
+		from testcafe a
+			left outer join testbmember b
+				on a.mem_id = b.mem_id
+			left outer join testdiet c
+				on a.cafe_idx = c.cafe_idx
+					and 
+				c.diet_menu like CONCAT('%',#{param1},'%')
+		where a.mem_id in
+			(select mem_id 
+			from testbmember b
+			where bmem_area_name like CONCAT('%',#{param1},'%'))
+		or a.cafe_title like CONCAT('%',#{param1},'%')
+		or a.cafe_idx in
+			(select c.cafe_idx
+			from testdiet c
+			where c.diet_menu like CONCAT('%',#{param1},'%')
+				and
+				  c.diet_date between #{param2} and #{param3}
+			) 
+	-->
+</mapper>

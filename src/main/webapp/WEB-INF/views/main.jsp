@@ -50,7 +50,8 @@
             <a class="dropdown-item" href="#">내 글 보기</a>
             <a class="dropdown-item" href="#">내 댓글 보기</a>
              -->
-           <a class="dropdown-item" href="#">문의하기</a>
+       
+           <a class="dropdown-item" href="./qstPage">문의하기</a>
            <a class="dropdown-item" href="./logout">로그아웃</a>
          </div>
       </c:when>
@@ -58,7 +59,8 @@
          <img src="/photo/0.png" width="100px" class="btn btn-secondary dropdown-toggle"
          id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="./"> 로그인해주세요흙흙 </a>
+            <a class="dropdown-item" href="javascript:void(window.open('./', '','width=500px, height=500px'))"> 로그인해주세요흙흙 </a>
+
             <!-- 
                window.location.href 입력하면 현재 URL 가져올 수 있음
                로그인 페이지로 이동시킬 때 페이지 이동이라면 해당 정보를 파라미터로 가지고 가서
@@ -66,7 +68,7 @@
                
                로그인 창 자체를 팝업으로 띄우면 할 필요 없고
             -->
-         
+
 
          </div>
       </c:when>

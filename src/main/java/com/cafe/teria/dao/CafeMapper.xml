@@ -6,6 +6,18 @@
 <!-- 이 XML 이 어떤 interface 와 연결되는지 설정 -->
 <mapper namespace="com.cafe.teria.dao.CafeDAO">
 
+<!-- 20210121 문의 글쓰기 -->
+	<insert id="writeQst" parameterType="hashmap">
+		insert into 
+			bmember (mem_bcode, bmem_stat, mem_emailchk) 
+		values 
+			(#{mem_bcode}, 1, 1);
+	</insert>
+
+
+
+
+
 <!-- 게시글 list 가져오기 -->
  	<select id="list" resultType="com.cafe.teria.dto.CafeDTO">
  		select cafe_idx, cafe_title, cafe_content, cafe_hit, cafe_likecnt, cafe_replycnt, cafe_photoex, cafe_poststat, cafe_posttime, cafe_modtime,
