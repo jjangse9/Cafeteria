@@ -59,7 +59,7 @@
          <img src="/photo/0.png" width="100px" class="btn btn-secondary dropdown-toggle"
          id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" onclick='popUpLogin()'"> 로그인해주세요흙흙 </a>
+            <a class="dropdown-item" href="javascript:void(window.open('./', '','width=500px, height=500px'))"> 로그인해주세요흙흙 </a>
 
             <!-- 
                window.location.href 입력하면 현재 URL 가져올 수 있음
@@ -82,24 +82,5 @@
 
 </html>
 <script>
-	
+
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

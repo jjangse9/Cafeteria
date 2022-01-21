@@ -80,20 +80,48 @@
 					
 					
 					
-<!-- 20220120 상태 아이콘SI --> 
-				<div class="dropdown">
-					<img src="/photo/1.png" width="50px" class="btn btn-secondary dropdown-toggle" 
-						style="padding:0px; margin-left:10px;" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" href="./myStat">${loginId } 님</a>
-					<!-- 20220117 내 정보 보기 쪽에서 할 수 있도록
-						<a class="dropdown-item" href="#">내 글 보기</a>
-						<a class="dropdown-item" href="#">내 댓글 보기</a>
-					-->
-					<a class="dropdown-item" href="#">문의하기</a>
-					<a class="dropdown-item" href="#">로그아웃</a>
-					</div>
-				</div>
+<!-- 20220117 내 상태창 보기SI -->
+   <c:set var="loId" value="${loginId }"/>
+   <div class="dropdown">
+   
+   <!-- 로그인 / 비로그인 상태 구분 -->
+   <c:choose>
+      <c:when test="${loId ne null}">
+         <img src="/photo/${iconName }" width="100px" class="btn btn-secondary dropdown-toggle"
+            id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
+         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+           <a class="dropdown-item" href="./myStat">${loginId} 님 </a>
+         
+            
+            <!-- 20220117 내 정보 보기 쪽에서 할 수 있도록
+            <a class="dropdown-item" href="#">내 글 보기</a>
+            <a class="dropdown-item" href="#">내 댓글 보기</a>
+             -->
+       
+           <a class="dropdown-item" href="./qstPage">문의하기</a>
+           <a class="dropdown-item" href="./logout">로그아웃</a>
+         </div>
+      </c:when>
+      <c:when test="${loId eq null }">
+         <img src="/photo/0.png" width="100px" class="btn btn-secondary dropdown-toggle"
+         id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
+         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" onclick='popUpLogin()'"> 로그인해주세요흙흙 </a>
+
+            <!-- 
+               window.location.href 입력하면 현재 URL 가져올 수 있음
+               로그인 페이지로 이동시킬 때 페이지 이동이라면 해당 정보를 파라미터로 가지고 가서
+               로그인 완료시 원래 페이지로 이동시키는 방법을 쓸 수 있음
+               
+               로그인 창 자체를 팝업으로 띄우면 할 필요 없고
+            -->
+
+
+         </div>
+      </c:when>
+   </c:choose>   
+   </div>
+<!-- 20220117 내 상태창 보기 -->
  
                     <div style="width: 100px;"></div>
 <!-- 20220120 상태 아이콘SI -->
@@ -423,6 +451,29 @@
         </footer>
     </body>
     <script>
-        
+		function popUpLogin(){
+			//console.log('메론');
+			
+			javascript:void(window.open('./loginPage', '','width=500px, height=500px'));
+			
+			
+		};
     </script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -101,7 +101,7 @@
 			<input type="button" value="회원가입" onclick="location.href='joinForm'"/>
 			</th>
 			
-		<li><a href="./findPw" target="_blank">
+		<li><a href="./findPw" target="_parent">
         비밀번호 찾기
     	</a></li>
 			</div>

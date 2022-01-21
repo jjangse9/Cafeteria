@@ -25,10 +25,12 @@ public class JoinController {
 	private  Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired JoinMemberService service;
-	/*
-	 * @RequestMapping(value = "/", method = RequestMethod.GET) public String
-	 * home(Model model) { logger.info("main page 이동"); return "mainpage"; }
-	 */
+	@RequestMapping(value = "/loginPage", method = RequestMethod.GET) 
+	public String home(Model model) {
+		logger.info("main page 이동"); 
+		return "login"; 
+	}
+	
 	
 	
 	//회원가입
