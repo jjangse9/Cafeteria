@@ -195,7 +195,62 @@ public class HomeController {
 	
 	
 	
+	@RequestMapping(value = "/idChk", method = RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> idChk(@RequestParam HashMap<String, Object> idChk) {
+		
+		//logger.info("받아온 idChk 값  : {}",idChk);
+		
+		HashMap<String, Object> idChkinfo = new HashMap<String, Object>();
+		
+		idChkinfo.put("idChk", service.idChk(idChk));
+		
+		//logger.info("idChkInfo : {} ",idChkinfo);
+
+		return idChkinfo; 
+	
+	}
 	
 	
+	  
+	   @RequestMapping(value = "/testImage", method = RequestMethod.GET)
+	   public String testImage(Model model) {
+	      
+	      return "testImage";
+	   }
+	
+	
+	   
+		@RequestMapping(value = "/bmemchk", method = RequestMethod.POST)
+		@ResponseBody
+		public HashMap<String, Object> bmemchk(@RequestParam HashMap<String, Object> idChk) {
+			
+			//logger.info("받아온 idChk 값  : {}",idChk);
+			
+			HashMap<String, Object> idChkinfo = new HashMap<String, Object>();
+			
+			idChkinfo.put("idChk", service.bmemchk(idChk));
+			
+			//logger.info("idChkInfo : {} ",idChkinfo);
+
+			return idChkinfo; 
+		
+		}
+	
+		
+		@RequestMapping(value = "/imgChk", method = RequestMethod.POST)
+		@ResponseBody
+		public List<HashMap<String, Object>> imgChk() {
+			
+			List<HashMap<String, Object>> imgInfo = service.imgChk();
+			
+			System.out.print(imgInfo);
+			
+			return imgInfo; 
+		
+		}
+		
+		
+		
 	
 }

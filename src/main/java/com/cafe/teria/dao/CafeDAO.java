@@ -43,5 +43,11 @@ public interface CafeDAO {
 
 	void disrewritecnt(HashMap<String, String> param);
 
+	HashMap<String, Object> idChk(HashMap<String, Object> idChk);
+
+	HashMap<String, Object> bmemchk(HashMap<String, Object> idChk);
+
+	List<HashMap<String, Object>> imgChk();
+
 
 }

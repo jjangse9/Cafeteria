@@ -78,8 +78,8 @@
  	
  	
  	<insert id="addreply" parameterType="HashMap">
- 		insert into cafereply(cafereply_content, cafe_idx, cafereply_ratestar)
- 		values(#{recon}, #{idx}, #{rate})
+ 		insert into cafereply(cafereply_content, cafe_idx, cafereply_ratestar, mem_id)
+ 		values(#{recon}, #{idx}, #{rate}, #{userId})
  	</insert>
  	
  	
@@ -137,6 +137,33 @@
    </update>
    
    
+	<select id="idChk" parameterType="HashMap" resultType="HashMap">
+		select *
+		from member m
+		where m.mem_id = #{idChk}
+	</select>
+ 
+ 
+ 
+	 <select id="bmemchk" parameterType="HashMap" resultType="HashMap">
+		select *
+		from member m
+		join bmember bm
+		on m.mem_id = bm.mem_id
+		where m.mem_id = #{idChk}
+	</select>
+ 
+ 
+  
+	 <select id="imgChk" resultType="HashMap">
+		select *
+		from replyphoto m
+	</select>
+ 
+ 
+ 
+ 
+ 
 	
 </mapper>
    

@@ -479,7 +479,6 @@ tbody {
 
 
 
-
 	<br>
 	<br>
 	<br>
@@ -501,7 +500,7 @@ tbody {
 			<tr>
 				<td>회원 이름</td>
 				<td>
-					<div class="startRadio">
+					<div class="startRadio starOrigin">
 						<label class="startRadio__box"> <input type="radio"
 							name="star" id="" value="1"> <span
 							class="startRadio__img"><span class="blind">별 1개</span></span>
@@ -533,8 +532,10 @@ tbody {
 							name="star" id="" value="10"> <span
 							class="startRadio__img"><span class="blind">별 5.5개</span></span>
 						</label>
-					</div> <textarea id="recon" placeholder="댓글을 입력하세요"
-						style="width: 100%; height: 100px"></textarea>
+					</div> <input type="button" id="callImgBox" value="이미지 첨부 하기"/>
+					<div id="div1" style="border: solid;width:100%; height:140px; display: none;"></div>
+					<textarea id="recon" placeholder="댓글을 입력하세요"
+						style="width: 100%; height: 150px" onclick="replyLoginChk()"></textarea>
 				</td>
 				<td><input type="button" id="addReply" value="입력"
 					onclick="addReply(${cafe.cafe_idx});" /></td>
@@ -561,6 +562,66 @@ tbody {
 
 <script>
 
+$(document).ready(function addImageBox(){
+
+    $("#div1").load("./testImage");
+
+});
+
+
+var loginId = "${sessionScope.loginId}";
+
+var loginChk = {};
+var userInfo = {};
+
+idChk(loginId);
+
+function idChk(loginId){
+	
+	//console.log("유저 세션 정보"+loginId);
+	
+	var param = {};
+	param.idChk = loginId;
+	
+	$.ajax({
+        type:'POST',
+        url:'idChk',
+        async:false,
+        data:param,
+        dataType:'JSON',
+        success:function(data){ // data == idChkinfo -> idChk 라는 키가 있고 idChk의 val이 존재
+        	
+        if(data.idChk.mem_grade ==1 ){
+        	
+	       	loginChk = data.idChk;    
+	       	console.log("일반 회원의 정보"+loginChk);
+	       	
+        }else if(data.idChk.mem_grade == 2){
+       		
+       		$.ajax({
+       	        type:'POST',
+       	        url:'bmemchk',
+       	        async:false,
+       	        data:param,
+       	        dataType:'JSON',
+       	        success:function(data){
+       	        	loginChk = data.idChk;
+       	        	console.log("업주 회원의 정보"+loginChk);
+	       	     },
+	             error:function(e){
+	                console.log("에러 발생   "+e);
+	             }
+	          });    
+       	}
+        },
+        error:function(e){
+           console.log("에러 발생   "+e);
+        }
+     });      
+}
+
+
+
 var replyListNo = $('#replyList').val();
 
 var limit = 0;
@@ -569,7 +630,8 @@ replyList(replyListNo);
 
 function replyList(idx){
 	
-	console.log(idx);
+	
+	//console.log(idx);
 	
 	 $.ajax({
          type:'POST',
@@ -588,6 +650,23 @@ function replyList(idx){
 }
 
 function replyListDraw(data){
+	var imgChk = {};
+	
+	$.ajax({
+        type:'POST',
+        url:'imgChk',
+        async:false,
+        data:{},
+        dataType:'JSON',
+        success:function(data){
+			imgChk = data;
+        },
+        error:function(e){
+           console.log("에러 발생   "+e);
+        }
+     });      
+	
+	
 	
 	limit += 1;
 	
@@ -665,10 +744,10 @@ function replyListDraw(data){
 				
 				
 				
-				
-				
 				content += "</td>";
 				content += "<td>";
+				content += "<span id=callImgList"+data[i].cafereply_idx+"><span>";
+				content += "<br/>";
 				if(data[i].cafereply_rewritechk>0){
 					content += data[i].cafereply_content+"(수정 됨)";				
 				}else{
@@ -707,7 +786,7 @@ function replyListDraw(data){
 				//$(".replyStar"+data[i].cafereply_idx+" input[name=star"+data[i].cafereply_idx+"] [value="+data[i].cafereply_ratestar+"]").prop('checked' , true);
 				
 				//console.log($(".replyStar"+data[i].cafereply_idx).find('input[name=star'+data[i].cafereply_idx));
-				var onCheckedRadio = $(".replyStar"+data[i].cafereply_idx).find('input[name=star'+data[i].cafereply_idx);
+				var onCheckedRadio = $(".replyStar"+data[i].cafereply_idx).find('input[name=star'+data[i].cafereply_idx+']');
 				//console.log(data[i].cafereply_ratestar);
 				for(var j = 0 ; j < data[i].cafereply_ratestar ; j++){
 					onCheckedRadio[j].checked = true;
@@ -764,6 +843,28 @@ function replyListDraw(data){
 		
 		}
 	}	
+	
+	var contentImg = "";
+	
+	for(var i = 0; i<imgChk.length; i++){
+		
+		
+		
+		
+		var area = "#callImgList"+imgChk[i].cafereply_idx;
+		
+		console.log(area);
+		
+		contentImg += "<img alt='' src='"+imgChk[i].replyphoto_path+imgChk[i].replyphoto_newname+"' style='width: 150px; height: 150px;'/>"	
+		
+		console.log(contentImg);
+		
+		$(area).prepend(contentImg);
+		
+	}
+	
+	
+	
 			//console.log(rateAvg);
 			var Avg = 0;
 			
@@ -828,7 +929,7 @@ geocoder.addressSearch('${cafe.bmem_address}', function(result, status) {
 
 
 function recoCall(idx){
-      console.log("대댓 정보 요청중");
+      //console.log("대댓 정보 요청중");
 
 
       $.ajax({
@@ -987,18 +1088,20 @@ function addReply(idx){
 	//번호는 DB에서 자동 입력
 	//댓글 등록 시간.
 	//댓글 수정 시간은 수정폼에서
-	//*2.	댓글 내용
+	//*2.	댓글 내용 ok
 	//댓글 좋아요는 댓글 보기에서
-	//*3.	별점
+	//*3.	별점 ok
 	//기본 댓글 상태는 null
 	//수정 여부를 표시하는 것도 수정 폼에서
 	//대댓수는 대댓글이 달릴 때 업데이트
 	//*4.	게시글의 번호 (댓글이 귀속될 게시글의 번호) 
-	//*5.	유저ID
+	//*5.	유저ID 
 	
 	var recon = $("#recon").val();
 	var idx = idx;
-	var star_rate = $(".startRadio input[type=radio]:checked").val();     
+	var star_rate = $(".starOrigin input[type=radio]:checked").val();     
+	var userId = loginChk.mem_id;
+	
 	
 	if(recon == ""){
 		
@@ -1010,6 +1113,7 @@ function addReply(idx){
 	      param.recon = recon;
 	      param.idx = idx;
 	      param.rate = star_rate;
+	      param.userId = userId;
 
 	      //console.log(param);
 	      
@@ -1025,23 +1129,73 @@ function addReply(idx){
 		            success:function(data){
 		               console.log(data.success);
 		               if(data.success>0){
-		                  $("#recon").val('');2
-		                  $(".startRadio input[type=radio]").prop('checked', false);
+		                  $("#recon").val('');
+		                  $(".starOrigin input[type=radio]").prop('checked', false);
+		                  replyList(idx);
 		               }
 		            },
 		            error:function(e){
 		               
 		            }
 		         });    
+		       
+			   	var imgEx = $("span .addImg").length;
+			   	
+		       if(imgEx > 0){
+		    	   dataSubmit();
+		       }	
+		       
+		       
+		       
 	      }
-	      
-	       
-	   
-	   
 	   }
+	
 
 	
+	
+	
 };
+
+
+function replyLoginChk(){
+	
+	if(loginChk === null){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
+	}
+	
+}
+
+
+
+$("#callImgBox").click(function(){
+	
+	if($("#callImgBox").val() == "이미지 첨부 하기"){
+		
+		$("#div1").css("display","block");
+		
+		$("#callImgBox").val("이미지 첨부 취소");
+		
+	}else if($("#callImgBox").val() == "이미지 첨부 취소"){
+		
+		$("span .addImg").remove();
+		
+		$("#div1").css("display","none");
+		
+		$("#callImgBox").val("이미지 첨부 하기");
+		
+		addImageBox();
+		
+	}
+	
+})
+
+
+
+
 
 
 
@@ -1051,18 +1205,29 @@ function recoBoxCall(Cidx, Ridx){
 	var content = "";
 	var addRecoArea = "#addRecoArea"+Ridx;
 	
-	if(document.getElementById("addRecoBox")==null){
-    
-	    content += '<tr id="addRecoBox">';
-	    content += '<td>회원 이름</td>';
-	    content += '<td><textarea id="recoBox" placeholder="답글을 입력하세요" style="width: 100%; height: 100px" cols="30" rows="10"></textarea></td>';
-	    content += '<td><input type="button" id="addReply" value="답글 입력" onclick="addRecomment('+Ridx+','+Cidx+');"/><input type="button" value="취소" onclick="cancelAddReco('+Ridx+');"/></td>';
-	    content += '</tr>';
-	    
-	    $(addRecoArea).append(content);
+	if(loginChk === null){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
 	}else{
-		alert("답글을 입력해 주세요");
+	
+		if(document.getElementById("addRecoBox")==null){
+		    
+		    content += '<tr id="addRecoBox">';
+		    content += '<td>회원 이름</td>';
+		    content += '<td><textarea id="recoBox" placeholder="답글을 입력하세요" style="width: 100%; height: 100px" cols="30" rows="10"></textarea></td>';
+		    content += '<td><input type="button" id="addReply" value="답글 입력" onclick="addRecomment('+Ridx+','+Cidx+');"/><input type="button" value="취소" onclick="cancelAddReco('+Ridx+');"/></td>';
+		    content += '</tr>';
+		    
+		    $(addRecoArea).append(content);
+		}else{
+			alert("답글을 입력해 주세요");
+		}
 	}
+	
+	
     
 };
 
@@ -1120,18 +1285,29 @@ function addRecomment(Ridx,Cidx){
 
 function replyRew(Ridx, oriReply, cafeidx){
 	
-	var content = "";
 	
-	//content += '<tbody id="replyListCall'+Ridx+'">'	
-	content += '<tr id="replyRewClear'+Ridx+'">';
-    content += '<td>회원 이름</td>';
-    content += '<td><textarea id="updateReply'+Ridx+'" placeholder="답글을 입력하세요" style="width: 100%; height: 100px" cols="30" rows="10">'+oriReply+'</textarea></td>';
-    content += '<td><input type="button" id="" value="수정하기" onclick="updateReply(\'' + Ridx +'\',\'' +cafeidx + '\');"/><input type="button" id="" value="취소" onclick="cancelReRew(\'' + Ridx +'\',\'' +cafeidx + '\')"/></td>';
-    content += '</tr>';
-    //content += '</tbody>'
-    
-   // $("#updateReply"+idx).val() = $("#replyArea"+idx+"#text").val();
-    $("#replyListCall"+Ridx).replaceWith(content);
+	if(loginChk === null){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
+	}else{
+		
+		var content = "";
+		
+		//content += '<tbody id="replyListCall'+Ridx+'">'	
+		content += '<tr id="replyRewClear'+Ridx+'">';
+	    content += '<td>회원 이름</td>';
+	    content += '<td><textarea id="updateReply'+Ridx+'" placeholder="답글을 입력하세요" style="width: 100%; height: 100px" cols="30" rows="10">'+oriReply+'</textarea></td>';
+	    content += '<td><input type="button" id="" value="수정하기" onclick="updateReply(\'' + Ridx +'\',\'' +cafeidx + '\');"/><input type="button" id="" value="취소" onclick="cancelReRew(\'' + Ridx +'\',\'' +cafeidx + '\')"/></td>';
+	    content += '</tr>';
+	    //content += '</tbody>'
+	    
+	   // $("#updateReply"+idx).val() = $("#replyArea"+idx+"#text").val();
+	    $("#replyListCall"+Ridx).replaceWith(content);
+	}
+	
 };
 
 
@@ -1190,26 +1366,35 @@ function updateReply(Ridx,cafeidx){
 	
 function replyDel(idx, cafeidx){
 	
-	var reDelCon = confirm("정말로 삭제하시겠습니까?");
-	
-	
-	if(reDelCon){
+	if(loginChk === null){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
+	}else{
 		
-		$.ajax({
-	         type:'POST',	
-	         url:'replyDel',
-	         data:{'idx' : idx},
-	         dataType:'JSON',
-	         success:function(data){
-	        	 if(data.success>0){
-	        		console.log("삭제 되었습니다.");
-	        		replyList(cafeidx);
-	        	 }
-	         },
-	         error:function(e){
-	            
-	         }
-	      });    
+		var reDelCon = confirm("정말로 삭제하시겠습니까?");
+		
+		if(reDelCon){
+			
+			$.ajax({
+		         type:'POST',	
+		         url:'replyDel',
+		         data:{'idx' : idx},
+		         dataType:'JSON',
+		         success:function(data){
+		        	 if(data.success>0){
+		        		console.log("삭제 되었습니다.");
+		        		replyList(cafeidx);
+		        	 }
+		         },
+		         error:function(e){
+		            
+		         }
+		      });    
+		}
+		
 	}
 };
 
@@ -1218,16 +1403,28 @@ function replyDel(idx, cafeidx){
 function recoRew(cfIdx, replyIdx, recoIdx, rcCom){
 	//console.log(cfIdx, replyIdx, recoIdx, rcCom);
 	
-	var content = "";
-	var addRecoArea = "#recommentArea"+replyIdx;
-
-    content += '<tr id="recoRewClear'+replyIdx+'">';
-    content += '<td>회원 이름</td>';
-    content += '<td><textarea id="updateCom'+recoIdx+'" placeholder="답글을 입력하세요" style="width: 100%; height: 100px" cols="30" rows="10">'+rcCom+'</textarea></td>';
-    content += '<td><input type="button" id="" value="수정하기" onclick="updateRecom(\''+cfIdx+'\',\'' +replyIdx+'\',\'' +recoIdx+'\',\'' +rcCom+'\')"/><input type="button" id="" value="취소" onclick="cancelCoRew(\'' + recoIdx +'\',\'' +cfIdx + '\',\''+replyIdx+'\')"/></td>';
-    content += '</tr>';
-    
-    $("#recommentArea"+replyIdx).replaceWith(content);
+	if(loginChk === null){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
+	}else{
+		
+		
+		var content = "";
+		var addRecoArea = "#recommentArea"+replyIdx;
+	
+	    content += '<tr id="recoRewClear'+replyIdx+'">';
+	    content += '<td>회원 이름</td>';
+	    content += '<td><textarea id="updateCom'+recoIdx+'" placeholder="답글을 입력하세요" style="width: 100%; height: 100px" cols="30" rows="10">'+rcCom+'</textarea></td>';
+	    content += '<td><input type="button" id="" value="수정하기" onclick="updateRecom(\''+cfIdx+'\',\'' +replyIdx+'\',\'' +recoIdx+'\',\'' +rcCom+'\')"/><input type="button" id="" value="취소" onclick="cancelCoRew(\'' + recoIdx +'\',\'' +cfIdx + '\',\''+replyIdx+'\')"/></td>';
+	    content += '</tr>';
+	    
+	    $("#recommentArea"+replyIdx).replaceWith(content);
+		
+	}
+	
 }
 
 
@@ -1289,35 +1486,46 @@ function updateRecom(cfIdx, replyIdx, recoIdx, rcCom){
 
 function recoDel(Cidx, cafeidx, Ridx){
 	
-	var recoDelCon = confirm("정말로 삭제하시겠습니까?");
+	if(loginChk === null){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
+	}else{
+		
+		var recoDelCon = confirm("정말로 삭제하시겠습니까?");
+		
+		var content = "";
+		
+		var param = {};
+		
+		param.Cidx = Cidx;
+		param.Ridx = Ridx;
+		
+		if(recoDelCon){
+				
+			$.ajax({
+		         type:'POST',	
+		         url:'recoDel',
+		         data:param,
+		         dataType:'JSON',
+		         success:function(data){
+		        	 if(data.success>0){
+		        		console.log("삭제 되었습니다.");
+		        		$("#recommentArea"+Ridx).empty();
+		        		//$("#receDelClear"+Ridx).replaceWith(content);
+		        		replyList(cafeidx);
+		        	 }
+		         },
+		         error:function(e){
+		            
+		         }
+		    });    
+		}	
+		
+	}
 	
-	var content = "";
-	
-	var param = {};
-	
-	param.Cidx = Cidx;
-	param.Ridx = Ridx;
-	
-	if(recoDelCon){
-			
-		$.ajax({
-	         type:'POST',	
-	         url:'recoDel',
-	         data:param,
-	         dataType:'JSON',
-	         success:function(data){
-	        	 if(data.success>0){
-	        		console.log("삭제 되었습니다.");
-	        		$("#recommentArea"+Ridx).empty();
-	        		//$("#receDelClear"+Ridx).replaceWith(content);
-	        		replyList(cafeidx);
-	        	 }
-	         },
-	         error:function(e){
-	            
-	         }
-	    });    
-	}	
 }
 
 //=========================================================================================

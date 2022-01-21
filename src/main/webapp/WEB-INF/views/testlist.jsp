@@ -29,7 +29,7 @@
 		<c:forEach items="${list}" var="cb">
 		<tr>
 			<td>${cb.cafe_idx}</td>
-			<td><a href="/teria/detail?idx=${cb.cafe_idx}">${cb.cafe_title} | (별점 : ${cb.cafe_ratestaravg})</a></td>
+			<td><a href="/detail?idx=${cb.cafe_idx}">${cb.cafe_title} | (별점 : ${cb.cafe_ratestaravg})</a></td>
 			<td>${cb.mem_id}</td>
 			<td>${cb.cafe_posttime}</td>
 			<td>${cb.cafe_hit}</td>

@@ -131,6 +131,47 @@ public class CafeService {
 		
 	}
 
+	public HashMap<String, Object> idChk(HashMap<String, Object> idChk) {
+		
+		return dao.idChk(idChk);
+	}
+
+	public int addDietMenu(HashMap<String, String> value) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public List<HashMap<String, String>> detail_diet(String cafe_idx, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int deleteDietMenu(String startDate, String endDate) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public HashMap<String, String> getOriginName(String string, String string2, String string3, String string4,
+			String string5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getDietIdx(String string, String string2, String string3, String string4, String string5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object bmemchk(HashMap<String, Object> idChk) {
+		
+		return dao.bmemchk(idChk);
+	}
+
+	public List<HashMap<String, Object>> imgChk() {
+		
+		return dao.imgChk();
+	}
+
 	
 
 
