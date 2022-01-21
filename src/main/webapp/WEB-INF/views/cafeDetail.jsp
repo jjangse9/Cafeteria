@@ -583,41 +583,48 @@ function idChk(loginId){
 	var param = {};
 	param.idChk = loginId;
 	
-	$.ajax({
-        type:'POST',
-        url:'idChk',
-        async:false,
-        data:param,
-        dataType:'JSON',
-        success:function(data){ // data == idChkinfo -> idChk 라는 키가 있고 idChk의 val이 존재
-        	
-        if(data.idChk.mem_grade ==1 ){
-        	
-	       	loginChk = data.idChk;    
-	       	console.log("일반 회원의 정보"+loginChk);
-	       	
-        }else if(data.idChk.mem_grade == 2){
-       		
-       		$.ajax({
-       	        type:'POST',
-       	        url:'bmemchk',
-       	        async:false,
-       	        data:param,
-       	        dataType:'JSON',
-       	        success:function(data){
-       	        	loginChk = data.idChk;
-       	        	console.log("업주 회원의 정보"+loginChk);
-	       	     },
-	             error:function(e){
-	                console.log("에러 발생   "+e);
-	             }
-	          });    
-       	}
-        },
-        error:function(e){
-           console.log("에러 발생   "+e);
-        }
-     });      
+	
+	
+	if(loginId != null && loginId != ""){
+		
+		$.ajax({
+	        type:'POST',
+	        url:'idChk',
+	        async:false,
+	        data:param,
+	        dataType:'JSON',
+	        success:function(data){ // data == idChkinfo -> idChk 라는 키가 있고 idChk의 val이 존재
+	        	console.log("idChk 정보 : "+data.idChk.mem_grade);
+	        	
+	        if(data.idChk.mem_grade ==1 ){
+	        	
+		       	loginChk = data.idChk;    
+		       	console.log("일반 회원의 정보"+loginChk);
+		       	
+	        }else if(data.idChk.mem_grade == 2){
+	       		
+	       		$.ajax({
+	       	        type:'POST',
+	       	        url:'bmemchk',
+	       	        async:false,
+	       	        data:param,
+	       	        dataType:'JSON',
+	       	        success:function(data){
+	       	        	loginChk = data.idChk;
+	       	        	console.log("업주 회원의 정보"+loginChk);
+		       	     },
+		             error:function(e){
+		                console.log("에러 발생   "+e);
+		             }
+		          });    
+	       	}
+	        },
+	        error:function(e){
+	           console.log("에러 발생   "+e);
+	        }
+	     });      
+	}
+	
 }
 
 
@@ -1159,7 +1166,7 @@ function addReply(idx){
 
 function replyLoginChk(){
 	
-	if(loginChk === null){
+	if(loginId == ""){
 		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
 		$("#recon").attr("readonly", true);
 		if(yn){
@@ -1173,23 +1180,34 @@ function replyLoginChk(){
 
 $("#callImgBox").click(function(){
 	
-	if($("#callImgBox").val() == "이미지 첨부 하기"){
+
+	if(loginId == ""){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+		$("#recon").attr("readonly", true);
+		if(yn){
+			location.href="/";
+		}
+	}else{
 		
-		$("#div1").css("display","block");
-		
-		$("#callImgBox").val("이미지 첨부 취소");
-		
-	}else if($("#callImgBox").val() == "이미지 첨부 취소"){
-		
-		$("span .addImg").remove();
-		
-		$("#div1").css("display","none");
-		
-		$("#callImgBox").val("이미지 첨부 하기");
-		
-		addImageBox();
-		
+		if($("#callImgBox").val() == "이미지 첨부 하기"){
+			
+			$("#div1").css("display","block");
+			
+			$("#callImgBox").val("이미지 첨부 취소");
+			
+		}else if($("#callImgBox").val() == "이미지 첨부 취소"){
+			
+			$("span .addImg").remove();
+			
+			$("#div1").css("display","none");
+			
+			$("#callImgBox").val("이미지 첨부 하기");
+			
+			addImageBox();
+			
+		}
 	}
+	
 	
 })
 
@@ -1205,7 +1223,7 @@ function recoBoxCall(Cidx, Ridx){
 	var content = "";
 	var addRecoArea = "#addRecoArea"+Ridx;
 	
-	if(loginChk === null){
+	if(loginId == ""){
 		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
 		$("#recon").attr("readonly", true);
 		if(yn){
@@ -1286,7 +1304,7 @@ function addRecomment(Ridx,Cidx){
 function replyRew(Ridx, oriReply, cafeidx){
 	
 	
-	if(loginChk === null){
+	if(loginId == ""){
 		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
 		$("#recon").attr("readonly", true);
 		if(yn){
@@ -1366,7 +1384,7 @@ function updateReply(Ridx,cafeidx){
 	
 function replyDel(idx, cafeidx){
 	
-	if(loginChk === null){
+	if(loginId == ""){
 		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
 		$("#recon").attr("readonly", true);
 		if(yn){
@@ -1403,7 +1421,7 @@ function replyDel(idx, cafeidx){
 function recoRew(cfIdx, replyIdx, recoIdx, rcCom){
 	//console.log(cfIdx, replyIdx, recoIdx, rcCom);
 	
-	if(loginChk === null){
+	if(loginId == ""){
 		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
 		$("#recon").attr("readonly", true);
 		if(yn){
@@ -1486,7 +1504,7 @@ function updateRecom(cfIdx, replyIdx, recoIdx, rcCom){
 
 function recoDel(Cidx, cafeidx, Ridx){
 	
-	if(loginChk === null){
+	if(loginId == ""){
 		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
 		$("#recon").attr("readonly", true);
 		if(yn){
