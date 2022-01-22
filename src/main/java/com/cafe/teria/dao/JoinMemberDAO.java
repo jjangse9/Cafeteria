@@ -46,9 +46,8 @@ public interface JoinMemberDAO {
 		String findPassword(String mem_id);
 
 		int pwupdate(HashMap<String, String> params);
-
-// 20220122 모든 글 불러오기
-		ArrayList<JoinMemberDTO> membersInfo();
-	
+		/*
+		 * // 20220122 모든 글 불러오기 ArrayList<JoinMemberDTO> membersInfo();
+		 */
 
 }

@@ -75,20 +75,20 @@
 						      <th scope="col">회원등급</th>
 						      <th scope="col">업주 회원으로</th>
 						    </tr>
-						  </thead>
+						 	</thead>
 						  
-						 <c:forEach items="${adminResult}" var="admin">
+							<tbody>
+						 <%-- <c:forEach items="${adminResult}" var="admin"> --%>
 						  <%-- <c:if test="${qst.qst_stat eq 1 }"> --%>
-							  <tbody>
 							    <tr>
 							      <th scope="row">${admin.membersInfo.mem_id }</th>
 							      <td>${admin.membersInfo.mem_nick }</td>
 							      <td>${admin.membersInfo.mem_grade }</td>
 							      <td style="width:15%"></td>
 							    </tr>
-							  </tbody>
 						  <%-- </c:if> --%>
-						  </c:forEach>
+						  <%-- </c:forEach> --%>
+							</tbody>
 						</table>
 
 		      </div>

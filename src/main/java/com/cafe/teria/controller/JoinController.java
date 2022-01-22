@@ -118,12 +118,13 @@ public class JoinController {
 		}
 		
 
-// 20220122 로그인 회원 아이디가 admin 일 경우 관리 페이지에서 필요한 모든 데이터를 뽑아온다.
-		if(mem_id.equals("admin")) {
-			
-			HashMap<String, Object> adminResult = service.adminInfo();
-			model.addAttribute("adminResult", adminResult);
-		}
+		/*
+		 * // 20220122 로그인 회원 아이디가 admin 일 경우 관리 페이지에서 필요한 모든 데이터를 뽑아온다.
+		 * if(mem_id.equals("admin")) {
+		 * 
+		 * HashMap<String, Object> adminResult = service.adminInfo();
+		 * model.addAttribute("adminResult", adminResult); }
+		 */
 		
 		return success;
 	}
