@@ -40,4 +40,9 @@ src/main/webapp/WEB-INF/views/board/board_reply.jsp
 src/main/webapp/WEB-INF/views/common/adm_main.jsp
 src/main/webapp/WEB-INF/views/common/footer.jsp
 src/main/webapp/WEB-INF/views/common/header.jsp
+<<<<<<< HEAD
 >>>>>>> 93a6f76 (커밋)
+=======
+.settings/
+target/
+>>>>>>> 3231179 (최초 프로젝트)
