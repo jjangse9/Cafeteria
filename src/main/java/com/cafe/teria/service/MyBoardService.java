@@ -8,22 +8,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cafe.teria.dao.BoardDAO;
-import com.cafe.teria.dto.BoardDTO;
+import com.cafe.teria.dao.MyBoardDAO;
 import com.cafe.teria.dto.CafeDTO;
-import com.cafe.teria.dto.JoinMemberDTO;
+import com.cafe.teria.dto.MyBoardDTO;
 import com.cafe.teria.dto.RecommentDTO;
 import com.cafe.teria.dto.ReplyDTO;
 
 @Service
-public class BoardService {
+public class MyBoardService {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	
 	
 	
-	@Autowired BoardDAO dao;
+	@Autowired MyBoardDAO dao;
 
 	
 	
@@ -75,7 +74,7 @@ public class BoardService {
 
 
 
-	public ArrayList<BoardDTO> blameList() {
+	public ArrayList<MyBoardDTO> blameList() {
      logger.info("blameList 쿼리 요청");
          
          return dao.blameList();

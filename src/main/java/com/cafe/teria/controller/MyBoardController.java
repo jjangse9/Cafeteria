@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafe.teria.dto.BoardDTO;
+import com.cafe.teria.dto.MyBoardDTO;
 import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.JoinMemberDTO;
 import com.cafe.teria.dto.RecommentDTO;
 import com.cafe.teria.dto.ReplyDTO;
-import com.cafe.teria.service.BoardService;
+import com.cafe.teria.service.MyBoardService;
 
 
 @Controller
-public class BoardController {
+public class MyBoardController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired BoardService service;
+	@Autowired MyBoardService service;
 	
 	
 	
@@ -110,7 +110,7 @@ public class BoardController {
 	public String blameList(Model model) {
 		logger.info("list 요청");
 		
-		ArrayList<BoardDTO>list = service.blameList();
+		ArrayList<MyBoardDTO>list = service.blameList();
 		
 		logger.info("글의 수 : {}", list.size());
 		

@@ -3,20 +3,20 @@ package com.cafe.teria.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.cafe.teria.dto.BoardDTO;
+import com.cafe.teria.dto.MyBoardDTO;
 import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.RecommentDTO;
 import com.cafe.teria.dto.ReplyDTO;
 
 
-public interface BoardDAO {
+public interface MyBoardDAO {
 	
 	
 //	ArrayList<JoinMemberDTO> myList(String loginId);
 
 	int write(HashMap<String, String> params);
 
-	ArrayList<BoardDTO> blameList();
+	ArrayList<MyBoardDTO> blameList();
 
 	int blameWrite(HashMap<String, String> params);
 

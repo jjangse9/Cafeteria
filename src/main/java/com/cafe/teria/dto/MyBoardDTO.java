@@ -2,7 +2,7 @@ package com.cafe.teria.dto;
 
 import java.sql.Date;
 
-public class BoardDTO {
+public class MyBoardDTO {
 	
 	
 

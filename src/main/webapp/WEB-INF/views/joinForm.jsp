@@ -193,7 +193,7 @@ $("#regist").click(function(){
 				console.log(data);
 				if(data.success == 1){
 					alert('회원가입을 축하 드립니다.');
-					location.href='./';
+					location.href='./login';
 				}else{
 					alert('회원가입에 실패 했습니다. 다시 시도해 주세요.');
 				}

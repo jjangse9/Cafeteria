@@ -1,6 +1,5 @@
 package com.cafe.teria.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -42,14 +41,6 @@ public class JoinController {
 	}
 	
 	
-//중복검사
-	
-	@RequestMapping(value = "/overlay", method = RequestMethod.GET)
-	@ResponseBody
-	public HashMap<String, Object> overlay(@RequestParam String mem_id) {
-		logger.info("중복 아이디 체크 : {}",mem_id);
-		return service.overlay(mem_id);
-	}
 	
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
@@ -59,6 +50,16 @@ public class JoinController {
 		logger.info("회원가입 요청 : {}", param);
 		
 		return service.join(param);
+	}
+
+	
+	//중복검사
+	
+	@RequestMapping(value = "/overlay", method = RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String, Object> overlay(@RequestParam String mem_id) {
+		logger.info("중복 아이디 체크 : {}",mem_id);
+		return service.overlay(mem_id);
 	}
 	
 
@@ -290,6 +291,7 @@ public class JoinController {
 			      // 로그인을 해야지만 진입할 수 있기 때문에 일단 로그인 확인 절차는 무시
 			      JoinMemberDTO userInfo = service.viewInfo(userId);
 			      
+			      model.addAttribute("userId", userId);
 			      model.addAttribute("userInfo", userInfo);
 				
 				return "passUpdate";

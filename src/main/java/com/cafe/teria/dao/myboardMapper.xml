@@ -9,12 +9,12 @@
    
    <!-- 네임스페이스는 이 xml이 어떤 인터페이스와 연결되는지 설정해주는거야. -->
    <!-- 인터페이스는 멤버다오.java 였어 왼쪽에보면 조그맣게 I라고 적혀있잖아.  그래서 맴버다오가 이리로 들어오는거야 이거 확인해봐 -->
-<mapper namespace="com.cafe.teria.dao.BoardDAO">
+<mapper namespace="com.cafe.teria.dao.MyBoardDAO">
 
 
 
 
- <select id="myList" resultType="com.cafe.teria.dto.BoardDTO">
+ <select id="myList" resultType="com.cafe.teria.dto.MyBoardDTO">
       SELECT * FROM bmember where mem_id = #{param1}
   </select>
    
@@ -27,7 +27,7 @@
     
     
     
-        <select id="blameList" resultType="com.cafe.teria.dto.BoardDTO">
+        <select id="blameList" resultType="com.cafe.teria.dto.MyBoardDTO">
        select blame_idx,blame_title,mem_id,blame_cnt
           from boardblame order by blame_idx desc 
     	</select>
