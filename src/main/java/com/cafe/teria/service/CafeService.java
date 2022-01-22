@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cafe.teria.dao.CafeDAO;
 import com.cafe.teria.dto.CafeDTO;
+import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.RecommentDTO;
 
 @Service
@@ -172,13 +173,6 @@ public class CafeService {
 		return dao.imgChk();
 	}
 
-// 20210121 - 문의하기 글쓰기
-	public int writeQst(HashMap<String, Object> params) {
-		
-		int result = dao.writeQst(params);
-		
-		return 0;
-	}
 
 	
 

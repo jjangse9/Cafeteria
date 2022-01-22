@@ -451,11 +451,13 @@
         </footer>
     </body>
     <script>
+/* 20220122 - 로그인 팝업 띄우는 function */    
 		function popUpLogin(){
 			//console.log('메론');
 			
-			javascript:void(window.open('./loginPage', '','width=500px, height=500px'));
-			
+			// 창을 띄우면서 현재(부모) 창의 url 정보를 같이 넘긴다.
+			javascript:void(window.open('./loginPage', '','width=1600px, height=1200px'));
+		 	
 			
 		};
     </script>

@@ -2,6 +2,7 @@ package com.cafe.teria.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cafe.teria.dto.MyBoardDTO;
+import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.JoinMemberDTO;
 import com.cafe.teria.dto.RecommentDTO;
@@ -28,8 +30,80 @@ public class MyBoardController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired MyBoardService service;
+
 	
 	
+	// 20220122 업주 회원 문의 페이지 이동
+			@RequestMapping(value = "/bQstPage", method = RequestMethod.GET)
+			public String bQstPage(
+					Model model,
+					HttpSession session
+					) {
+				logger.info("확인해보기");
+				
+				String loginId = (String) session.getAttribute("loginId");
+				model.addAttribute("loginId", loginId);
+				
+				return "bQstWriteForm";
+				
+			}
+	
+	
+	
+	
+	// 20220121 일반 문의 글쓰기 페이지 요청
+		@RequestMapping(value = "/qstPage", method = RequestMethod.GET)
+		public String qstPage(Model model, HttpSession session) {
+			logger.info("문의 쓰기 페이지 요청");
+			
+			String mem_id = (String) session.getAttribute("loginId");
+			
+			model.addAttribute("mem_id", mem_id);
+				
+			return "qstWriteForm";
+		}
+
+		// 20220122 일반 문의 글쓰기
+			@RequestMapping(value = "/qstWrite", method = RequestMethod.POST)
+			public String qstWrite(
+					Model model, 
+					@RequestParam HashMap<String, Object> params,
+					HttpSession session
+					) 
+			{
+				logger.info("일반 문의 글쓰기 요청 도착");
+				
+				
+// 20220122 - hashmap 값 확인하기SI
+				for (Entry<String, Object> entrySet : params.entrySet()) {
+					logger.info("받아온 값 확인 : {}", entrySet.getKey() + " : " + entrySet.getValue());
+					}
+
+				String userId = (String) session.getAttribute("loginId");
+				
+				model.addAttribute("loginId", userId);
+				
+				int result = service.writeQst(params);
+				
+				return "redirect:./qstList";
+			}
+			
+		
+			// 20220122 문의 내역 보기
+			@RequestMapping(value = "/qstList", method = RequestMethod.GET)
+			public String qstList(Model model, HttpSession session) {
+				logger.info("문의 내역 페이지 요청");
+				
+				String mem_id = (String) session.getAttribute("loginId");
+				
+				model.addAttribute("mem_id", mem_id);
+				
+				ArrayList<QstDTO> result = service.qstList(mem_id);
+				
+				model.addAttribute("qstInfo", result);
+				
+				return "qstList";
+			}	
 	
 	
 	

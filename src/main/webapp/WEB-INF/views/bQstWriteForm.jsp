@@ -114,15 +114,15 @@
                       
 <!-- 20220121 보낼 데이터 - 폼! -->                     
 <form action="qstWrite" method="post">
-                            <!--업체명-->
+                            <!--아이디-->
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <a style="color: red;">*</a>
-                                    <a>업체명</a> 
+                                    <a>아이디</a>
                                     </span>
                                 </div>
-<!-- 20220121 보낼 데이터 - 1. 업체명 -->
-<input name="mem_id" class="form-control" placeholder="업체명을 입력해주세요" type="text"/>
+<!-- 20220121 보낼 데이터 - 1. 회원 아이디( mem_id ) -->
+<input name="mem_id" class="form-control" value="${loginId }" type="text" readonly/>
                             </div>
                             <div style="width: 100%; height: 15px;"></div>
                             <!--사업자등록번호-->
@@ -146,7 +146,7 @@
                             <!--영업시간-->
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
-                            a        <span class="input-group-text"> <a>영업시간</a> </span>
+                                    <span class="input-group-text"> <a>영업시간</a> </span>
                                 </div>
 <!-- 20220121 보낼 데이터 - 4. 영업시간 -->
 <input name="bmem_btime" clss="form-control" placeholder="영업시간을 입력해주세요.  ex) 09:00 ~ 20:00 " type="text"/>

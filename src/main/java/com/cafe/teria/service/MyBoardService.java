@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cafe.teria.dao.MyBoardDAO;
 import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.MyBoardDTO;
+import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.RecommentDTO;
 import com.cafe.teria.dto.ReplyDTO;
 
@@ -19,10 +20,24 @@ public class MyBoardService {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	
-	
-	
 	@Autowired MyBoardDAO dao;
+	
+	// 20210121 - 문의하기 글쓰기
+		public int writeQst(HashMap<String, Object> params) {
+			
+			int result = dao.writeQst(params);
+			
+			return result;
+		}
+
+		public ArrayList<QstDTO> qstList(String mem_id) {
+			
+			ArrayList<QstDTO> result = new ArrayList<QstDTO>();
+			
+			result = dao.qstList(mem_id);
+			
+			return result;
+		}
 
 	
 	

@@ -112,14 +112,14 @@
 
 
 
-
+// 로그인 버튼을 눌렀을 때
 $('#login').click(function(){
-	
+
 	var mem_id = $('#mem_id').val();
 	var mem_pw = $('#mem_pw').val();
 	console.log(mem_id+'/'+mem_pw);
 	
-	
+	// 로그인 유효성 검사
 	$.ajax({
 		type:'POST',
 		url:'login',
@@ -127,9 +127,20 @@ $('#login').click(function(){
 		dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
 		success:function(data){
 			console.log("안녕하세요"+data.memInfo);
+			// 로그인 성공시
 			if(data.memInfo != null){
 				alert(data.memInfo.mem_nick+'님 반갑습니다.');
 				location.href='./main';
+				
+// 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
+				// 부모창(원래 보던 창) 새로고침
+				opener.document.location.reload();
+				
+				// 자식창(현재 로그인 창)을 끄기
+				window.close();
+// 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
+				
+			// 로그인 실패시
 			}else if(data.memInfo === null){
 				alert('아이디 또는 패스워드를 확인하세요.')
 			}

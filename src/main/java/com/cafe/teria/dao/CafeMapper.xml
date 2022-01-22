@@ -6,16 +6,6 @@
 <!-- 이 XML 이 어떤 interface 와 연결되는지 설정 -->
 <mapper namespace="com.cafe.teria.dao.CafeDAO">
 
-<!-- 20210121 문의 글쓰기 -->
-	<insert id="writeQst" parameterType="hashmap">
-		insert into 
-			bmember (mem_bcode, bmem_stat, mem_emailchk) 
-		values 
-			(#{mem_bcode}, 1, 1);
-	</insert>
-
-
-
 
 
 <!-- 게시글 list 가져오기 -->

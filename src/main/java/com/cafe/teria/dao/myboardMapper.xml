@@ -11,6 +11,20 @@
    <!-- 인터페이스는 멤버다오.java 였어 왼쪽에보면 조그맣게 I라고 적혀있잖아.  그래서 맴버다오가 이리로 들어오는거야 이거 확인해봐 -->
 <mapper namespace="com.cafe.teria.dao.MyBoardDAO">
 
+<!-- 20220121 문의 글쓰기 -->
+	<insert id="writeQst" parameterType="hashmap">
+		insert 
+		into qst (qst_title, qst_content, qst_stat, mem_id)
+		values(#{qst_title}, #{qst_content}, 1, #{mem_id});
+	</insert>
+
+<!-- 20220122 내 문의 내역 보기 -->
+	<select id="qstList" resultType="com.cafe.teria.dto.QstDTO">
+	select *
+	from qst
+	where mem_id = #{mem_id}
+	</select>
+
 
 
 

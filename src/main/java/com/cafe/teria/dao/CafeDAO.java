@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cafe.teria.dto.CafeDTO;
+import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.RecommentDTO;
 
 public interface CafeDAO {
@@ -49,8 +50,6 @@ public interface CafeDAO {
 
 	List<HashMap<String, Object>> imgChk();
 
-// 20210121 => 인터페이스이기 때문에 뭔가를 할 수 없어 => mapper 와 dao 연결하는애
-	int writeQst(HashMap<String, Object> params);
 
 
 }
