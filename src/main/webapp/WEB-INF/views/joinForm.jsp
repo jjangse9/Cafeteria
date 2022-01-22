@@ -106,14 +106,14 @@
             이메일 수신 동의
             </div>
             <input id="mem_emailchky" type="radio" name="mem_emailchk" value = '1' checked>동의  
-            <input id="mem_emailchkn" type="radio" name="mem_emailchk" value = '0'>거부
+            <input id="mem_emailchkn" type="radio" name="mem_emailchk" value = '2'>거부
             <div id="emailchkError" class="error"></div>
         </div>
         <div class="line">
             <hr>
         </div>
         <div class="signUp">
-            <button id="regist" onclick="signUpCheck()">가입하기</button>
+            <button id="regist">가입하기</button>
         </div>
        </div>
     
@@ -193,7 +193,16 @@ $("#regist").click(function(){
 				console.log(data);
 				if(data.success == 1){
 					alert('회원가입을 축하 드립니다.');
-					location.href='./login';
+					location.href='./loginPage';
+					
+// 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
+					// 부모창(원래 보던 창) 새로고침
+					opener.document.location.reload();
+				
+					// 자식창(현재 로그인 창)을 끄기
+					window.close();
+// 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
+										
 				}else{
 					alert('회원가입에 실패 했습니다. 다시 시도해 주세요.');
 				}

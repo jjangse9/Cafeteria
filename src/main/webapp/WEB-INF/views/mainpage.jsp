@@ -97,7 +97,7 @@
             <a class="dropdown-item" href="#">내 글 보기</a>
             <a class="dropdown-item" href="#">내 댓글 보기</a>
              -->
-       
+       		
            <a class="dropdown-item" href="./qstPage">문의하기</a>
            <a class="dropdown-item" href="./logout">로그아웃</a>
          </div>
@@ -106,7 +106,7 @@
          <img src="/photo/0.png" width="100px" class="btn btn-secondary dropdown-toggle"
          id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" onclick='popUpLogin()'"> 로그인해주세요흙흙 </a>
+            <a class="dropdown-item" onclick='popUpLogin()'> 로그인해주세요흙흙 </a>
 
             <!-- 
                window.location.href 입력하면 현재 URL 가져올 수 있음
@@ -456,7 +456,7 @@
 			//console.log('메론');
 			
 			// 창을 띄우면서 현재(부모) 창의 url 정보를 같이 넘긴다.
-			javascript:void(window.open('./loginPage', '','width=1600px, height=1200px'));
+			javascript:void(window.open('./loginPage', '','width=500px, height=500px, top=250px, left=750px'));
 		 	
 			
 		};

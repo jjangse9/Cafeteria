@@ -1,6 +1,8 @@
 package com.cafe.teria.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,6 +26,22 @@ public class JoinController {
 	private  Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired JoinMemberService service;
+
+	@RequestMapping(value = "/admin", method = RequestMethod.GET) 
+	public String admin(
+			Model model,
+			HttpSession session
+			) 
+	{
+		
+		logger.info("관리자 로그인 성공"); 
+		return "admin"; 
+	}
+	
+	
+	
+	
+	// 로그인 페이지로 이동
 	@RequestMapping(value = "/loginPage", method = RequestMethod.GET) 
 	public String home(Model model) {
 		logger.info("main page 이동"); 
@@ -42,19 +60,25 @@ public class JoinController {
 	
 	
 	
-	
+	// 회원가입
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	@ResponseBody
-	
-	public HashMap<String, Object> join(@RequestParam HashMap<String, String> param) {
+	public HashMap<String, Object> join(
+			@RequestParam HashMap<String, String> param,
+			HttpSession session
+			) 
+	{
 		logger.info("회원가입 요청 : {}", param);
+		
+		String loginId = (String) session.getAttribute("loginId");
+		
+		
 		
 		return service.join(param);
 	}
 
 	
 	//중복검사
-	
 	@RequestMapping(value = "/overlay", method = RequestMethod.GET)
 	@ResponseBody
 	public HashMap<String, Object> overlay(@RequestParam String mem_id) {
@@ -64,26 +88,41 @@ public class JoinController {
 	
 
 	// 로그인
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	
 	public HashMap<String, Object> login(
-			@RequestParam String mem_id, @RequestParam String mem_pw,
-			HttpSession session) {
+			@RequestParam String mem_id, 
+			@RequestParam String mem_pw,
+			HttpSession session,
+			Model model) {
 		logger.info("로그인 체크 : {} / {}",mem_id,mem_pw);
 		
+		// 로그인한 회원정보를 받을 success Hashmap 선언
 		HashMap<String, Object> success = new HashMap<String, Object>();
 				
+		// success에 회원정보 넣어주기
 		success.put("memInfo", service.login(mem_id,mem_pw));
 		
+		// 20220122 - hashmap 값 확인하기SI
+		for (Entry<String, Object> entrySet : success.entrySet()) {
+			logger.info("받아온 값 확인 : {}", entrySet.getKey() + " : " + entrySet.getValue());
+			}
+		
+		// 로그인 성공 여부 확인
 		logger.info("로그인 성공여부 : {}",success);
 		
+		// 로그인이 성공했다면( success가 null이 아닐경우)
 		if(success != null) {
-			
 			session.setAttribute("loginId", mem_id);
-			
 			success.put("loginId", mem_id);
+		}
+		
+
+// 20220122 로그인 회원 아이디가 admin 일 경우 관리 페이지에서 필요한 모든 데이터를 뽑아온다.
+		if(mem_id.equals("admin")) {
+			
+			HashMap<String, Object> adminResult = service.adminInfo();
+			model.addAttribute("adminResult", adminResult);
 		}
 		
 		return success;

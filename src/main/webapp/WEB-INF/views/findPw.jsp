@@ -35,7 +35,9 @@
 	
 </form>
 </div> 
-<p align="center">로그인 페이지로 가시려면 <a href="./">바로가기</a>를 클릭하세요.</p>
+<p align="center">로그인 페이지로 가시려면 
+	<a href="./loginPage">바로가기</a>를 클릭하세요.
+</p>
 </body>
 
 

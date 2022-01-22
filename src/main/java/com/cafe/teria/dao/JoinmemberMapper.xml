@@ -8,7 +8,10 @@
    >
 
 <mapper namespace="com.cafe.teria.dao.JoinMemberDAO">
-
+	<select id="membersInfo" resultType="com.cafe.teria.dto.JoinMemberDTO">
+		select *
+		from member;
+	</select>
 
 
 
