@@ -133,6 +133,19 @@
    </update>
    
    
+   
+   <select resultType="HashMap" id="detail_diet" parameterType="String">
+	   select *
+	   from diet de
+	   where de.cafe_idx = #{param1}
+	   order by de.diet_idx asc 
+   </select>
+   
+   
+   
+   
+   
+   
 	<update id="disrewritecnt" parameterType="HashMap">
    		update cafereply
 		set cafereply_rewritechk = -1 
@@ -163,15 +176,29 @@
 		from replyphoto m
 		order by replyphoto_idx desc
 	</select>
-	
- 
+
 	<insert id="imgUpload" parameterType="java.util.List">
 	<foreach collection="list"  item="item" separator="">
 		insert into replyphoto(replyphoto_path, cafereply_idx, replyphoto_newname)
 		values (#{item.path},#{item.replyIdx},#{item.Name})	
 	</foreach>
 	</insert>
+
+ <!-- 식단관련 쿼리 s -->
+
+
+<insert id="addDietMenu">insert into diet(diet_idx, mem_bcode, diet_date, diet_code, diet_menu, diet_menu_seq, cafe_idx, diet_date_name) values ( (select max(d.diet_idx) from diet as d) + 1 , #{mem_bcode}, #{diet_date}, #{diet_code}, #{diet_menu},#{diet_menu_seq}, #{cafe_idx},(select case WEEKDAY(#{diet_date}) when '0' then '월요일' when '1' then '화요일' when '2' then '수요일' when '3' then '목요일' when '4' then '금요일' when '5' then '토요일' when '6' then '일요일' end) ) </insert>
+
+<update id="updateDietMenu">update diet set diet_menu = #{diet_menu} where cafe_idx = #{cafe_idx} and mem_bcode = #{mem_bcode} and diet_code = #{diet_code}and diet_menu_seq = #{diet_menu_seq} and date_format(diet_date, '%Y%m%d') = #{diet_date} </update>
+
+<select resultType="String" id="getDietIdx" parameterType="HashMap">select IFNULL ( diet_idx , 'none' ) as diet_idx from diet where date_format(diet_date, '%Y%m%d') = #{diet_date} and mem_bcode = #{bcode} and cafe_idx = #{idx} and diet_code = #{diet_code} and diet_menu = #{diet_menu} </select>
+
+<select resultType="HashMap" id="getOriginName" parameterType="HashMap">select IFNULL ( diet_menu , "none" ) as diet_menu, IFNULL ( diet_idx , "none" ) as diet_idx from diet where date_format(diet_date, '%Y%m%d') = #{diet_date}and mem_bcode = #{bcode} and cafe_idx = #{idx} and diet_code = #{diet_code} and diet_menu_seq = #{diet_menu_seq} </select>
+
+<delete id="deleteDietMenu" parameterType="HashMap">delete from diet where date_format(diet_date, '%Y%m%d') BETWEEN (#{startDate}) AND (#{endDate}) </delete>
+
  
+<!-- 식단관련 쿼리 e -->
  
  	 <select id="likeView" resultType="HashMap" parameterType="HashMap">
 		select *

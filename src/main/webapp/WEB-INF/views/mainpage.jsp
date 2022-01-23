@@ -49,7 +49,7 @@
                   <form class="d-flex">
                     <!-- 공지사항 -->
                     <div class="nav-item">
-                      <a class="nav-link" href="#" style="font-size: 20px; color: black;">공지사항</a>
+                      <a class="nav-link" href="./notice/noticeList" style="font-size: 20px; color: black;">공지사항</a>
                     </div>
                     <!-- 구내식당 -->
                     <div class="nav-item">
