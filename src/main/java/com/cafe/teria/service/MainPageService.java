@@ -278,6 +278,7 @@ public class MainPageService {
 					for(int i=0; i<filterPriceString.length; i++) {
 						logger.info("filterPrice : {}", filterPriceString[i]);
 					}					
+					
 					// 지역 자르기
 					filterArea = Arrays.copyOfRange(filterValues, 0, Arrays.asList(filterValues).indexOf("/"));
 					for(int i=0; i<filterArea.length; i++) {
@@ -292,7 +293,7 @@ public class MainPageService {
 					if(filterDiet.length > 0) {	// 끼니 구분 있다면
 						filterCategory += 4;
 					};
-					if(!filterPriceString[0].equals("12000")) {// 가격 정보가 있다면
+					if(!filterPriceString[0].equals("5000")) {// 가격 정보가 있다면
 						filterCategory += 2;
 					}	
 					if(filterArea.length > 0) {	// 지역 정보가 있다면
@@ -326,7 +327,9 @@ public class MainPageService {
 							
 							filterDaysChk = Arrays.asList(filterDays).contains(mainPageDTO.getDiet_date_name());
 							filterDietChk = Arrays.asList(filterDiet).contains(Integer.toString(mainPageDTO.getDiet_code()));
-							filterPriceChk = filterPrice <= Integer.parseInt(mainPageDTO.getCafe_diet_price());
+							
+							// 입력된 가격이 가게의 가격보다 높으면 지워버린다.
+							filterPriceChk = filterPrice >= Integer.parseInt(mainPageDTO.getCafe_diet_price());
 							filterAreaChk = Arrays.asList(filterArea).contains(mainPageDTO.getBmem_area_name());
 							
 
@@ -474,7 +477,10 @@ public class MainPageService {
 
 	// 댓글 전부
 	public ArrayList<MainPageDTO> mainReplySearch(ArrayList<MainPageDTO> newResult) {
-
+		
+		
+		
+		
 		// 7. 댓글 뽑아오기( 사진 포함여부 중요함 -> 메인페이지에서 띄울거거든 => sql문 추가 )
 		// cafe, cafereply, replyphoto, replylike 테이블 순회해야함
 		// cafe_idx가 같은 댓글 중 replylike가 높은 댓글을 cafereply에서 찾아서, replyphoto와 함께 가져옴
@@ -483,10 +489,11 @@ public class MainPageService {
 			
 			// 2. 잘 뽑았는지 확인
 			logger.info("댓글 검색 결과 수 : {}", replyResult.size());
-				//	for (MainPageReplyDTO mainPageReplyDTO : replyResult) {
-				//		logger.info("댓글 최대 추천추 : {}", mainPageReplyDTO.getMaxcnt());
-				//		logger.info("불러온 카페 번호 : {}", mainPageReplyDTO.getCafe_idx());
-				//	}
+					for (MainPageReplyDTO mainPageReplyDTO : replyResult) {
+						logger.info("댓글 최대 추천추 : {}", mainPageReplyDTO.getCafereply_likecnt());
+						logger.info("불러온 카페 번호 : {}", mainPageReplyDTO.getCafe_idx());
+						logger.info("닉네임 : {}", mainPageReplyDTO.getMem_id());
+					}
 		
 			// 3. newResult 돌면서 mem_id가 같은 값을 replyResult에서 찾고, 필드 매칭
 			MainPageDTO mainPageDTO = null;
@@ -512,16 +519,22 @@ public class MainPageService {
 					mainPageReplyDTO = iterReply.next();
 					
 					if(mainPageDTO.getCafe_idx() == mainPageReplyDTO.getCafe_idx()) {
+						logger.info("확인해야함 : {}", mainPageDTO.getCafe_idx());
+						logger.info("확인해야함 : {}", mainPageReplyDTO.getCafe_idx());
+						
+						logger.info(mainPageDTO.getMem_id());
+						logger.info(mainPageReplyDTO.getMem_id());
+						
 						// 해당 카페 이름으로 찾아서 댓글 작성자와 시간, 내용을 set 해준다
 						mainPageDTO.setReply_mem_id(mainPageReplyDTO.getMem_id());
 						mainPageDTO.setCafereply_posttime(mainPageReplyDTO.getCafereply_posttime());
 						mainPageDTO.setCafereply_modtime(mainPageReplyDTO.getCafereply_modtime());
 						mainPageDTO.setCafereply_content(mainPageReplyDTO.getCafereply_content());
+						mainPageDTO.setCafereply_likecnt(mainPageReplyDTO.getCafereply_likecnt());
 						
-						logger.info("검색된 댓글 내용 : {}", mainPageDTO.getCafereply_content());
-						break;
 					}	
 				}
+				logger.info("검색된 댓글 닉네임 : {}", mainPageDTO.getReply_mem_id());
 			}			
 		return newResult;
 	}

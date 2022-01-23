@@ -21,11 +21,9 @@ public class JoinMemberService {
 	@Autowired JoinMemberDAO dao;
 
 	public HashMap<String, Object> overlay(String mem_id) {
-		
 		logger.info("중복체크 서비스 도착!!");
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		
 		String overlayId = dao.overlay(mem_id);
 		
 		logger.info("중복 아이디 여부 : {}",overlayId);

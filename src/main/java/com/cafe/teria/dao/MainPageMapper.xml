@@ -61,16 +61,22 @@
 			from diet c
 			where c.diet_menu like CONCAT('%',#{param1},'%')
 				and
-				  c.diet_date between #{param2} and #{param3}
+				  c.diet_date between 20220101 and 20220225
 			)
 		order by REPLACE(${param4},'"','') desc
 	</select>
 	
+	<!-- https://pingukim.tistory.com/5 -->
 	<select id="mainReplyList" resultType="com.cafe.teria.dto.MainPageReplyDTO">
-		select *, max(cafereply_likecnt) as maxcnt
-		from cafereply
-		where cafereply_stat = 1
-		group by mem_id
+		select * 
+		from 
+		cafereply a
+		where cafereply_stat = 1 AND 
+			cafereply_likecnt IN (
+			select max(cafereply_likecnt)
+				from cafereply
+				group by cafe_idx)
+
 	</select>
 	<!-- 20220115 정렬기능 => order by에 REPLACE 함수 사용 -->
 	

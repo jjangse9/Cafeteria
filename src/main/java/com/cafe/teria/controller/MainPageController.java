@@ -119,6 +119,8 @@ public class MainPageController {
 		ArrayList<MainPageDTO> lastResult = service.mainReplySearch(newResult);
 		
 		HashMap<String, Object> ajaxSortResult = service.mainSearchSort(lastResult);
+
+		
 		
 		return ajaxSortResult;
 	}

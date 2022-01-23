@@ -3,9 +3,6 @@ package com.cafe.teria.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cafe.teria.dto.CafeDTO;
-import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.RecommentDTO;
 import com.cafe.teria.service.CafeService;
 

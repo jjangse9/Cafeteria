@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.cafe.teria.dao.CafeDAO;
 import com.cafe.teria.dto.CafeDTO;
-import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.RecommentDTO;
 
 @Service

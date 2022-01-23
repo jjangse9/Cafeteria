@@ -36,7 +36,7 @@ public class MainPageDTO {
 	private Date cafereply_posttime;
 	private Date cafereply_modtime;
 	private String cafereply_content;
-	//private int cafereply_likecnt;
+	private int cafereply_likecnt;
 	//private int cafereply_stat;
 	//private int cafereply_rewritechk;
 	//private int cafe_idx;
@@ -49,6 +49,12 @@ public class MainPageDTO {
 	
 	public int getCafe_idx() {
 		return cafe_idx;
+	}
+	public int getCafereply_likecnt() {
+		return cafereply_likecnt;
+	}
+	public void setCafereply_likecnt(int cafereply_likecnt) {
+		this.cafereply_likecnt = cafereply_likecnt;
 	}
 	public void setCafe_idx(int cafe_idx) {
 		this.cafe_idx = cafe_idx;

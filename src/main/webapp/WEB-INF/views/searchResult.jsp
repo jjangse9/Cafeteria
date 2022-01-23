@@ -15,7 +15,6 @@
 
         <!-- 필터-가격바 -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
         <!-- 체크박스 버튼 -->
@@ -145,7 +144,8 @@
                         <div id="search-three-1-2-1-1"></div>
                         <div id="search-three-1-2-1-2">
                             <div id="search-three-1-2-1-2-1">
-                                <h4>전체식당()</h4>
+<!-- 20220122 검색결과 건수 표시 -->
+                                <h5 id="searchCnt">"${keyword }" 검색결과 - 총 ${size}건( 식당 : ${newResultSize} 개 )</h5>
                             </div>
                             <div id="search-three-1-2-1-2-2"></div>
                             <div id="search-three-1-2-1-2-3" style="display: flex; flex-direction: row-reverse;">
@@ -215,17 +215,24 @@
 		                            <li><a>${res.cafe_diet_price } 원 | 서울시 ${res.bmem_area_name }</a></li>
 		                            <li>
 		                           		<a>
-		                           			<!-- 댓글이 수정된 시간이 있으면 수정시간 출력 / 없으면 작성시간-->
-											<c:choose>
-												<c:when test="${res.cafereply_modtime ne null }">
-													${res.reply_mem_id } | ${res.cafereply_modtime } <br>
-													${res.cafereply_content }
-												</c:when>
-												<c:when test="${res.cafereply_modtime eq null }">
-													${res.reply_mem_id } | ${res.cafereply_posttime } <br>
-													${res.cafereply_content }
-												</c:when>
-											</c:choose>
+		                           			<c:choose>
+		                           				<c:when test="${res.mem_id ne null }">
+		                           					<!-- 댓글이 수정된 시간이 있으면 수정시간 출력 / 없으면 작성시간-->
+		                           					<c:choose>
+														<c:when test="${res.cafereply_modtime ne null }">
+															${res.reply_mem_id } | ${res.cafereply_modtime } <br>
+															${res.cafereply_content }(수정됨) <br>
+														</c:when>
+														<c:when test="${res.cafereply_modtime eq null }">
+															${res.reply_mem_id } | ${res.cafereply_posttime } <br>
+															${res.cafereply_content } <br>
+														</c:when>
+													</c:choose>
+		                           				</c:when>
+		                           				<c:when test="${res.mem_id eq null }">
+		                           					<span>등록된 댓글이 아직은 없네요!</span>
+		                           				</c:when>
+		                           			</c:choose>
 		                            	</a>
 		                            </li>
 		                            <!-- 2. 만약 끼니가 비어있지 않으면(하나라도 메뉴가 나왔다면) -->
@@ -255,7 +262,7 @@
                 <div id="search-three-2-2"></div>
                 <div id="search-three-2-3"></div>
             </div>
-            <!--필터-->
+<!--필터-->
             <div id="search-three-3">
                 <div id="search-three-3-1"></div> 
                 <div id="search-three-3-2">
@@ -564,14 +571,9 @@
 
     
     
-    
-    
 
 
-
-    <script>
-    
-    
+    <script>    
     
 /* 20220120 요일 버튼 배열 기능 추가 */    
 	// 요일 버튼 배열
@@ -606,13 +608,13 @@
 			// 3.0 요일 계속 받아오기
 			weekOfDay = week[weekOfDayInt];
 	
-			/* 20220117 하나라도 끼니구분 값이 있었다면 필터 활성화 */
+			/* 20220117 하나라도 끼니구분 값이 있었다면 필터 활성화 => 20220122 필터 비활성화는 폐기 */
 			if(dChk == 1){
 				// 3-1. 요일을 붙여서 넣어줌( 화요일 )
 				content += '<li><input type="checkbox" id="checkbox-0'+i+'" value="Order Two">';
                 content += '<label for="checkbox-0'+i+'" class="dayFilter">'+weekOfDay+'요일</label></li>';
          	}else{ //그렇지 않다면
-         		content += '<li><input type="checkbox" id="checkbox-0'+i+'" value="Order Two" class="dayFilter">';
+         		content += '<li><input type="checkbox" id="checkbox-0'+i+'" value="Order Two">';
                 content += '<label for="checkbox-0'+i+'" class="dayFilter">'+weekOfDay+'요일</label></li>';
 			}
 
@@ -637,12 +639,15 @@
 /* 20220120 전체초기화 기능 삽입 */
         function ClearAll(){
 
-            console.log("함수 실행");
+            //console.log("함수 실행");
             var chk = $("#search-three-3-2").find("input[type='checkbox']").prop("checked");
-            console.log(chk);   
+            //console.log(chk);   
             $("#search-three-3-2").find("input").prop("checked" ,false);
 
             $('.selectedFilter').remove();
+            
+            // 202220122 가격 필터 초기화 추가
+            filterPriceCancel();
             
 /* 20220117 필터 배열 초기화 */
          	
@@ -672,27 +677,34 @@
 
 
     
-<!-- 20220120 정렬, 필터 기능 삽입 -->    
+// 20220120 정렬, 필터 기능 삽입    
 
 	// 필터 값 모아놓을 배열
 	var filterDays = [];
 	var filterDiet = [];
-	var filterPrice = 0;
+	var filterPrice = 5000;
 	var filterArea = [];
-
+	
 // 요일 필터 - 동적으로 생긴 버튼은 이렇게 on 을 줘야 이벤트 주기 가능
 	$(document).on("click",".dayFilter", sortFilterSearch);
 
-	function sortFilterSearch(){
+	function sortFilterSearch(filterDiv){
+		//console.log(filterDiv);
 		
 		// 현재 필터 배열에 해당 값이 없으면
 		if(!filterValues.includes($(this).text())){
 			// 필터 배열에 넣을 값
 			var filterValue = $(this).text();
 			
+			//console.log($(this).text());
+			
 /* Front쪽 처리 => 필터 영역에 값 추가하기 */
-			var filterContent = '<label class="selectedFilter" onclick="filterCancel(this)">'+filterValue+' X</label>';
-			$('#selected').append(filterContent);	
+ 			// 20220122 - 가격 필터를 선택한 경우 필터 영역에 추가되지 않는다( 따로 뺐음 )
+ 			// https://hianna.tistory.com/385
+ 			if(isNaN(filterDiv)){	// 숫자가 아닐경우 추가
+				var filterContent = '<label class="selectedFilter btn btn-outline-danger btn-sm" onclick="filterCancel(this)">'+filterValue+' X</label>';
+				$('#selected').append(filterContent);
+ 			}
 /* Front쪽 처리 => 필터 영역에 값 추가하기 */
 		
 		
@@ -705,6 +717,8 @@
 				filterDays.push(filterValue);
 				
 			}
+			
+			
 			
 			// 아침, 점심, 저녁 => 1, 2, 3으로 바꿔서 push
 			if(filterValue == '조(아침)'){ 
@@ -721,8 +735,17 @@
 				filterDiet.push(filterValue); 
 				}
 					
-			// 가격
-			filterPrice = 12000; // 기본 값
+			
+			
+			
+// 20220122 - 가격 필터 추가 => 가격 필터는 change 이벤트로 계속 바뀌기 때문에 무조건 여길 탄다
+			if(!isNaN(filterDiv)){
+				filterPrice = filterDiv; // 최대 값
+				
+			}
+			
+			
+			
 			
 			// 지역			
 			// 강동구 강북구 강서구 관악구 광진구 구로구 금천구 노원구 도봉구 동대문구 동작구 마포구 
@@ -823,7 +846,7 @@
 				listDraw(data);
 			},
 			error:function(e){
-				console.log(e);
+				//console.log(e);
 			}
 		});
 	}
@@ -832,16 +855,16 @@
 	
 	
 	
-/* 20220120 - Front쪽 처리 - 선택된 필터를 클릭시 선택필터 영역에서 제거+밑 필터 영역에서도 제거 */
+/* 20220120 - Front쪽 처리 - 선택된 필터를 클릭시 선택필터 영역에서 제거 + 밑 필터 영역에서도 제거 */
 	function filterCancel(filterTag){
 		// 선택된 필터 지우기
-		console.log(filterTag);
+		//console.log(filterTag);
 		filterTag.remove();
 		
 	// 같은 값을 가진 필터도 checked 해제하기
 		// 1. 지우려고 클릭한 필터 라벨의 text 가져오기		
 		var strArray = filterTag.outerText.split(' ');
-		console.log(strArray[0]);
+		//console.log(strArray[0]);
 		
 		// 2. text와 똑같은 걸 필터에서 찾아서 checked 해제
 		var chkLabel = $("#search-three-3-2").find("label");
@@ -878,8 +901,8 @@
 		// 4. 필터 제거
 		for(var i=0; i<chkLabel.length; i++){
 			if(strArray[0] == chkLabel[i].outerText){
-				console.log('여기서 확인 : ',chkLabel[i]);
-				console.log(chkLabel[i].previousElementSibling);
+				//console.log('여기서 확인 : ',chkLabel[i]);
+				//console.log(chkLabel[i].previousElementSibling);
 				
 				labelName = chkLabel[i].outerText;
 				
@@ -986,7 +1009,7 @@ function filterRemove(labelName){
 	// 지역
 	filterValues = filterValues.concat(filterArea).concat('/');
 	
-	console.log('filterValues : ',filterValues);
+	//console.log('filterValues : ',filterValues);
 	
 	searchPageFilter(filterValues);
 
@@ -996,7 +1019,7 @@ function filterRemove(labelName){
 /* 20220120 요일필터를 다시 선택시 필터 영역에서도 버튼이 빠지게 */
 function filterCancelFront(filterValue){
 	// 텍스트를 가지고 필터 영역에 있는 라벨중에 이름이 같은거 제거시키면 된다
-	console.log(filterValue);
+	//console.log(filterValue);
 	
 	var chkLabel = $('.selectedFilter');
 	//console.log(chkLabel);	
@@ -1005,8 +1028,10 @@ function filterCancelFront(filterValue){
 		//console.log('1 : ',chkLabel[k].outerText.split(' '));
 		//console.log('2 : ',filterValue);
 		
+		// 뒤에 X 빼주고
 		var labels = chkLabel[k].outerText.split(' ');
 		
+		// 삭제
 		if(labels[0]==filterValue){
 			chkLabel[k].remove();
 		}
@@ -1021,7 +1046,7 @@ var filterValues = [];
 	
 	$('#sortSelect').on('change', function(){
 		var sort = $(this).val();
-		console.log(sort);
+		//console.log(sort);
 		
 		if(sort == 'likeSort'){
 			sortValue = 1;
@@ -1055,7 +1080,7 @@ var filterValues = [];
 	
 	// keyword와 정렬category를 가지고 ajax
 	function searchPageListSort(){
-		console.log(filterValues);
+		//console.log(filterValues);
 			$.ajax({
 				type:'POST',
 				url:'searchPageFilter',
@@ -1074,7 +1099,7 @@ var filterValues = [];
 					listDraw(data);
 				},
 				error:function(e){
-					console.log(e);
+					//console.log(e);
 				}
 			});
 	} 
@@ -1098,14 +1123,21 @@ var filterValues = [];
 				codeDateChk = 1;
 			}
 		} */
-		
 				
 		// 원래 있던 데이터 비우기
 		$("#tbody").html('');	
 	
+		// 20220211 검색 결과 갯수도 바꾸기
+		$("#searchCnt").html(''); 
+		var filterCnt = 0;
+		
+		
 	
 		// 값 만들어서 한줄씩 append
 		for(var i=0; i<Object.keys(data).length; i++){
+// 검색결과 갯수(20220122)
+			filterCnt = filterCnt + 1;
+			
 			var content = "";
 			
 			content += '<div id="search-three-1-3" onclick="showDetailCafe('+data[i].cafe_idx+')">';
@@ -1118,17 +1150,44 @@ var filterValues = [];
 			content += '<div style="width: 2%; height: auto;"></div>';
 			content += '<div style="width: 64%; height: auto;">';
 			content += '<a>'+data[i].cafe_title+'</a>';
-			content += '<li><a>좋아요 '+data[i].cafe_likcnt+' 별점 '+data[i].cafe_ratestaravg+' 조회수 '+data[i].cafe_hit+'</a></li>';
+			
+			content += '<li>';
+			content += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">';
+			content += '<path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>';
+			content += '</svg>';
+			content += '<a>&nbsp;'+data[i].cafe_likecnt+'&nbsp;</a>';
+			content += '<a>|&nbsp;</a>';
+			content += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">';
+			content += '<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>';
+			content += '</svg>';
+			/* https://squll1.tistory.com/entry/javascript-%EC%86%8C%EC%88%98%EC%A0%90-%EC%9E%90%EB%A6%AC%EC%88%98-%EC%A7%80%EC%A0%95%EC%9E%90%EB%A5%B4%EA%B8%B0 */
+			content += '<a>&nbsp;'+parseFloat(data[i].cafe_ratestaravg).toFixed(1)+'&nbsp;</a>';
+			content += '<a>|</a>&nbsp;';
+			content += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">';
+			content += '<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>';
+			content += '<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>';
+			content += '</svg>';
+			content += '<a>&nbsp;'+data[i].cafe_hit+'&nbsp;&nbsp;</a>';
+			content += '</li>';			
+			
 			content += '<li><a>'+data[i].cafe_diet_price+ ' 원 | 서울시  '+data[i].bmem_area_name+'</a></li>';
 			content += '<li>';
 			content += '<a>';
-			if(data[i].cafereply_modtime!=null){
-				content += data[i].reply_mem_id+' | '+data[i].cafereply_modtime+'<br>';
-				content += data[i].cafereply_content;
-			}else{
-				content += data[i].reply_mem_id+' | '+data[i].cafereply_posttime+'<br>';
-				content += data[i].cafereply_content;
-			}
+
+			if(data[i].cafereply_mem_id != null){		// 등록된 댓글이 없으면
+				content += '등록된 댓글이 없네요';
+			}else{										
+				if(data[i].cafereply_modtime!=null){	// 댓글이 있고, 수정날짜가 있으면
+					content += data[i].reply_mem_id+' | '+formatDate(data[i].cafereply_modtime)+'<br>';		// 수정날짜로 표시
+					content += data[i].cafereply_content +'(수정됨)';
+				}else{
+					content += data[i].reply_mem_id+' | '+formatDate(data[i].cafereply_posttime)+'<br>';	// 작성날짜로 표시
+					content += data[i].cafereply_content;
+				}
+			}		
+			
+			
+			
 			content += '</a>';
 			content += '</li>';
 						
@@ -1150,7 +1209,14 @@ var filterValues = [];
 			$("#tbody").append(content);
 		}
 	
-			
+// 20220122 => 필터에 따라 검색결과 건수 바꾸기SI
+		if(filterDays.length == 0 & filterDiet.length == 0 & filterPrice == 5000 & filterArea == 0){
+			$('#searchCnt').html('"${keyword }" 검색결과 - 총 ${size}건( 식당 : ${newResultSize} 개 )');
+		}else{
+			$("#searchCnt").html('"${keyword }" 검색결과 - 총 ${size}건( 필터 후 식당 : '+ filterCnt +' 개 )');
+		}
+		
+		
 	}
 		
 		
@@ -1188,56 +1254,100 @@ var filterValues = [];
     
     
     
-    // 필터 지역 검색기능 -->
+// 20220122 - 지역 필터SI
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $("#myTable label").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        
+                
                 });
-                // // 만약에 인풋 바 값이 비어있으면 -- !!!!!!!!
-                // if($('#myInput').html()==''){
-                //     // 기본 6개 display = inline-block => 기본값만 보이게
-                //     console.log('메롱');
-                // }
+               
             });
         });
-        // 체크박스 전체선택
-        // $('#clearall').click(function(){
-        //     var $chk = $('input[type="checkbox"]');
-        //     //console.log($chk);
-        //     //console.log($chk.is(':checked'));    // => true/false
-        //     $chk.attr('checked',true); 
-        // });
+        
+        
+        
+        
+        
+        
+// 20220122 - 지역 필터SI        
         
 
-    
-    // 가격 바
+
+// 20220122 - 가격 필터SI
         $("#demo_price").ionRangeSlider({
-            skin: "flat",
-            min: 5000,
-            max: 8000,
-            from: 5000,
-            step: 500,
-            grid: true,
-            grid_snap: true,
-            onStart: function (data) {
-                console.log(data.min);          // MIN value
-                //console.log(data.max);          // MAX values
-                console.log(data.from);         // FROM value
-                console.log(data.from_percent); // FROM value in percent
-                console.log(data.from_value);   // FROM index in values array (if used)
-            },
-            onChange: function (data) {
-                console.log(data.from);
-            },
-            onFinish: function (data) {
-                console.log(data.to);
+	            skin: "flat",
+	            min: 5000,
+	            max: 8000,
+	            from: 5000,
+	            step: 500,
+	            grid: true,
+	            grid_snap: true,
+	            onStart: function (data) {
+	                //console.log(data.min);          // MIN value
+	                //console.log(data.max);          // MAX values
+	                //console.log(data.from);         // FROM value
+	                //console.log(data.from_percent); // FROM value in percent
+	                //console.log(data.from_value);   // FROM index in values array (if used)
+	            },
+	            onChange: function (data) {
+	                //console.log(data.from);
+	            },
+	            onFinish: function (data) {
+// 20220122 - 가격 필터 등록SI
+	            	// 바 움직이고 나서 끝날 때 값 찍어줌
+	            	//console.log(data.from);
+	
+					$('.selectedPriceFilter').remove();
+// Front 쪽 처리( 있는지 확인 후 무조건 지우고 새로 append) => 요일, 끼니, 지역과 따로 감( 사실 앞에 세개도 따로 갔어야 돼 )
+		          	if(data.min != data.from){		// 5000~5000 은 안돼
+		           		var filterPrice = '<label class="selectedPriceFilter btn btn-outline-danger btn-sm" onclick="filterPriceCancel()"> &nbsp'+data.min+'원~'+data.from+'원 X &nbsp</label>';
+						$('#selected').append(filterPrice);
+		          	}
+// Front
+// Back 쪽 처리
+			sortFilterSearch(data.from);
+	
+// Back
+		          
+		          		
+		          		
+		          		
             },
             onUpdate: function (data) {
-                console.log(data.from_percent);
+                //console.log(data.from_percent);
             }
         });
+		
+	
+		
+        // 가격 필터 영역에서 클릭시 제거
+        function filterPriceCancel(){
+        	$('.selectedPriceFilter').remove();
+        	
+        	$(".js-range-slider").ionRangeSlider();
+        	
+        	 // 2. Save instance to variable
+            let my_range = $("#demo_price").data("ionRangeSlider");
+            
+            // 4. Reset range slider to initial values
+            my_range.reset();
+            
+            sortFilterSearch(5000);
+            
+        }
+        
+        
+        
+        
+        
+// 20220122 - 가격필터SI        
+        
+        
+        
+        
     </script>
   
 </html>

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cafe.teria.dto.CafeDTO;
-import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.dto.RecommentDTO;
 
 public interface CafeDAO {
