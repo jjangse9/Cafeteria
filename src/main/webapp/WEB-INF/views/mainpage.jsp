@@ -87,7 +87,7 @@
    <!-- 로그인 / 비로그인 상태 구분 -->
    <c:choose>
       <c:when test="${loId ne null}">
-         <img src="/photo/${iconName }" width="100px" class="btn btn-secondary dropdown-toggle"
+         <img src="./resources/images/${iconName }" width="100px" class="btn btn-secondary dropdown-toggle"
             id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
            <a class="dropdown-item" href="./myStat">${loginId} 님 </a>
@@ -128,8 +128,9 @@
    
             </nav>
         </section>
-        
-	<form action="searchResult" method="get" name="mainSearchForm" >
+
+
+	<!-- <form action="searchResult" method="get" name="mainSearchForm" > -->
         <!--헤드 이미지 (class-부트)(id-스타일)-->
         <section id="main-one" style="background-image: url(resources/img/mainpage-top.jpg);">
             <div id="main-one-1"></div>
@@ -139,20 +140,20 @@
             <div id="main-one-2">
             	<div >
             	<!-- 검색바 -->
-				<input class="form-control border-0 shadow-0" 
+				<input id="searchString" class="form-control border-0 shadow-0" 
 						style="width: 380px; height: 65px; font-size: 23px;" type="text" 
 						name="keyword" placeholder="지역, 식당, 메뉴로 검색하세요." value="${keyword }">
 				</div>
 			<div style="width: 5px;"></div>
                 <div >
 				<!-- search 버튼 -->
-				<button class="btn btn-danger btn-lg" style="width: 110px; height: 65px; font-size: 25px;" type="submit">Search </button>
+				<button id="searchButton" class="btn btn-danger btn-lg" style="width: 110px; height: 65px; font-size: 25px;" type="submit">Search </button>
                 </div>
             </div>
             <div id="main-one-1-1"></div>
 <!-- 20220120 - 메인페이지 검색SI -->
         </section>
-	</form>
+	<!-- </form> -->
 
 
        <!--조중석 아이콘 (class-부트)(id-스타일)-->
@@ -460,6 +461,46 @@
 		 	
 			
 		};
+		
+		// 자음 / 모음이 검색어에 들어갔을 때 방어
+		var chkString = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ', 
+						'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ','ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ', 
+						'', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ','ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ','ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ',
+	        	        'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+		
+		
+		// form방식 => location.href 로 바꿈( 검색어 방어 위해 )
+		$('#searchButton').click(function(){
+			var searchString = $('#searchString').val();
+			var searchStringArr = []
+			
+			for (var i = 0; i < searchString.length; i++) {
+				searchStringArr.push(searchString.charAt(i));
+			}
+			
+			console.log(searchStringArr);
+			
+			if($('#searchString').val().length < 1){
+				alert('검색어를 입력해주세요!');
+			}else{
+				for(var j=0; j<searchStringArr.length; j++){
+					if(chkString.includes(searchStringArr[j])){
+						alert('자음이나 모음이 포함된 검색어로는 검색할 수 없어요');
+						break;
+					}else{
+						location.href="./searchResult?keyword="+searchString;
+						
+					}
+				}
+				
+			}
+			
+			
+			
+			
+			
+		});
+		
     </script>
 </html>
 

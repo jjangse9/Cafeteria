@@ -26,24 +26,10 @@
 	</select>
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<!-- 20220113~ 20220117 마무리 / 메인 검색 sql -->
 	<!-- 결정된 날짜의 아점저를 포함한 7일의 데이터 쿼리 -->
 	<select id="mainSearchList" resultType="com.cafe.teria.dto.MainPageDTO">
-		select a.*, b.bmem_area_name, b.bmem_image1, c.diet_date, c.diet_code, c.diet_date_name
+		select a.*, b.bmem_area_name, b.bmem_image1, c.diet_date, c.diet_code, c.diet_date_name, d.mem_nick
 		from cafe a
 			left outer join bmember b
 				on a.mem_id = b.mem_id
@@ -51,6 +37,8 @@
 				on a.cafe_idx = c.cafe_idx
 					and 
 				c.diet_menu like CONCAT('%',#{param1},'%')
+			left outer join member d
+				on a.mem_id = d.mem_id
 		where a.mem_id in
 			(select mem_id 
 			from bmember b
@@ -61,16 +49,21 @@
 			from diet c
 			where c.diet_menu like CONCAT('%',#{param1},'%')
 				and
-				  c.diet_date between 20220101 and 20220225
+				  c.diet_date between #{param2} and #{param3}
 			)
-		order by REPLACE(${param4},'"','') desc
+		order by ${param4} desc
 	</select>
+	<!-- 
+		myBatis에서 #{}과 ${}의 차이
+		https://logical-code.tistory.com/25 
+	-->
 	
 	<!-- https://pingukim.tistory.com/5 -->
 	<select id="mainReplyList" resultType="com.cafe.teria.dto.MainPageReplyDTO">
-		select * 
-		from 
-		cafereply a
+		select * , b.mem_nick
+		from cafereply a
+		left outer join member b 
+			on a.mem_id = b.mem_id
 		where cafereply_stat = 1 AND 
 			cafereply_likecnt IN (
 			select max(cafereply_likecnt)
@@ -90,26 +83,29 @@
 	
 	
 	<!-- 검색 결과 최종 sql
-	select a.*, b.bmem_area_name, b.bmem_image3, c.diet_date, c.diet_code, c.diet_date_name, 
+	select a.*, b.bmem_area_name, b.bmem_image1, c.diet_date, c.diet_code, c.diet_date_name, d.mem_nick
 		from cafe a
 			left outer join bmember b
 				on a.mem_id = b.mem_id
 			left outer join diet c
 				on a.cafe_idx = c.cafe_idx
 					and 
-				c.diet_menu like CONCAT('%',#{param1},'%')
+				c.diet_menu like '%셰%'
+			left outer join member d
+				on a.mem_id = d.mem_id
 		where a.mem_id in
 			(select mem_id 
 			from bmember b
-			where bmem_area_name like CONCAT('%',#{param1},'%'))
-		or a.cafe_title like CONCAT('%',#{param1},'%')
+			where bmem_area_name like '%셰%')
+		or a.cafe_title like '%셰%'
 		or a.cafe_idx in
 			(select c.cafe_idx
 			from diet c
-			where c.diet_menu like CONCAT('%',#{param1},'%')
+			where c.diet_menu like '%셰%'
 				and
-				  c.diet_date between '2022-01-10' and #{param3}
+				  c.diet_date between '20210101' and '20221231'
 			)
+		order by cafe_likecnt desc;
 	 -->
 	
 	<!-- 28번라인 #{param2} => 20220110
