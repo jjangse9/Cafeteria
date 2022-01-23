@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<!-- 얘가 없으면 시스템에서 확인할 수 없음 -->
+<!-- 이 XML 이 어떤 interface 와 연결되는지 설정 -->
+<mapper namespace="com.cafe.teria.dao.CafeDAO">
+
+<!-- 게시글 list 가져오기 -->
+ 	<select id="list" resultType="com.cafe.teria.dto.CafeDTO">
+ 		select cafe_idx, cafe_title, cafe_content, cafe_hit, cafe_likecnt, cafe_replycnt, cafe_photoex, cafe_poststat, cafe_posttime, cafe_modtime,
+				cafe_ratestaravg, cafe_comment, cafe_fix, mem_bcode, cafe_diet_price, mem_id
+ 			from cafe order by cafe_idx desc 
+ 	</select>
+ 	
+ 	
+ 	   <!-- 조회수 올리기 -->
+   <update id="upHit">
+		update cafe 
+		set cafe_hit = cafe_hit + 1 
+		where cafe_idx = #{param1}
+   </update>
+
+	   <!-- 상세 보기  -->
+   <select id="detail" resultType="HashMap" parameterType="String">
+		select *
+		from diet de
+		where de.cafe_idx = #{param1}
+		order by de.diet_idx asc
+   </select>
+   
+   <select id="replyList" resultType="HashMap" parameterType="int">
+   		select *
+		from cafereply cr
+		join member mb
+		on cr.mem_id = mb.mem_id
+		where cr.cafe_idx = #{param1}
+		order by cr.cafereply_posttime asc
+   </select>
+   
+   
+   
+   
+   <select id="cafeBmem" resultType="HashMap" parameterType="String">
+		select *
+		from cafe cf
+		join bmember bm 
+		on cf.mem_bcode = bm.mem_bcode
+		where cf.cafe_idx = #{param1}
+   </select>
+
+ 	
+	<select id="cafeReply" resultType="HashMap" parameterType="String">
+		select *
+		from cafereply cr
+		join member mb
+		on cr.mem_id = mb.mem_id
+		where cr.cafe_idx = #{param1}
+		order by cr.cafereply_posttime asc
+   </select>
+   
+   <select id="recomment" resultType="HashMap" parameterType="String">
+   		select *
+   		from recomment rct
+   		join cafereply cr
+   		on cr.cafereply_idx = recomment_idx
+   		where cr.cafe_idx = #{param1}
+   </select>
+   
+   
+   <select id="recoCall" resultType="com.cafe.teria.dto.RecommentDTO" parameterType="int">
+		select *
+		from recomment rct
+		join member mb
+		on rct.mem_id = mb.mem_id
+		where rct.cafereply_idx = #{param1}
+   </select>
+ 	
+ 	
+ 	<insert id="addreply" parameterType="HashMap">
+      insert into cafereply(cafereply_content, cafe_idx, cafereply_ratestar, mem_id)
+      values(#{recon}, #{idx}, #{rate}, #{userId})
+      <selectKey keyProperty="cafereply_idx" resultType="String" order="AFTER">
+         select last_insert_id()
+      </selectKey>
+</insert>
+ 	
+ 	
+ 	<insert id="addRecomment" parameterType="HashMap"> 
+ 		insert into recomment(recomment_content, cafereply_idx, cafe_idx)
+ 		values(#{recoBox},#{Ridx},#{Cidx})
+ 	</insert>
+ 	
+   <update id="recocnt" parameterType="HashMap">
+		update cafereply
+		set cafereply_recommentcnt = cafereply_recommentcnt + 1 
+		where cafereply_idx = #{Ridx}
+   </update>
+   
+   
+   <update id="rewritecnt" parameterType="HashMap">
+   		update cafereply
+		set cafereply_rewritechk = 1 
+		where cafereply_idx = #{Ridx}
+   </update>
+ 	
+ 	
+ 	<update id="updateReply" parameterType="HashMap">
+   		update cafereply
+		set cafereply_content = #{newContent}
+		where cafereply_idx = #{Ridx}
+   </update>
+   
+   
+   <update id="replyDel" parameterType="int">
+   		update cafereply
+		set cafereply_stat = 3
+		where cafereply_idx = #{param1}
+   </update>
+   
+   
+	<update id="updateRecom" parameterType="HashMap">
+   		update recomment
+		set recomment_content = #{newcontent}, recomment_rewritechk = 1
+		where recomment_idx = #{recoIdx}
+   </update>
+   
+   
+	<update id="recoDel" parameterType="HashMap">
+   		update recomment
+		set recomment_stat = 3
+		where recomment_idx = #{Cidx}
+   </update>
+   
+   
+	<update id="disrewritecnt" parameterType="HashMap">
+   		update cafereply
+		set cafereply_rewritechk = -1 
+		where cafereply_idx = #{Ridx}
+   </update>
+   
+   
+	<select id="idChk" parameterType="HashMap" resultType="HashMap">
+		select *
+		from member m
+		where m.mem_id = #{idChk}
+	</select>
+ 
+ 
+ 
+	 <select id="bmemchk" parameterType="HashMap" resultType="HashMap">
+		select *
+		from member m
+		join bmember bm
+		on m.mem_id = bm.mem_id
+		where m.mem_id = #{idChk}
+	</select>
+ 
+ 
+  
+	 <select id="imgChk" resultType="HashMap">
+		select *
+		from replyphoto m
+		order by replyphoto_idx desc
+	</select>
+	
+ 
+	<insert id="imgUpload" parameterType="java.util.List">
+	<foreach collection="list"  item="item" separator="">
+		insert into replyphoto(replyphoto_path, cafereply_idx, replyphoto_newname)
+		values (#{item.path},#{item.replyIdx},#{item.Name})	
+	</foreach>
+	</insert>
+ 
+ 
+ 	 <select id="likeView" resultType="HashMap" parameterType="HashMap">
+		select *
+		from member m
+		join boardlike bl
+		on m.mem_id = bl.mem_id
+		where bl.cafe_idx = #{cafeIdx}
+		and m.mem_id = #{userId}
+	</select>
+	
+	
+	<update id="downLike" parameterType="HashMap">
+   		update boardlike
+		set boardlike_chk = 1
+		where mem_id = #{mem_id} 
+		and cafe_idx = #{cafe_idx} 
+		and boardlike_chk =#{boardlike_chk}
+   </update>
+	
+	
+ 	
+	<update id="upLike" parameterType="HashMap">
+   		update boardlike
+		set boardlike_chk = 2
+		where mem_id = #{mem_id} 
+		and cafe_idx = #{cafe_idx} 
+		and boardlike_chk = #{boardlike_chk}
+   </update>
+	
+		
+	<update id="downLikeCnt" parameterType="HashMap">
+   		update cafe
+		set cafe_likecnt = cafe_likecnt-1 
+		where cafe_idx = #{cafe_idx} 
+   </update>
+	
+	
+	<update id="upLikeCnt" parameterType="HashMap">
+   		update cafe
+		set cafe_likecnt = cafe_likecnt+1 
+		where cafe_idx = #{cafe_idx} 
+   </update>
+		 
+ 
+ 	<insert id="addLike" parameterType="HashMap">
+ 		insert into boardlike(mem_id, cafe_idx, boardlike_chk)
+ 		values(#{userId}, #{cafeIdx}, 2)
+ 	</insert>
+
+ 	
+ 	<update id="addLikeCnt" parameterType="HashMap">
+   		update cafe
+		set cafe_likecnt = cafe_likecnt+1 
+		where cafe_idx = #{cafeIdx} 
+   </update>
+   
+   
+	
+</mapper>
+   
