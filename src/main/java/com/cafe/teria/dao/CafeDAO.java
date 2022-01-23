@@ -23,7 +23,7 @@ public interface CafeDAO {
 
 	List<HashMap<String, String>> recomment(String cafe_idx);
 
-	void addreply(HashMap<String, String> param);
+	int addreply(HashMap<String, String> param);
 
 	void addRecomment(HashMap<String, String> param);
 
@@ -48,6 +48,23 @@ public interface CafeDAO {
 	HashMap<String, Object> bmemchk(HashMap<String, Object> idChk);
 
 	List<HashMap<String, Object>> imgChk();
+
+	void imgUpload(ArrayList<HashMap<String, Object>> imgList);
+
+	List<HashMap<String, Object>> likeView(HashMap<String, String> param);
+
+	void downLike(HashMap<String, String> params);
+
+	void upLike(HashMap<String, String> params);
+
+	void downLikeCnt(HashMap<String, String> params);
+
+	void upLikeCnt(HashMap<String, String> params);
+
+	void addLike(HashMap<String, String> params);
+
+	void addLikeCnt(HashMap<String, String> params);
+
 
 
 

@@ -15,7 +15,9 @@
 
  	<div>
  		<label for="mem_id">아이디(이메일)</label>
+
  		<input type="text" name=mem_id value="${userId}" readonly/>
+
  	</div>
  	
  	<div>

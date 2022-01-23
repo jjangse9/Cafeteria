@@ -6,8 +6,6 @@
 <!-- 이 XML 이 어떤 interface 와 연결되는지 설정 -->
 <mapper namespace="com.cafe.teria.dao.CafeDAO">
 
-
-
 <!-- 게시글 list 가져오기 -->
  	<select id="list" resultType="com.cafe.teria.dto.CafeDTO">
  		select cafe_idx, cafe_title, cafe_content, cafe_hit, cafe_likecnt, cafe_replycnt, cafe_photoex, cafe_poststat, cafe_posttime, cafe_modtime,
@@ -80,9 +78,12 @@
  	
  	
  	<insert id="addreply" parameterType="HashMap">
- 		insert into cafereply(cafereply_content, cafe_idx, cafereply_ratestar, mem_id)
- 		values(#{recon}, #{idx}, #{rate}, #{userId})
- 	</insert>
+      insert into cafereply(cafereply_content, cafe_idx, cafereply_ratestar, mem_id)
+      values(#{recon}, #{idx}, #{rate}, #{userId})
+      <selectKey keyProperty="cafereply_idx" resultType="String" order="AFTER">
+         select last_insert_id()
+      </selectKey>
+</insert>
  	
  	
  	<insert id="addRecomment" parameterType="HashMap"> 
@@ -160,12 +161,74 @@
 	 <select id="imgChk" resultType="HashMap">
 		select *
 		from replyphoto m
+		order by replyphoto_idx desc
 	</select>
+	
+ 
+	<insert id="imgUpload" parameterType="java.util.List">
+	<foreach collection="list"  item="item" separator="">
+		insert into replyphoto(replyphoto_path, cafereply_idx, replyphoto_newname)
+		values (#{item.path},#{item.replyIdx},#{item.Name})	
+	</foreach>
+	</insert>
  
  
+ 	 <select id="likeView" resultType="HashMap" parameterType="HashMap">
+		select *
+		from member m
+		join boardlike bl
+		on m.mem_id = bl.mem_id
+		where bl.cafe_idx = #{cafeIdx}
+		and m.mem_id = #{userId}
+	</select>
+	
+	
+	<update id="downLike" parameterType="HashMap">
+   		update boardlike
+		set boardlike_chk = 1
+		where mem_id = #{mem_id} 
+		and cafe_idx = #{cafe_idx} 
+		and boardlike_chk =#{boardlike_chk}
+   </update>
+	
+	
+ 	
+	<update id="upLike" parameterType="HashMap">
+   		update boardlike
+		set boardlike_chk = 2
+		where mem_id = #{mem_id} 
+		and cafe_idx = #{cafe_idx} 
+		and boardlike_chk = #{boardlike_chk}
+   </update>
+	
+		
+	<update id="downLikeCnt" parameterType="HashMap">
+   		update cafe
+		set cafe_likecnt = cafe_likecnt-1 
+		where cafe_idx = #{cafe_idx} 
+   </update>
+	
+	
+	<update id="upLikeCnt" parameterType="HashMap">
+   		update cafe
+		set cafe_likecnt = cafe_likecnt+1 
+		where cafe_idx = #{cafe_idx} 
+   </update>
+		 
  
- 
- 
+ 	<insert id="addLike" parameterType="HashMap">
+ 		insert into boardlike(mem_id, cafe_idx, boardlike_chk)
+ 		values(#{userId}, #{cafeIdx}, 2)
+ 	</insert>
+
+ 	
+ 	<update id="addLikeCnt" parameterType="HashMap">
+   		update cafe
+		set cafe_likecnt = cafe_likecnt+1 
+		where cafe_idx = #{cafeIdx} 
+   </update>
+   
+   
 	
 </mapper>
    

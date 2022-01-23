@@ -21,7 +21,11 @@
 				</h5>
 				<p >
 					<button type="button" id=loginBtn>로그인</button>
+<<<<<<< HEAD
+					<button type="button" id=mainBtn>메인으로</button>
+=======
 					<button type="button" id=mainBtn>창닫기</button>
+>>>>>>> 3ea421163ae36df70acac767fda3effba4653c99
 				</p>
 			</div>
 		</div>
@@ -33,13 +37,20 @@
     
         $(function(){
             $("#loginBtn").click(function(){
+<<<<<<< HEAD
+                location.href='./';
+=======
                 location.href='./loginPage';
+>>>>>>> 3ea421163ae36df70acac767fda3effba4653c99
             })
         });
         
         
         $(function(){
             $("#mainBtn").click(function(){
+<<<<<<< HEAD
+                location.href='./main';
+=======
             	// 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
 				// 부모창(원래 보던 창) 새로고침
 				opener.document.location.reload();
@@ -47,6 +58,7 @@
 				// 자식창(현재 로그인 창)을 끄기
 				window.close();
 				// 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
+>>>>>>> 3ea421163ae36df70acac767fda3effba4653c99
             })
         });
         

@@ -16,11 +16,11 @@
     margin: 5% 20%;
     }
     
-	table, th, td{
-	   border : 1px solid black;
-	   border-collapse:collapse;
-	   padding : 5px 10px;
-	}
+    table, th, td{
+       border : 1px solid black;
+       border-collapse:collapse;
+       padding : 5px 10px;
+    }
     </style>
 
     <body>
@@ -28,30 +28,30 @@
         <hr/>
       
       <table class="table table-hover">
-		  <thead>
-		    <tr>
-		       <th>작성일</th>
+          <thead>
+            <tr>
+               <th>작성일</th>
                <th>글번호</th>
                <th>제목</th>
                <th>좋아요</th>
                <th>조회수</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    <c:forEach var="mychk" items="${myPost}">
+            </tr>
+          </thead>
+          <tbody>
+            <c:forEach var="mychk" items="${myPost}">
 
-		       <%-- ${myList}  --%>
-		      <tr>
-		      <td>${mychk.cafe_modtime }</td>
-		      <td>${mychk.cafe_idx}</td>
-		      <td>${mychk.cafe_title}</td>
-		      <td>${mychk.cafe_hit}</td>
-		      <td>${mychk.cafe_likecnt }</td>
-		      </tr>
-		      </c:forEach>
-		   
-		  </tbody>
-		</table>
+               <%-- ${myList}  --%>
+              <tr>
+              <td>${mychk.cafe_modtime }</td>
+              <td>${mychk.cafe_idx}</td>
+              <td>${mychk.cafe_title}</td>
+              <td>${mychk.cafe_hit}</td>
+              <td>${mychk.cafe_likecnt }</td>
+              </tr>
+              </c:forEach>
+           
+          </tbody>
+        </table>
       
       
         <!-- <tr>

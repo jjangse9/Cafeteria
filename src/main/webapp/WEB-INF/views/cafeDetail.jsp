@@ -1,564 +1,672 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
-<script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>
-<script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=13d5c33e08b7f9bd8e414183f027f399&libraries=services"></script>
-<style>
-#buis_img {
-	width: 500px;
-	height: 200px;
-	background-color: cadetblue;
-}
 
-#diet_table {
-	width: 500px;
-	height: 200px;
-	background-color: yellowgreen;
-}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>구내식당 정보</title>
+        <!--부트 스트랩 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+        
+        <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 
-#map {
-	width: 30%;
-	height: 400px;
-	margin-bottom: 50px;
-	float: right;
-	margin-right: 500px;
-}
+        <!--카카오-->
+        <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>
+        <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=13d5c33e08b7f9bd8e414183f027f399&libraries=services"></script>
 
-table, tr, th, td {
-	border: black 1px solid;
-	border-collapse: collapse;
-}
+        <style>
 
-table {
-	width: 30%;
-	float: left;
-	margin-bottom: 50px;
-}
+        #buis_img {
+            width: 500px;
+            height: 200px;
+            background-color: cadetblue;
+        }
 
-th {
-	background-color: rgb(214, 214, 214);
-}
+        #diet_table {
+            height: 300px;
+            background-color: yellowgreen;
+            width: 100%;
+            text-align: center;
+            font-size: xx-small;
+        }
 
-#remark {
-	width: 70%;
-	height: 100px;
-	border: none;
-	resize: none;
-}
+        #map {
+            width: 100%;
+            height: 100%;
+        }
 
-#navy {
-	width: 100%;
-	height: 100px;
-	background-color: grey;
-}
+        table, tr, th, td {
+            border: black 1px solid;
+            border-collapse: collapse;
+        }
 
-#foot {
-	width: 100%;
-	height: 100px;
-	background-color: grey;
-}
+        table {
+            width: 30%;
+            float: left;
+            margin-bottom: 50px;
+        }
 
-#diet_table {
-	width: 800px;
-	text-align: center;
-	font-size: xx-small;
-}
+        th {
+            background-color: rgb(214, 214, 214);
+        }
 
-#infoArea {
-	height: 300px;
-}
+        #navy {
+            width: 100%;
+            height: 100px;
+            background-color: grey;
+        }
 
-tbody {
-	width: 100%;
-}
+        #foot {
+            width: 100%;
+            height: 100px;
+            background-color: grey;
+        }
 
-#replyArea {
-	width: 1500px;
-}
+        
 
-#likeArea {
-	display: flex;
-	justify-content: center;
-}
+        #infoArea {
+            height: auto;
+            width: 100%;
+        }
 
-#likeCnt {
-	display: flex;
-	justify-content: center;
-	font-size: x-large;
-}
+        tbody {
+            width: 100%;
+        }
 
-.blind {
-	position: absolute;
-	overflow: hidden;
-	margin: -1px;
-	padding: 0;
-	width: 1px;
-	height: 1px;
-	border: none;
-	clip: rect(0, 0, 0, 0);
-}
 
-.startRadio {
-	display: inline-block;
-	overflow: hidden;
-	height: 40px;
-}
+        #likeArea {
+            display: flex;
+            justify-content: center;
+        }
 
-.startRadio:after {
-	content: "";
-	display: block;
-	position: relative;
-	z-index: 10;
-	height: 40px;
-	background:
-		url("data:image/png;base64,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")
-		repeat-x 0 0;
-	background-size: contain;
-	pointer-events: none;
-}
+        #likeCnt {
+            display: flex;
+            justify-content: center;
+            font-size: x-large;
+        }
 
-.startRadio__box {
-	position: relative;
-	z-index: 1;
-	float: left;
-	width: 20px;
-	height: 40px;
-	cursor: pointer;
-}
+        .blind {
+            position: absolute;
+            overflow: hidden;
+            margin: -1px;
+            padding: 0;
+            width: 1px;
+            height: 1px;
+            border: none;
+            clip: rect(0, 0, 0, 0);
+        }
 
-.startRadio__box input {
-	opacity: 0 !important;
-	height: 0 !important;
-	width: 0 !important;
-	position: absolute !important;
-}
+        .startRadio {
+            display: inline-block;
+            overflow: hidden;
+            height: 40px;
+        }
 
-.startRadio__box input:checked+.startRadio__img {
-	background-color: #0084ff;
-}
+        .startRadio:after {
+            content: "";
+            display: block;
+            position: relative;
+            z-index: 10;
+            height: 40px;
+            background:
+                url("data:image/png;base64,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")
+                repeat-x 0 0;
+            background-size: contain;
+            pointer-events: none;
+        }
 
-.startRadio__img {
-	display: block;
-	position: absolute;
-	right: 0;
-	width: 500px;
-	height: 40px;
-	pointer-events: none;
-}
-</style>
-<html>
-<!-- header s -->
-<div id="navy">NAVY</div>
-<!-- header e -->
-<body>
-	<h1>(임시)상세페이지</h1>
-	<h2>구내식당 업체명</h2>
-	<b>조회수 : ${cafe.cafe_hit} </b>
-	<b> 좋아요 : ${cafe.cafe_likecnt} </b>
-	<b id="rateAvg"> 별점 : </b>
-	<hr>
+        .startRadio__box {
+            position: relative;
+            z-index: 1;
+            float: left;
+            width: 20px;
+            height: 40px;
+            cursor: pointer;
+        }
 
-	<div id="buis_img">업장 이미지가 들어갈 자리</div>
-	<br>
-	<div id="diet_table">
-		<table id="diet_table">
-			<tr>
-				<td>시간/요일</td>
-				<td>월요일</td>
-				<td>회요일</td>
-				<td>수요일</td>
-				<td>목요일</td>
-				<td>금요일</td>
-				<td>토요일</td>
-				<td>일요일</td>
-			</tr>
-			<tr>
-				<td>조식</td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '월요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '화요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '수요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '목요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '금요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '토요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '일요일' && dt.diet_code == 01}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-			</tr>
-			<tr>
-				<td>중식</td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '월요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '화요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '수요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '목요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '금요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '토요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '일요일' && dt.diet_code == 02}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-			</tr>
-			<tr>
-				<td>석식</td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '월요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '화요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '수요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '목요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null || dt.diet_menu =''}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '금요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '토요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-				<td><c:forEach items="${diet}" var="dt">
-						<c:if test="${dt.diet_date_name eq '일요일' && dt.diet_code == 03}">
-							<c:if test="${dt.diet_menu eq null}">
-								<span>휴무 입니다.</span>
-							</c:if>
-							<span>${dt.diet_menu}</span>
-							<br />
-						</c:if>
-					</c:forEach></td>
-			</tr>
+        .startRadio__box input {
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            position: absolute !important;
+        }
 
-		</table>
-	</div>
+        .startRadio__box input:checked+.startRadio__img {
+            background-color: #0084ff;
+        }
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+        .startRadio__img {
+            display: block;
+            position: absolute;
+            right: 0;
+            width: 500px;
+            height: 40px;
+            pointer-events: none;
+        }
+        #search-navi{
+            width: 100%;
+            height: 100px;
+            /* background-color: rgb(228, 206, 6); */
+        }
+        </style>
+        
+    <body>
+        <!-- 네비 -->
+        <section id="search-navi">
+            <div>
+                <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: white; border: 2px solid black; border-top: none; border-left: none; border-right: none;">
+					<div style="width: 100px;"></div>
+<!-- 20220120 사이트 로고 연결 -> 홈페이지로SI -->
+				<a class="navbar-brand" href="#">
+					<!-- svg => 아이콘 -->
+					<svg style="color: rgb(255, 174, 0);" xmlns="http://www.w3.org/2000/svg" 
+								width="50px" height="50px" fill="currentColor" class="bi bi-piggy-bank-fill" viewBox="0 0 16 16"
+								onclick="location.href='./'">
+						<!-- 아이콘 경로 -->
+						<path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58	0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zm7.173 3.876a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199zm-8.999-.65A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 1 0 .286-.958A7.601 7.601 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962zM5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z"/>
+					</svg>
+				</a>
+<!-- 20220120 사이트 로고 연결 -> 홈페이지로SI -->
 
-	<table id="infoArea">
-		<tr>
-			<th>업체명</th>
-			<td>${cafe.cafe_title}</td>
-		</tr>
-		<tr>
-			<th>지역</th>
-			<td>${cafe.bmem_area_name}</td>
-		</tr>
-		<tr>
-			<th>상세주소</th>
-			<td>${cafe.bmem_address}, ${cafe.bmem_address_detail}</td>
-		</tr>
-		<tr>
-			<th>영업시간</th>
-			<td>${cafe.bmem_btime}</td>
-		</tr>
-		<tr>
-			<th>가격</th>
-			<td>${cafe.cafe_diet_price}원</td>
-		</tr>
-		<tr>
-			<th>연락처</th>
-			<td>${cafe.bmem_tel_no}</td>
-		</tr>
-	</table>
 
-	<br>
-	<div id="map"></div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarScroll">
+                      <ul class="navbar-nav mr-auto my-2 my-lg-0 navbar-nav-scroll" style="max-height: 100px;"></ul>
+                      <form class="d-flex">
+                        <!-- 공지사항 -->
+                        <div class="nav-item">
+                          <a class="nav-link" href="#" style="font-size: 20px; color: black;">공지사항</a>
+                        </div>
+                        <!-- 구내식당 -->
+                        <div class="nav-item">
+                          <a class="nav-link" href="#" style="font-size: 20px; color: black;">구내식당</a>
+                        </div>
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-	<textarea id="remark" name="comment" id="com" cols="30" rows="10"
-		readonly> 
-   ${cafe.bmem_remark}
-</textarea>
-
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+<!-- 20220120 네비게이션 바 검색SI -->
+					<!-- 검색바 -->
+					<div class="nav-item dropdown">
+						<a class="nav-link" href="#" id="navbarScrollingDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+						<svg xmlns="http://www.w3.org/2000/svg" 
+						width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="color: black;">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+						</svg>
+					</a>
+               		</form>
+					 	<form action="searchResult" method="get" name="naviSearchForm" >
+							<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+								<input class="form-control mr-2" type="search" aria-label="Search" name="keyword" placeholder="검색어 입력" value="${keyword }">
+								<button type="submit" style="margin: 0px 0px 0px 0px;" class="btn btn-danger" >Search</button>
+							</ul>
+						</form>
+					</div>
+<!-- 20220120 네비게이션 바 검색SI -->					
+								
+					
+					
+<!-- 20220120 상태 아이콘SI --> 
+				<div class="dropdown">
+					<img src="/photo/1.png" width="50px" class="btn btn-secondary dropdown-toggle" 
+						style="padding:0px; margin-left:10px;" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="./myStat">${loginId } 님</a>
+						<!-- 20220117 내 정보 보기 쪽에서 할 수 있도록
+							<a class="dropdown-item" href="#">내 글 보기</a>
+							<a class="dropdown-item" href="#">내 댓글 보기</a>
+						-->
+						<a class="dropdown-item" href="#">문의하기</a>
+						<a class="dropdown-item" href="#">로그아웃</a>
+					</div>
+				</div>
+ 
+                    <div style="width: 100px;"></div>
+<!-- 20220120 상태 아이콘SI -->
 
 
 
-	<div id="likeArea">
-		<span> <img id="likeChk" src="./resources/images/like.png"
-			width="100px" height="100px" style="cursor: pointer;" />
-		</span>
-	</div>
-	<br />
-	<div id="likeCnt">
-		<span style="color: #ed3f27;"><b>${cafe.cafe_likecnt}</b></span>
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+        </section>
+        
+        <section style="width: 100%; height: auto;" class="container">
+            <div style="width: 100%; height: 80px;"></div>
+            <div style="width: 100%; height: auto;">
+                <div style="width: 100%; display: flex;">
+                    <div>
+                        <b><h2>구내식당 상세 페이지</h2></b>
+                    </div> 
+                </div>
+                <div style="width: 100%; height: 3px;"></div>
+                <div style="width: 100%; height: 3px; background-color: rgb(138, 138, 138); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+                <div style="width: 100%; height: 70px;"></div>
 
+                <div style="display: flex;">
+                    <div style="width: 3%;"></div>
+                    <div style="width: 94%;">
+                        <div style="width: 100%; display: flex;">
+<!--식당명-->
+                            <div style="width: 40%;">
+                                <b><h3>식당명</h3></b>
+                            </div>
+<!--별점 조회순 좋아요-->  
+                            <div style="width: 60%; margin: 9px; text-align: right;"> 
+                                <b>조회수 : ${cafe.cafe_hit} </b>
+                                <b> 좋아요 : ${cafe.cafe_likecnt} </b>
+                                <b id="rateAvg"> 별점 : </b>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 3px;"></div>
+                        <div style="width: 100%; height: 3px; background-color: rgb(7, 7, 7); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+<!--고객명 날짜 수정 삭제-->
+                        <div style="display: flex;">
+                            <div style="width: 2%;"></div>
+                            <div style="width: 10%;">
+                                <a>고객명</a>
+                            </div>
+                            <div style="width: 50%;">
+                                <a>날짜</a>
+                            </div>
+                            <div style="text-align: right; width: 36%;">
+                                <a href="#">수정</a> <a>/</a> <a href="#">삭제</a>
+                            </div>
+                            <div style="width: 2%;"></div>
+                        </div>
+                        <div style="width: 100%; height: 50px;"></div>
+                    </div>
+                    <div style="width: 3%;"></div>
+                </div>
+<!--내용-->
+                <div style="display: flex; width: 100%; height: auto;">
+                    <div style="width: 5%; height: auto;"></div>
+                    <div style="width: 90%; height: auto;">
+<!-- 이미지 -->
+                        <div style="display: flex; width: 100%; height: auto; justify-content: center;align-items: center;">
+                            <div style="width: 266.4px; height: 266.4px; background-color: aquamarine;"></div>
+                            <div style="width: 5%; height: auto;"></div>
+                            <div style="width: 266.4px; height: 266.4px; background-color: aquamarine;"></div>
+                            <div style="width: 5%; height: auto;"></div>
+                            <div style="width: 266.4px; height: 266.4px; background-color: aquamarine;"></div>
+                        </div>
+                        <div style="width: 100%; height: 50px;"></div>
+<!-- 식단표 -->
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <div id="diet_table">
+                                <table id="diet_table">
+                                    <tr>
+                                        <td>시간/요일</td>
+                                        <td>월요일</td>
+                                        <td>회요일</td>
+                                        <td>수요일</td>
+                                        <td>목요일</td>
+                                        <td>금요일</td>
+                                        <td>토요일</td>
+                                        <td>일요일</td>
+                                    </tr>
+                                    <tr>
+                                        <td>조식</td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '월요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '화요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '수요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '목요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '금요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '토요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '일요일' && dt.diet_code == 01}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                    </tr>
+                                    <tr>
+                                        <td>중식</td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '월요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '화요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '수요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '목요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '금요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '토요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '일요일' && dt.diet_code == 02}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                    </tr>
+                                    <tr>
+                                        <td>석식</td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '월요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '화요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '수요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '목요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null || dt.diet_menu =''}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '금요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '토요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                        <td><c:forEach items="${diet}" var="dt">
+                                                <c:if test="${dt.diet_date_name eq '일요일' && dt.diet_code == 03}">
+                                                    <c:if test="${dt.diet_menu eq null}">
+                                                        <span>휴무 입니다.</span>
+                                                    </c:if>
+                                                    <span>${dt.diet_menu}</span>
+                                                    <br />
+                                                </c:if>
+                                            </c:forEach></td>
+                                    </tr>
+                    
+                                </table>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 50px;"></div>
 
+                        <div style="width: 100%; display: flex;">
+<!-- 업체명 -->
+                            <div style="width: 43%; height: auto;">
+                                <table id="infoArea">
+                                    <tr>
+                                        <th style="width: 100px; height: 60px; text-align: center;">업체명</th>
+                                        <td style="padding: 0px 0px 0px 10px;">${cafe.cafe_title}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 100px; height: 60px; text-align: center;">지역</th>
+                                        <td style="padding: 0px 0px 0px 10px;">${cafe.bmem_area_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 100px; height: 100px; text-align: center;">상세주소</th>
+                                        <td style="padding: 0px 0px 0px 10px;">${cafe.bmem_address}, ${cafe.bmem_address_detail}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 100px; height: 60px; text-align: center;">영업시간</th>
+                                        <td style="padding: 0px 0px 0px 10px;">${cafe.bmem_btime}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 100px; height: 60px; text-align: center;">가격</th>
+                                        <td style="padding: 0px 0px 0px 10px;">${cafe.cafe_diet_price}원</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 100px; height: 60px; text-align: center;">연락처</th>
+                                        <td style="padding: 0px 0px 0px 10px;">${cafe.bmem_tel_no}</td>
+                                    </tr>
+                                </table>
+                            </div>
 
+                            <div style="width: 4%; height: auto;"></div>
+<!-- 지도 -->
+                            <div style="width: 53%; height: 400px; background-color: rebeccapurple;">
+                                <div id="map"></div>
+                            </div>
+                        </div>
+<!-- 업주 코멘트 -->
+                        <div style="width: 100%; height: auto;">
+                            <textarea style="width: 100%; height: 100%; border: none; resize: none;" name="comment" id="com" cols="30" rows="10" readonly> 
+                                ${cafe.bmem_remark}
+                            </textarea>
+                        </div>
+                        <div style="width: 100%; height: 100px; background-color: royalblue;"></div>
+<!-- 따봉 -->
+                        <div style="width: 100%; height: auto;">
+                            <div id="likeArea">
+                                <span> 
+                                </span>
+                            </div>
+                            <br />
+                            <div id="likeCnt">
+                                <span style="color: #ed3f27;"><b>${cafe.cafe_likecnt}</b></span>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 50px; background-color: royalblue;"></div>
+                    </div>
+                
+                    <div style="width: 5%; height: auto;"></div>
+                </div>
+                
+                <div style="width: 100%; height: 50px;"></div>
+            </div>
+        </section>
 
-	<br>
-	<br>
-	<br>
+        <section style="width: 100%; height: auto;" class="container">
 
-	<div>
-		<table id="replyArea">
-			<tr>
-				<td><span>작성자</span><br /> <span>별점 : </span></td>
-				<td>내용</td>
-				<td>작성일</td>
-			</tr>
-			<c:forEach items="${reply}" var="rp">
-				<tbody id="replyListCall${rp.cafereply_idx}">
+            <div style="width: 100%; height: auto;">
+<!-- 댓글 -->
+                <div>
+                    <div style="width: 100%; height: auto;">
+                        <div style="display: flex;">
+                            <div style="width: 2%;"></div>
+                            <div style="width: 10%; display: flex;">
+                                <h3>댓글</h3><h3>()</h3>
+                            </div>
+                            <div style="width: 50%; margin: 9px;">
+                                <a href="#" style="margin-right: 10px;">최신순</a>
+                                <a>|</a>
+                                <a href="#" style="margin-left: 10px;">좋아요순</a>
+                            </div>
+                            <div style="margin: 9px; text-align: right; width: 36%;">
+                                <a style="margin-right: 20px;" href="#">공유하기</a><a href="#">아이콘</a>
+                            </div>
+                            <div style="width: 2%;"></div>
+                        </div>
+                        <div style="width: 100%; height: 3px;"></div>
+                        <div style="width: 100%; height: 3px; background-color: rgb(7, 7, 7); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+                        <div style="width: 100%; height: 20px;"></div>
+                    </div>
+                </div>
 
-				</tbody>
-				<tbody id="recommentArea${rp.cafereply_idx}"></tbody>
-				<tbody id="addRecoArea${rp.cafereply_idx}"></tbody>
-			</c:forEach>
-			<tr>
-				<td>회원 이름</td>
-				<td>
-					<div class="startRadio starOrigin">
-						<label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="1"> <span
-							class="startRadio__img"><span class="blind">별 1개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="2"> <span
-							class="startRadio__img"><span class="blind">별 1.5개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="3"> <span
-							class="startRadio__img"><span class="blind">별 2개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="4"> <span
-							class="startRadio__img"><span class="blind">별 2.5개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="5"> <span
-							class="startRadio__img"><span class="blind">별 3개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="6"> <span
-							class="startRadio__img"><span class="blind">별 3.5개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="7"> <span
-							class="startRadio__img"><span class="blind">별 4개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="8"> <span
-							class="startRadio__img"><span class="blind">별 4.5개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="9"> <span
-							class="startRadio__img"><span class="blind">별 5개</span></span>
-						</label> <label class="startRadio__box"> <input type="radio"
-							name="star" id="" value="10"> <span
-							class="startRadio__img"><span class="blind">별 5.5개</span></span>
-						</label>
-					</div> <input type="button" id="callImgBox" value="이미지 첨부 하기"/>
-					<div id="div1" style="border: solid;width:100%; height:140px; display: none;"></div>
-					<textarea id="recon" placeholder="댓글을 입력하세요"
-						style="width: 100%; height: 150px" onclick="replyLoginChk()"></textarea>
-				</td>
-				<td><input type="button" id="addReply" value="입력"
-					onclick="addReply(${cafe.cafe_idx});" /></td>
-				<td hidden=""><input id="replyList" value="${cafe.cafe_idx}" /></td>
-			</tr>
-		</table>
-	</div>
+                <div style="width: 100%; height: auto;">
+                    <table style="width: 100%; height: auto;" id="replyArea">
+                        <tr>
+                            <td><span>작성자</span><br /> <span>별점 : </span></td>
+                            <td>내용</td>
+                            <td>작성일</td>
+                        </tr>
+                        <c:forEach items="${reply}" var="rp">
+                            <tbody id="replyListCall${rp.cafereply_idx}">
+        
+                            </tbody>
+                            <tbody id="recommentArea${rp.cafereply_idx}"></tbody>
+                            <tbody id="addRecoArea${rp.cafereply_idx}"></tbody>
+                        </c:forEach>
+                        <tr>
+                            <td>회원 이름</td>
+                            <td>
+                                <div class="startRadio starOrigin">
+                                    <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="1"> <span
+                                        class="startRadio__img"><span class="blind">별 1개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="2"> <span
+                                        class="startRadio__img"><span class="blind">별 1.5개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="3"> <span
+                                        class="startRadio__img"><span class="blind">별 2개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="4"> <span
+                                        class="startRadio__img"><span class="blind">별 2.5개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="5"> <span
+                                        class="startRadio__img"><span class="blind">별 3개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="6"> <span
+                                        class="startRadio__img"><span class="blind">별 3.5개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="7"> <span
+                                        class="startRadio__img"><span class="blind">별 4개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="8"> <span
+                                        class="startRadio__img"><span class="blind">별 4.5개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="9"> <span
+                                        class="startRadio__img"><span class="blind">별 5개</span></span>
+                                    </label> <label class="startRadio__box"> <input type="radio"
+                                        name="star" id="" value="10"> <span
+                                        class="startRadio__img"><span class="blind">별 5.5개</span></span>
+                                    </label>
+                                </div> <input type="button" id="callImgBox" value="이미지 첨부 하기"/>
+                                <div id="div1" style="border: solid;width:100%; height:140px; display: none;"></div>
+                                <textarea id="recon" placeholder="댓글을 입력하세요"
+                                    style="width: 100%; height: 150px" onclick="replyLoginChk()"></textarea>
+                            </td>
+                            <td><input type="button" id="addReply" value="입력"
+                                onclick="addReply(${cafe.cafe_idx});" /></td>
+                            <td hidden=""><input id="replyList" value="${cafe.cafe_idx}" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-
-
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-</body>
+    </body>
 
 <script>
 
@@ -571,6 +679,7 @@ $(document).ready(function addImageBox(){
 
 var loginId = "${sessionScope.loginId}";
 
+var boardLike = {};
 var loginChk = {};
 var userInfo = {};
 
@@ -599,7 +708,8 @@ function idChk(loginId){
 	        if(data.idChk.mem_grade ==1 ){
 	        	
 		       	loginChk = data.idChk;    
-		       	console.log("일반 회원의 정보"+loginChk);
+		       	console.log("일반 회원의 정보"+loginChk.mem_id);
+		       	likeView(loginChk);
 		       	
 	        }else if(data.idChk.mem_grade == 2){
 	       		
@@ -612,6 +722,7 @@ function idChk(loginId){
 	       	        success:function(data){
 	       	        	loginChk = data.idChk;
 	       	        	console.log("업주 회원의 정보"+loginChk);
+	       	        	likeView(loginChk);
 		       	     },
 		             error:function(e){
 		                console.log("에러 발생   "+e);
@@ -623,9 +734,55 @@ function idChk(loginId){
 	           console.log("에러 발생   "+e);
 	        }
 	     });      
-	}
+	}else{
+		var content = '<img id="likeChk" src="./resources/images/like.png" width="100px" height="100px" style="cursor: pointer;" />'
+    		$("#likeArea span").append(content);
+       	}
+}
+
+
+
+function likeView(loginChk){
+	
+	$("#likeArea span").empty();
+	
+	var param = {};
+	param.userId = loginChk.mem_id;
+	param.cafeIdx = $('#replyList').val();
+	
+	
+	$.ajax({
+        type:'POST',
+        url:'likeView',
+	    async:false,
+        data : param,
+        dataType:'JSON',
+        success:function(data){
+        	
+        	boardLike = data;
+        	console.log(boardLike);
+        	//console.log(data[0].boardlike_chk);
+        	if(data.length == 0 ){
+        		var content = '<img id="likeChk" src="./resources/images/like.png" width="100px" height="100px" style="cursor: pointer;" />'
+            		$("#likeArea span").append(content);
+        	}else if(data[0].boardlike_chk == 1){
+        		var content = '<img id="likeChk" src="./resources/images/like.png" width="100px" height="100px" style="cursor: pointer;" />'
+            		$("#likeArea span").append(content);
+        	}else{
+        		var content = '<img id="likeChk" src="./resources/images/likecolor.png" width="100px" height="100px" style="cursor: pointer;" />'
+            		$("#likeArea span").append(content);
+        	}
+       	
+        },
+        error:function(e){
+           console.log("에러 발생   "+e);
+        }
+     });      
 	
 }
+
+
+
 
 
 
@@ -657,22 +814,24 @@ function replyList(idx){
 }
 
 function replyListDraw(data){
-	var imgChk = {};
-	
-	$.ajax({
-        type:'POST',
-        url:'imgChk',
-        async:false,
-        data:{},
-        dataType:'JSON',
-        success:function(data){
-			imgChk = data;
-        },
-        error:function(e){
-           console.log("에러 발생   "+e);
-        }
-     });      
-	
+	   var imgChk = {};
+	   
+	   //console.log(data);
+	   $.ajax({
+	        type:'POST',
+	        url:'imgChk',
+	        async:false,
+	        data:{},
+	        dataType:'JSON',
+	        success:function(data){
+	         imgChk = data;
+	        },
+	        error:function(e){
+	           console.log("에러 발생   "+e);
+	        }
+	     });      
+	   //console.log(data);
+	   
 	
 	
 	limit += 1;
@@ -696,9 +855,13 @@ function replyListDraw(data){
 			
 			rateAvg[i] = data[i].cafereply_ratestar;
 			
-			var replyStar = ".replyStar"+data[i].cafereply_idx
+			//console.log(data[i].cafereply_stat);
 			
-			if(data[i].cafereply_stat == 1){
+			 var replyStat = eval(data[i].cafereply_stat);
+			 
+			 //console.log(replyStat);
+	         
+	         if(replyStat == 1 || replyStat == '1'){
 			
 				content += "<tr>";
 				content += "<td>";
@@ -793,12 +956,13 @@ function replyListDraw(data){
 				//$(".replyStar"+data[i].cafereply_idx+" input[name=star"+data[i].cafereply_idx+"] [value="+data[i].cafereply_ratestar+"]").prop('checked' , true);
 				
 				//console.log($(".replyStar"+data[i].cafereply_idx).find('input[name=star'+data[i].cafereply_idx));
-				var onCheckedRadio = $(".replyStar"+data[i].cafereply_idx).find('input[name=star'+data[i].cafereply_idx+']');
-				//console.log(data[i].cafereply_ratestar);
-				for(var j = 0 ; j < data[i].cafereply_ratestar ; j++){
-					onCheckedRadio[j].checked = true;
-				}
-				
+				 var onCheckedRadio = $(".replyStar"+data[i].cafereply_idx).find('input[name=star'+data[i].cafereply_idx+']');
+		            //console.log(data[i].cafereply_ratestar);
+		            //console.log(onCheckedRadio);
+		            for(var j = 0 ; j < data[i].cafereply_ratestar ; j++){
+		               //console.log(onCheckedRadio[j]);
+		               onCheckedRadio[j].checked = true;
+		            }
 				
 				//console.log(rateAvg);
 				
@@ -851,20 +1015,20 @@ function replyListDraw(data){
 		}
 	}	
 	
-	var contentImg = "";
 	
 	for(var i = 0; i<imgChk.length; i++){
 		
 		
+		var contentImg = "";
 		
 		
 		var area = "#callImgList"+imgChk[i].cafereply_idx;
 		
-		console.log(area);
+		//console.log(area);
 		
 		contentImg += "<img alt='' src='"+imgChk[i].replyphoto_path+imgChk[i].replyphoto_newname+"' style='width: 150px; height: 150px;'/>"	
 		
-		console.log(contentImg);
+		//console.log(contentImg);
 		
 		$(area).prepend(contentImg);
 		
@@ -879,7 +1043,7 @@ function replyListDraw(data){
 				Avg += rateAvg[i]
 			}
 			
-			var starAvg = (Avg/2)/rateAvg.length;
+			var starAvg = ((Avg/2)/rateAvg.length);
 			
 			if(limit == 1){
 				$("#rateAvg").append(starAvg.toFixed(2));			
@@ -1078,7 +1242,7 @@ function recoHide(idx, Ridx){
 		$("#recoRewClear"+Ridx[0]).replaceWith(content);	
 	}
 	
-	console.log(content);
+	//console.log(content);
    
    $(commentCall).html('답글 더 보기');
    
@@ -1115,7 +1279,8 @@ function addReply(idx){
   	  alert("댓글을 입력해 주세요.");
   	  
     }else if($("#recon").val() != ""){     
-                                                              
+                                                     
+		  var imgEx = $("span .addImg").length;
 	      var param = {};
 	      param.recon = recon;
 	      param.idx = idx;
@@ -1134,11 +1299,20 @@ function addReply(idx){
 		            data:param,
 		            dataType:'JSON',
 		            success:function(data){
-		               console.log(data.success);
-		               if(data.success>0){
-		                  $("#recon").val('');
-		                  $(".starOrigin input[type=radio]").prop('checked', false);
-		                  replyList(idx);
+		               
+		               if(data.cafeReplyIdx>0){
+							console.log("1차 실행");   
+		                   if(imgEx > 0){
+		                	   console.log("1-1차 실행");
+		                	  dataSubmit(data.cafeReplyIdx, idx)
+		   		       	  }else{
+		   		       		console.log("1-2차 실행");
+							  $("#recon").val('');
+		                  	  $(".starOrigin input[type=radio]").prop('checked', false);
+		                  	location.reload();
+
+		   		       	  }	
+		                   
 		               }
 		            },
 		            error:function(e){
@@ -1146,11 +1320,8 @@ function addReply(idx){
 		            }
 		         });    
 		       
-			   	var imgEx = $("span .addImg").length;
-			   	
-		       if(imgEx > 0){
-		    	   dataSubmit();
-		       }	
+			   				   	
+		       
 		       
 		       
 		       
@@ -1285,7 +1456,7 @@ function addRecomment(Ridx,Cidx){
 		         data:param,
 		         dataType:'JSON',
 		         success:function(data){
-		        	 console.log(data.success);
+		        	 //console.log(data.success);
 		        	 if(data.success>0){
 		        		 $("#addRecoArea"+Ridx).empty();
 		        	 }
@@ -1367,7 +1538,8 @@ function updateReply(Ridx,cafeidx){
         	 if(data.success>0){
         		 $("#replyRewClear"+Ridx).empty();
         		 $("#replyRewClear"+Ridx).replaceWith(content)
-        		 replyList(cafeidx);
+        		 location.reload();
+
         	 }
          },
          error:function(e){
@@ -1404,7 +1576,8 @@ function replyDel(idx, cafeidx){
 		         success:function(data){
 		        	 if(data.success>0){
 		        		console.log("삭제 되었습니다.");
-		        		replyList(cafeidx);
+		        		location.reload();
+
 		        	 }
 		         },
 		         error:function(e){
@@ -1450,7 +1623,7 @@ function cancelCoRew(recoIdx, cfIdx, replyIdx){
 	
 	var content = "";
 	
-	console.log(replyIdx);
+	//console.log(replyIdx);
 	
 	content += '<tbody id="recommentArea'+replyIdx+'">';
 	content += '</tbody>';
@@ -1489,7 +1662,8 @@ function updateRecom(cfIdx, replyIdx, recoIdx, rcCom){
        	 if(data.success>0){
        		$("#recoRewClear"+recoIdx).empty();
        		$("#recoRewClear"+recoIdx).replaceWith(content)
-       		replyList(cfIdx);
+       		location.reload();
+
        	 }
         },
         error:function(e){
@@ -1533,7 +1707,8 @@ function recoDel(Cidx, cafeidx, Ridx){
 		        		console.log("삭제 되었습니다.");
 		        		$("#recommentArea"+Ridx).empty();
 		        		//$("#receDelClear"+Ridx).replaceWith(content);
-		        		replyList(cafeidx);
+		        		location.reload();
+
 		        	 }
 		         },
 		         error:function(e){
@@ -1555,15 +1730,85 @@ $("#likeChk").click(function(){
 	var path = $("#likeChk").attr("src");
 	var color = "./resources/images/likecolor.png";
 	
-	console.log("path의 값 : "+path);
-	console.log("color의 값 : "+color);
-	
-	if(path == color){
-		$("#likeChk").attr("src","./resources/images/like.png");
+	if(loginId == ""){
+		var yn = confirm("로그인 이후 이용 가능한 서비스입니다.");
+
+		if(yn){
+			location.href="/";
+		}
+		
 	}else{
-		$("#likeChk").attr("src","./resources/images/likecolor.png");
+		var boardLikes = {};
+		boardLikes = boardLike[0];
+		console.log(boardLikes);
+		//console.log(boardLikes.boardLike_chk);
+		
+		
+		if(boardLike.length == 0){
+			
+			var param = {};
+			
+			console.log("좋아요 3번 케이스");
+			//console.log("좋아요 클릭 3번 이벤트에서 : "+loginChk.mem_id);
+			//console.log("좋아요 클릭 3번 이벤트에서 : "+$('#replyList').val());
+			
+			param.userId = loginChk.mem_id;
+			param.cafeIdx = $('#replyList').val();
+			
+			$.ajax({
+		         type:'POST',	
+		         url:'addLike',
+		         data : param,
+		         dataType:'JSON',
+		         success:function(data){
+		        	 location.reload();
+		         },
+		         error:function(e){
+		            
+		         }
+		    });
+			
+		}else if(boardLike[0].boardlike_chk  == 1){
+			
+			console.log("좋아요 1번 케이스");
+			
+			$.ajax({
+		         type:'POST',	
+		         url:'upLike',
+		         data : boardLikes,
+		         dataType:'JSON',
+		         success:function(data){
+		        	 console.log("성공");
+		        	 location.reload();
+
+		         },
+		         error:function(e){
+		            
+		         }
+		    });    
+			
+		}else if(boardLike[0].boardlike_chk == 2){
+			
+			console.log("좋아요 2번 케이스");
+			
+			$.ajax({
+		         type:'POST',	
+		         url:'downLike',
+		         data : boardLikes,
+		         dataType:'JSON',
+		         success:function(data){
+		        	 console.log("성공");
+		        	 location.reload();
+
+		         },
+		         error:function(e){
+		            
+		         }
+		    });
+			
+		}
+			
 	}
-	
 	
 });
 

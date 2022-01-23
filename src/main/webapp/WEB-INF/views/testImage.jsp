@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-   
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cmmn/adminLayout}">
@@ -140,23 +140,92 @@ function previewImage(targetObj, View_area) {
 
 
 //form데이터 전송
-function dataSubmit() {
-   
-   var data = new FormData($("#addForm")[0]);
-    console.log(data);
+<<<<<<< HEAD
+function dataSubmit(replyIdx, idx) {
+	
+	var sendData = new FormData($("#addForm")[0]);
+    
     
     $.ajax({
-        url: "/board/fileUpload",
+        url:"/board/fileUpload",
         processData:false,
         contentType:false,
         enctype: 'multipart/form-data',
-        data: data,
-        type:"POST",      
+        data:sendData,
+        type:"POST",
+        dataType:'JSON',
+        success:function(data){
+        	
+        	//console.log(data.imgList);
+        	
+        	//data.put("replyIdx",replyIdx);
+        	
+        	/*
+        	var imgList = new Array();
+        	var imgGroup = {};
+        	
+        	//console.log(data.imgList.length);
+        	//console.log(data.imgList[0]);
+        	
+        	for(var i = 0; i < data.imgList.length; i++){
+        		
+        		var imgName = "imaName"+i;
+				
+        		imgGroup = {imgName : data.imgList[i]};
+        	 	console.log("이미지 정보 통합"+imgGroup.imgName);
+        	}
+        	
+        	console.log(imgGroup.imgName0);
+        	console.log(imgGroup.imgName1);
+        	
+        	imgGroup.replyIdx = replyIdx;
+        	
+        	console.log("이미지 정보 통합"+imgGroup);
+        	*/
+        	
+        	var totalData = {};
+        	totalData.data = data;
+        	totalData.replyIdx = replyIdx;
+        	
+        	
+        	$.ajax({
+    	         type:'POST',	
+    	         url: 'imgUpload',
+    	         data : totalData,
+    	         dataType:'JSON',
+    	         success:function(data){
+                    
+    	        	$("#recon").val('');
+                  	
+                    $(".starOrigin input[type=radio]").prop('checked', false);
+                  	
+          			$("span .addImg").remove();
+          			
+          			$("#div1").css("display","none");
+          			
+          			$("#callImgBox").val("이미지 첨부 하기");
+          			
+                  	replyList(idx);
+                  	  
+    	         },
+    	         error:function(e){
+    	            console.log(e);
+    	         }
+    	      });    
+        	
+        	
+	    },
+	    error:function(e){
+	            
+	    }    
+         
     }).done(function (fragment) {
-        $("#resultDiv").replaceWith(fragment);
-    });
-    
-};
+        
+    	$("#resultDiv").replaceWith(fragment);
+	   
+       });
+ 
+
 
 
 

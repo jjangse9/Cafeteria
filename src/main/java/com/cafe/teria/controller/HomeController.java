@@ -24,7 +24,8 @@ public class HomeController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired CafeService service;
-	
+
+
     @RequestMapping(value = "/testlist", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("임시 리스트 페이지 이동");
@@ -97,21 +98,28 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value = "/addreply", method = RequestMethod.POST)
-	@ResponseBody
-	public HashMap<String, Object> addreply(@RequestParam HashMap<String, String> param) {
-		
-		//logger.info("댓글 등록 요청 : {}",param);
-
-		service.addreply(param);
-		
-		 HashMap<String, Object> success = new  HashMap<String, Object>();
-		 
-		 success.put("success", 1);
-		
-		return success; 
-	
-	}
+	   @RequestMapping(value = "/addreply", method = RequestMethod.POST)
+	   @ResponseBody
+	   public HashMap<String, Object> addreply(@RequestParam HashMap<String, String> param) {
+	      
+	      //logger.info("댓글 등록 요청 : {}",param);
+	     HashMap<String, String> values = param;
+	     values.put("cafereply_idx" , "0");
+	     
+	      int cafeReplyIdx = service.addreply(values);
+	      
+	     System.out.println(values.get("cafereply_idx"));
+	     
+	     
+	       HashMap<String, Object> success = new  HashMap<String, Object>();
+	       
+	       success.put("cafeReplyIdx", values.get("cafereply_idx"));
+	       
+	       System.out.println("컨단에서 받은 insert 후 댓글 번호 : "+values.get("cafereply_idx"));
+	      
+	      return success; 
+	   
+	   }
 	
 	
 	@RequestMapping(value = "/addRecomment", method = RequestMethod.POST)
@@ -251,5 +259,88 @@ public class HomeController {
 		
 		
 		
+		@RequestMapping(value = "/imgUpload", method = RequestMethod.POST)
+		@ResponseBody
+		public int imgUpload(@RequestParam HashMap<String, Object> params) {
+			
+			System.out.println("컨단 에서 받은 params 의 정보 : " + params);
+			
+			
+			
+			HashMap<String, Object> imgMap = new HashMap<String, Object>();
+			
+			
+			for(int i=0; i<params.size()-2; i++) {
+				
+				ArrayList<HashMap<String, Object>> imgList= new ArrayList<HashMap<String,Object>>();				
+				
+				System.out.println("컨단 에서 받은 params 하위" + params.get("data[imgList"+i+"]"));
+				imgMap.put("Name", params.get("data[imgList"+i+"]"));
+				imgMap.put("replyIdx", params.get("replyIdx"));
+				imgMap.put("path", params.get("data[path]"));
+								
+				imgList.add(imgMap);
+				
+				service.imgUpload(imgList);
+				
+				System.out.println("imgMap의 정보 "+imgMap);
+				System.out.println("imgList의 정보 "+imgList);
+			}
+			
+			
+			return 1; 
+		
+		}
+		
+		
+		@RequestMapping(value = "/likeView", method = RequestMethod.POST)
+		@ResponseBody
+		public List<HashMap<String, Object>> likeView(@RequestParam HashMap<String, String> param) {
+			
+			List<HashMap<String, Object>> map = service.likeView(param);
+			
+			//logger.info("컨트롤러에서 받아온 ReplyList : {}",map);
+			
+			return map;
+		}
+		
+		
+		
+		@RequestMapping(value = "/upLike", method = RequestMethod.POST)
+		@ResponseBody
+		public int upLike(@RequestParam HashMap<String, String> params) {
+			
+			System.out.println("upLike params의 정보 : "+params);
+			
+			service.upLike(params);
+	
+			return 0;
+		}
+		
+		
+		@RequestMapping(value = "/downLike", method = RequestMethod.POST)
+		@ResponseBody
+		public int downLike(@RequestParam HashMap<String, String> params) {
+			
+			System.out.println("downLike params의 정보 : "+params);
+			
+			service.downLike(params);
+	
+			return 0;
+		}
+	
+		
+		
+		@RequestMapping(value = "/addLike", method = RequestMethod.POST)
+		@ResponseBody
+		public int addLike(@RequestParam HashMap<String, String> params) {
+			
+			System.out.println("addLike params의 정보 : "+params);
+			
+			service.addLike(params);
+	
+			return 0;
+		}
+	
 	
 }

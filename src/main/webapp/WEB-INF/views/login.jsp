@@ -145,7 +145,7 @@
     <script>
     /* 20220122 - 회원가입 팝업 */
     function popupJoin(){
-    	javascript:void(window.open('./joinForm', '','width=800px, height=900px, top=50px, left=600px'));
+       javascript:void(window.open('./joinForm', '','width=800px, height=900px, top=50px, left=600px'));
     };
     
     
@@ -166,39 +166,39 @@
         success:function(data){
             console.log("안녕하세요"+data.memInfo);
             // 로그인 성공시
-			if(data.memInfo != null){
-				console.log('여기서확인' , data.memInfo.mem_grade);
-				
-				// 로그인 아이디의 등급이 3이면 = 관리자라면
-				if(data.memInfo.mem_grade == 3){
-					//location.href='./admin';
-					console.log('관리자 로그인');
-					
-					// 모르겠으면 복습하세요
-					//console.log(data);
-					//console.log(data.memInfo);
-					
-					//console.log('data의 길이', Object.keys(data).length);
-					//console.log('memInfo의 길이', Object.keys(data.memInfo).length);
-					
-					opener.document.location.href='./admin';
-			
-					// 자식창(현재 로그인 창)을 끄기
-					window.close();
-				}else{
-					// 일반회원, 업주회원이면
-					alert(data.memInfo.mem_nick+'님 반갑습니다.');
-					location.href='./main';
-				
+         if(data.memInfo != null){
+            console.log('여기서확인' , data.memInfo.mem_grade);
+            
+            // 로그인 아이디의 등급이 3이면 = 관리자라면
+            if(data.memInfo.mem_grade == 3){
+               //location.href='./admin';
+               console.log('관리자 로그인');
+               
+               // 모르겠으면 복습하세요
+               //console.log(data);
+               //console.log(data.memInfo);
+               
+               //console.log('data의 길이', Object.keys(data).length);
+               //console.log('memInfo의 길이', Object.keys(data.memInfo).length);
+               
+               opener.document.location.href='./admin';
+         
+               // 자식창(현재 로그인 창)을 끄기
+               window.close();
+            }else{
+               // 일반회원, 업주회원이면
+               alert(data.memInfo.mem_nick+'님 반갑습니다.');
+               location.href='./main';
+            
 // 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
-					// 부모창(원래 보던 창) 새로고침
-					opener.document.location.reload();
-				
-					// 자식창(현재 로그인 창)을 끄기
-					window.close();
+               // 부모창(원래 보던 창) 새로고침
+               opener.document.location.reload();
+            
+               // 자식창(현재 로그인 창)을 끄기
+               window.close();
 // 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
-					
-				}
+               
+            }
             // 로그인 실패시
             }else if(data.memInfo === null){
                 alert('아이디 또는 패스워드를 확인하세요.')

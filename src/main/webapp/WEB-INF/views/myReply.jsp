@@ -16,11 +16,11 @@
     margin: 5% 20%;
     }
     
-	table, th, td{
-	   border : 1px solid black;
-	   border-collapse:collapse;
-	   padding : 5px 10px;
-	}
+    table, th, td{
+       border : 1px solid black;
+       border-collapse:collapse;
+       padding : 5px 10px;
+    }
     </style>
 
     <body>
@@ -66,16 +66,16 @@
             </tr>
         </thead>
         <c:forEach var="rec" items="${myRecomment}">
-		<tbody>
-      	 <%-- ${myList}  --%>
-	      <tr>
-	      <td>${rec.recomment_posttime}</td>
-	      <td>${rec.recomment_modtime}</td>
-	      <td style="width:40%;">${rec.recomment_content}</td>
-	      <td>${rec.recomment_likecnt}</td>
-	      </tr>
-	      </c:forEach>
-      	</tbody>
+        <tbody>
+           <%-- ${myList}  --%>
+          <tr>
+          <td>${rec.recomment_posttime}</td>
+          <td>${rec.recomment_modtime}</td>
+          <td style="width:40%;">${rec.recomment_content}</td>
+          <td>${rec.recomment_likecnt}</td>
+          </tr>
+          </c:forEach>
+          </tbody>
         </table>
         
         <input type="button" value="메인으로" class="btn" onclick="location.href='./'">
@@ -84,23 +84,23 @@
 </html>
 <script>
 function formatDate(date){
-		var d = new Date(date);
-		
-		// 출력 모양 변경( yyyy-mm-dd )
-		month = '' + (d.getMonth() + 1), 
-		day = '' + d.getDate(), 
-		year = d.getFullYear(); 
-		
-		if (month.length < 2) {
-			month = '0' + month;			
-		}
-		if (day.length < 2) {
-			day = '0' + day;			
-		}
-		
-		return [year, month, day].join('-');
+        var d = new Date(date);
+        
+        // 출력 모양 변경( yyyy-mm-dd )
+        month = '' + (d.getMonth() + 1), 
+        day = '' + d.getDate(), 
+        year = d.getFullYear(); 
+        
+        if (month.length < 2) {
+            month = '0' + month;            
+        }
+        if (day.length < 2) {
+            day = '0' + day;            
+        }
+        
+        return [year, month, day].join('-');
 
-	}
+    }
 
 
 </script>
