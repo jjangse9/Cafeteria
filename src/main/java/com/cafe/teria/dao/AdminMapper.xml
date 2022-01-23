@@ -18,9 +18,14 @@
       select *
       from cafe;
    </select>
-
-
-
+   
+   
+<!-- 업주회원 코드 등록 -->
+	<update id="updateBcode">
+	update member
+	set mem_bcode = #{param2}
+	where mem_id = #{param1}
+	</update>
 
 
 

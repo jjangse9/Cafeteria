@@ -103,6 +103,7 @@
 							      
 							      <c:if test="${admin.mem_bcode ne null }">
 							      <td id="bcode">${admin.mem_bcode }</td>
+							      
 							      	</c:if>
 							      	<c:if test="${admin.mem_bcode eq null }">
 							      	<td id="bcode"></td>
@@ -282,29 +283,14 @@
     </script> -->
 </html>
 					
-					
-					
-					
-					
-					
-					
-				</div>
-				
-				
-		    </div>
-		  </div>
-		</div>
-       
-
-    </div>
-
-
+			
       
 </body>
 </html>
 <script>
-// 업주코드가 모두 포함되어 있는 배열 생성
+	// 업주코드가 모두 포함되어 있는 배열 생성
 	var bcodeList = [];
+	
 // db 테이블에 저장하기 전에 여기 이미 있는 값인지 확인하고 보낼거에요
 
 
@@ -357,7 +343,9 @@
 	        data:{'mem_id':id,'bcode':bcode},
 	        dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
 	        success:function(data){
-	        console.log("안녕하세요"+data);
+	        	alert('등록이 확정 됐습니다.');
+	        	
+	        	document.location.reload();
 	        
 	        },
 	        error:function(e){

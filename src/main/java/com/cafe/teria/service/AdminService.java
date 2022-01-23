@@ -1,6 +1,7 @@
 package com.cafe.teria.service;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,20 @@ public class AdminService {
          return adminResult;
    }
 
-public HashMap<String, Object> updateBcode(HashMap<String, Object> params) {
-	// TODO Auto-generated method stub
-	return null;
+// 20220123 - 업주회원으로 만들기
+public HashMap<String, Object> updateBcode(String mem_id, String bcode) {
+	HashMap<String, Object> map = new HashMap<String, Object>();
+	
+	int success = dao.updateBcode(mem_id, bcode);
+	
+	if(success > 0) {
+		map.put("bcodeEdit", success);		
+	}
+	
+	return map;
+	
 }
+
 
       
 
