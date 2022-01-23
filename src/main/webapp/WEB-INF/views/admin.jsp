@@ -91,9 +91,16 @@
 							      <td>${admin.mem_nick }</td>
 							      <td>${admin.mem_grade }</td>
 							      <td>
-							      	<input type="button" class="checkinfo" value="발급" >
+								      	<input type="button" class="checkinfo" value="발급/취소" >
+							      	
 							      </td>
-							      <td id="bcode"></td>
+							      
+							      <c:if test="${admin.mem_bcode ne null }">
+							      <td id="bcode">${admin.mem_bcode }</td>
+							      	</c:if>
+							      	<c:if test="${admin.mem_bcode eq null }">
+							      	<td id="bcode"></td>
+							      	</c:if>
 							      <td><input class="agreeBtn" type="button" value="확정"></td>
 							    </tr>
 						  
@@ -222,15 +229,15 @@
 		console.log(id);
 		console.log(bcode);
 		
-		/* 
+		
 		// 업주코드 값 넣고 빼기
 	  		$.ajax({
 	        type:'POST',
 	        url:'bcodeEdit',
-	        data:{'id':id,'bcode':bcode},
+	        data:{'mem_id':id,'bcode':bcode},
 	        dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
 	        success:function(data){
-	        console.log("안녕하세요"+data.memInfo);
+	        console.log("안녕하세요"+data);
 	        
 	        },
 	        error:function(e){
@@ -240,7 +247,7 @@
 	        
 	        
 	    });
-		 */
+		 
 	});
 	
 	

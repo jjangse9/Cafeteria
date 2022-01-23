@@ -28,37 +28,6 @@ public class JoinController {
    
    @Autowired JoinMemberService service;
 
-   @RequestMapping(value = "/admin", method = RequestMethod.GET) 
-   public String admin(
-         Model model,
-         HttpSession session
-         ) 
-   {
-      logger.info("관리자 로그인 성공"); 
-      
-      HashMap<String, Object> result = new HashMap<String, Object>();
-      result = service.adminInfo();
-      
-      Object memResult = new ArrayList<JoinMemberDTO>();
-      Object cafeResult = new ArrayList<CafeDTO>();
-      
-      for (Entry<String, Object> entrySet : result.entrySet()) {
-         logger.info("받아온 값 확인 : {}", entrySet.getKey() + " : " + entrySet.getValue());
-         if(entrySet.getKey().equals("membersInfo")) {
-            memResult = entrySet.getValue();
-         }else if(entrySet.getKey().equals("cafesInfo")) {
-            cafeResult = entrySet.getValue();
-         }
-      }
-      
-      model.addAttribute("memResult", memResult);
-      model.addAttribute("cafeResult", cafeResult);
-      
-      return "admin"; 
-   }
-   
-   
-   
    
    // 로그인 페이지로 이동
    @RequestMapping(value = "/loginPage", method = RequestMethod.GET) 
