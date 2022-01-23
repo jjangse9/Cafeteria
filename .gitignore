@@ -1,3 +1,48 @@
+<<<<<<< HEAD
 .settings/
 target/
 .classpath
+=======
+src/main/java/com/cafe/teria/controller/HomeController.java
+pom.xml
+src/main/java/com/cafe/teria/dao/CafeDAO.java
+src/main/java/com/cafe/teria/dao/CafeMapper.xml
+src/main/java/com/cafe/teria/dto/CafeDTO.java
+src/main/java/com/cafe/teria/dto/RecommentDTO.java
+src/main/java/com/cafe/teria/service/CafeService.java
+src/main/resources/log4j.xml
+src/main/webapp/WEB-INF/web.xml
+src/main/webapp/WEB-INF/spring/root-context.xml
+src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml
+src/main/webapp/WEB-INF/views/testlist.jsp
+src/main/java/com/cafe/teria/controller/BoardController.java
+src/main/java/com/cafe/teria/controller/NoticeController.java
+src/main/java/com/cafe/teria/dao/DietDAO.java
+src/main/java/com/cafe/teria/dao/NoticeDAO.java
+src/main/java/com/cafe/teria/dao/NoticeMapper.xml
+src/main/java/com/cafe/teria/dto/NoticeDTO.java
+src/main/java/com/cafe/teria/service/DietService.java
+src/main/java/com/cafe/teria/service/NoticeService.java
+src/main/webapp/resources/css/cafe-write.css
+src/main/webapp/resources/css/summernote-lite.css
+src/main/webapp/resources/css/summernote/font/summernote.eot
+src/main/webapp/resources/css/summernote/font/summernote.ttf
+src/main/webapp/resources/css/summernote/font/summernote.woff
+src/main/webapp/resources/css/summernote/font/summernote.woff2
+src/main/webapp/resources/images/plus.png
+src/main/webapp/resources/js/jquery.twbsPagination.js
+src/main/webapp/WEB-INF/views/cafe_write.jsp
+src/main/webapp/WEB-INF/views/noticeDetail.jsp
+src/main/webapp/WEB-INF/views/noticeList.jsp
+src/main/webapp/WEB-INF/views/noticeUpdateForm.jsp
+src/main/webapp/WEB-INF/views/noticeWriteForm.jsp
+src/main/webapp/WEB-INF/views/board/board_reply.jsp
+src/main/webapp/WEB-INF/views/common/adm_main.jsp
+src/main/webapp/WEB-INF/views/common/footer.jsp
+src/main/webapp/WEB-INF/views/common/header.jsp
+<<<<<<< HEAD
+>>>>>>> 93a6f76 (커밋)
+=======
+.settings/
+target/
+>>>>>>> 3231179 (최초 프로젝트)

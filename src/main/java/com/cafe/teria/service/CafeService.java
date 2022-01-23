@@ -135,32 +135,76 @@ public class CafeService {
 		
 		return dao.idChk(idChk);
 	}
+	
+	
 
-	public int addDietMenu(HashMap<String, String> value) {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	   /* 식단관련 s */
+	public List<HashMap<String, String>> detail_diet(String cafe_idx, String method) {
+		
+		List<HashMap<String, String>> result = dao.detail_diet(cafe_idx);
+		
+		return result;//이후 데이터 가져오기
+		
+		
 	}
+	 public int addDietMenu(HashMap<String, String> value) {
 
-	public List<HashMap<String, String>> detail_diet(String cafe_idx, String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public int deleteDietMenu(String startDate, String endDate) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	      int fs = dao.addDietMenu(value);
+	      
+	      return fs;
+	   }
 
-	public HashMap<String, String> getOriginName(String string, String string2, String string3, String string4,
-			String string5) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	   public String getDietIdx(String diet_date, String bcode, String idx, String diet_code, String diet_menu) {
+	      
+	      HashMap<String,String> allValue = new HashMap<String, String>();
+	      allValue.put("diet_date", diet_date);
+	      allValue.put("bcode", bcode);
+	      allValue.put("idx", idx);
+	      allValue.put("diet_code", diet_code);
+	      allValue.put("diet_menu", diet_menu);
+	      
+	      
+	      String diet_idx = dao.getDietIdx(allValue);
+	      
+	      
+	      return diet_idx;
+	   }
 
-	public String getDietIdx(String string, String string2, String string3, String string4, String string5) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	   public HashMap<String,String> getOriginName(String diet_date, String bcode, String idx, String diet_code, String diet_menu_seq) {
+
+	      HashMap<String,String> allValue = new HashMap<String, String>();
+	      allValue.put("diet_date", diet_date);
+	      allValue.put("bcode", bcode);
+	      allValue.put("idx", idx);
+	      allValue.put("diet_code", diet_code);
+	      allValue.put("diet_menu_seq", diet_menu_seq);
+	      
+	      HashMap<String,String> originName = dao.getOriginName(allValue);
+	      
+	      return originName;
+	   }
+
+	   public int updateDietMenu(HashMap<String, String> value) {
+	      
+	      int fs = dao.updateDietMenu(value);
+	      
+	      return fs;
+	   }
+
+	   public int deleteDietMenu(String startDate, String endDate) {
+	      
+	      HashMap<String,String> allValue = new HashMap<String, String>();
+	      allValue.put("startDate", startDate);
+	      allValue.put("endDate", endDate);
+	      
+	      int fs = dao.deleteDietMenu(allValue);
+	      
+	      return fs;
+	   }
+
+	   /* 식단관련 e */
 
 	public Object bmemchk(HashMap<String, Object> idChk) {
 		

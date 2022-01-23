@@ -49,6 +49,7 @@ public interface CafeDAO {
 
 	List<HashMap<String, Object>> imgChk();
 
+
 	void imgUpload(ArrayList<HashMap<String, Object>> imgList);
 
 	List<HashMap<String, Object>> likeView(HashMap<String, String> param);
@@ -65,7 +66,22 @@ public interface CafeDAO {
 
 	void addLikeCnt(HashMap<String, String> params);
 
+// 20210121 => 인터페이스이기 때문에 뭔가를 할 수 없어 => mapper 와 dao 연결하는애
+	int writeQst(HashMap<String, Object> params);
+	
+	List<HashMap<String, String>> detail_diet(String cafe_idx);
+	
+	//식단관련
+	   int addDietMenu(HashMap<String, String> value);
 
 
+	   String getDietIdx(HashMap<String, String> allValue);
+
+	   HashMap<String, String> getOriginName(HashMap<String, String> allValue);
+
+	   int updateDietMenu(HashMap<String, String> value);
+
+	   int deleteDietMenu(HashMap<String, String> allValue);
+	 //식단관련
 
 }
