@@ -34,10 +34,13 @@
 
             }
 
-            table,tr,td,th{
+			table{
+			width: 800px;
+			}
+
+            table, tr, td, th{
                 border: solid black 1px;
                 border-collapse: collapse;
-                width: 800px;
             }
             
    </style>
@@ -76,6 +79,7 @@
 						      <th scope="col">회원등급</th>
 						      <th scope="col">업주 회원으로</th>
 						      <th scope="col">업주코드</th>
+						      <th scope="col">확정</th>
 						    </tr>
 						 	</thead>
 						  
@@ -86,10 +90,11 @@
 							      <th scope="row">${admin.mem_id }</th>
 							      <td>${admin.mem_nick }</td>
 							      <td>${admin.mem_grade }</td>
-							      <td style="width:15%; padding-top:17px;">
-							      	<input type="checkbox" class="checkinfo" value="grade" >
+							      <td>
+							      	<input type="button" class="checkinfo" value="발급" >
 							      </td>
 							      <td id="bcode"></td>
+							      <td><input class="agreeBtn" type="button" value="확정"></td>
 							    </tr>
 						  
 						  </c:forEach>
@@ -171,11 +176,75 @@
 </body>
 </html>
 <script>
+// 업주코드가 모두 포함되어 있는 배열 생성
+	var bcodeList = [];
+// db 테이블에 저장하기 전에 여기 이미 있는 값인지 확인하고 보낼거에요
+
+
+	function rand(min, max) {
+		  return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+// 체크박스 선택시 업주코드가 비어있지 않다면 업주코드 발급( 5글자 난수 )
 	$('.checkinfo').click(function(){
 		console.log(this);
+		console.log($(this).parent().next().html());
+				
+		if($(this).parent().next().html() == ''){
+			// 5글자 난수 생성
+			var bcode = rand(9999, 100000);
+
+			
+			// 중복을 막기 위해 10번정도 실행
+			for(var i=0; i<10; i++){
+				// 업주코드 배열에 방금 생성한 난수가 없다면
+				if(bcodeList.includes(bcode)){
+					bcode = rand(9999, 100000);
+				}
+			}	
+				$(this).parent().next().html(bcode);
 		
-		console.log($(this).next().next());
+		}else{
+			$(this).parent().next().html('');
+		}
+		
+		console.log(bcode);
+		
+		
 	});
+	
+	$('.agreeBtn').click(function(){
+		//console.log($(this).parent().prev().prev().prev().prev().prev().html());
+		
+		var id = $(this).parent().prev().prev().prev().prev().prev().html();
+		var bcode = $(this).parent().prev().html();
+		
+		console.log(id);
+		console.log(bcode);
+		
+		/* 
+		// 업주코드 값 넣고 빼기
+	  		$.ajax({
+	        type:'POST',
+	        url:'bcodeEdit',
+	        data:{'id':id,'bcode':bcode},
+	        dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
+	        success:function(data){
+	        console.log("안녕하세요"+data.memInfo);
+	        
+	        },
+	        error:function(e){
+	        
+	        	console.log(e);
+	        }
+	        
+	        
+	    });
+		 */
+	});
+	
+	
+	
 </script>
 
 
