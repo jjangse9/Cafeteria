@@ -327,10 +327,9 @@ public class JoinController {
                @RequestParam HashMap<String, String> params) {
             logger.info("수정 요청 : {}",params); // logger는 스트링 이외에는 찍어주지 않는다. (숫자 등을 찍을 때에는 다른 방법이 있다.);
             
-            
             service.pwupdate(params);
          
-            return "main";
+            return "redirect:/myStat";
          }
          
    
