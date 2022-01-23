@@ -6,7 +6,6 @@
 <!-- 이 XML 이 어떤 interface 와 연결되는지 설정 -->
 <mapper namespace="com.cafe.teria.dao.CafeDAO">
 
-
 <!-- 게시글 list 가져오기 -->
  	<select id="list" resultType="com.cafe.teria.dto.CafeDTO">
  		select cafe_idx, cafe_title, cafe_content, cafe_hit, cafe_likecnt, cafe_replycnt, cafe_photoex, cafe_poststat, cafe_posttime, cafe_modtime,
@@ -84,8 +83,7 @@
       <selectKey keyProperty="cafereply_idx" resultType="String" order="AFTER">
          select last_insert_id()
       </selectKey>
-	</insert>
-
+</insert>
  	
  	
  	<insert id="addRecomment" parameterType="HashMap"> 
@@ -231,9 +229,6 @@
    </update>
    
    
- 
- 
-
 	
 </mapper>
    

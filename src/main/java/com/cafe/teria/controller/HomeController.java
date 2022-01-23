@@ -25,6 +25,7 @@ public class HomeController {
 	
 	@Autowired CafeService service;
 
+
     @RequestMapping(value = "/testlist", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("임시 리스트 페이지 이동");
@@ -97,22 +98,28 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value = "/addreply", method = RequestMethod.POST)
-	@ResponseBody
-	public HashMap<String, Object> addreply(@RequestParam HashMap<String, String> param) {
-		
-		//logger.info("댓글 등록 요청 : {}",param);
-
-		service.addreply(param);
-		
-		 HashMap<String, Object> success = new  HashMap<String, Object>();
-		 
-		 success.put("success", 1);
-		
-		return success; 
-	
-	}
-
+	   @RequestMapping(value = "/addreply", method = RequestMethod.POST)
+	   @ResponseBody
+	   public HashMap<String, Object> addreply(@RequestParam HashMap<String, String> param) {
+	      
+	      //logger.info("댓글 등록 요청 : {}",param);
+	     HashMap<String, String> values = param;
+	     values.put("cafereply_idx" , "0");
+	     
+	      int cafeReplyIdx = service.addreply(values);
+	      
+	     System.out.println(values.get("cafereply_idx"));
+	     
+	     
+	       HashMap<String, Object> success = new  HashMap<String, Object>();
+	       
+	       success.put("cafeReplyIdx", values.get("cafereply_idx"));
+	       
+	       System.out.println("컨단에서 받은 insert 후 댓글 번호 : "+values.get("cafereply_idx"));
+	      
+	      return success; 
+	   
+	   }
 	
 	
 	@RequestMapping(value = "/addRecomment", method = RequestMethod.POST)
@@ -250,7 +257,8 @@ public class HomeController {
 		
 		}
 		
-
+		
+		
 		@RequestMapping(value = "/imgUpload", method = RequestMethod.POST)
 		@ResponseBody
 		public int imgUpload(@RequestParam HashMap<String, Object> params) {
@@ -334,6 +342,5 @@ public class HomeController {
 			return 0;
 		}
 	
-
 	
 }

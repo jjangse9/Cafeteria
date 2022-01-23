@@ -23,7 +23,7 @@ public interface CafeDAO {
 
 	List<HashMap<String, String>> recomment(String cafe_idx);
 
-	void addreply(HashMap<String, String> param);
+	int addreply(HashMap<String, String> param);
 
 	void addRecomment(HashMap<String, String> param);
 

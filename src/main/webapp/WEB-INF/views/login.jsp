@@ -1,156 +1,3 @@
-<<<<<<< HEAD
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
-	<link rel="stylesheet" href="resources/css/common.css" type="text/css">
-	<style>
-	
-	div{
-    text-align: center;
-}
-
-
-    #login1{
-        margin-top: 300px;
-    }
-
-
-    #zero{
-        border: 1px solid rebeccapurple;
-        width: 502px;
-        height: 800px;
-        margin-top: 130px;
-        margin-left: 698px;
-    }
-
-    #login2{
-        background-color: aquamarine;
-        width: 500px;
-        height: 90px;
-
-    }
-
-    #login3{
-        background-color: cadetblue;
-        width: 500px;
-        height: 90px;
-    }
-
-    #login4{
-        background-color: rebeccapurple;
-        width: 500px;
-        height: 90px;
-    }
-
-
-    a:link{
-                    color: black;
-                    text-decoration: none;
-                    
-                }
-                a:visited{
-                    color:lightgray;
-                    text-decoration: none;
-                }
-                a:hover{
-                    text-decoration: underline;
-                }
-                a:active{
-                    color: crimson;
-                }
-
-                li{
-                    list-style: none;
-                }
-	
-	
-	
-	
-	
-	</style>
-</head>
-<body>
-
-<div id="login1">
-	<h3>로그인</h3>
-	<hr/>
-</div>
-
-
-	
-		<div id="zero">
-		
-		<div id="login2">
-			<th>ID</th>
-			<td><input type="email" id="mem_id"/></td>
-			</div>
-		
-		
-		<div id="login3">
-			<th>pw</th>
-			<td><input type="password" id="mem_pw"/></td>
-			</div>
-		
-	
-		<div id="login4">
-			<th colspan="2">
-			<input type="button" id="login" value="LOGIN"/>
-			<input type="button" value="회원가입" onclick="location.href='joinForm'"/>
-			</th>
-			
-		<li><a href="./findPw" target="_blank">
-        비밀번호 찾기
-    	</a></li>
-			</div>
-		
-</div>
-</body>
-<script>
-
-
-
-
-$('#login').click(function(){
-	
-	var mem_id = $('#mem_id').val();
-	var mem_pw = $('#mem_pw').val();
-	console.log(mem_id+'/'+mem_pw);
-	
-	
-	$.ajax({
-		type:'POST',
-		url:'login',
-		data:{'mem_id':mem_id,'mem_pw':mem_pw},
-		dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
-		success:function(data){
-			console.log("안녕하세요"+data.memInfo);
-			if(data.memInfo != null){
-				alert(data.memInfo.mem_nick+'님 반갑습니다.');
-				location.href='./main';
-			}else if(data.memInfo === null){
-				alert('아이디 또는 패스워드를 확인하세요.')
-			}
-		},
-		error:function(e){
-			
-			console.log(e);
-		}
-		
-		
-	});
-	
-});
-
-
-
-
-</script>
-</html>
-=======
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -298,7 +145,7 @@ $('#login').click(function(){
     <script>
     /* 20220122 - 회원가입 팝업 */
     function popupJoin(){
-    	javascript:void(window.open('./joinForm', '','width=800px, height=900px, top=50px, left=600px'));
+       javascript:void(window.open('./joinForm', '','width=800px, height=900px, top=50px, left=600px'));
     };
     
     
@@ -319,39 +166,39 @@ $('#login').click(function(){
         success:function(data){
             console.log("안녕하세요"+data.memInfo);
             // 로그인 성공시
-			if(data.memInfo != null){
-				console.log('여기서확인' , data.memInfo.mem_grade);
-				
-				// 로그인 아이디의 등급이 3이면 = 관리자라면
-				if(data.memInfo.mem_grade == 3){
-					//location.href='./admin';
-					console.log('관리자 로그인');
-					
-					// 모르겠으면 복습하세요
-					//console.log(data);
-					//console.log(data.memInfo);
-					
-					//console.log('data의 길이', Object.keys(data).length);
-					//console.log('memInfo의 길이', Object.keys(data.memInfo).length);
-					
-					opener.document.location.href='./admin';
-			
-					// 자식창(현재 로그인 창)을 끄기
-					window.close();
-				}else{
-					// 일반회원, 업주회원이면
-					alert(data.memInfo.mem_nick+'님 반갑습니다.');
-					location.href='./main';
-				
+         if(data.memInfo != null){
+            console.log('여기서확인' , data.memInfo.mem_grade);
+            
+            // 로그인 아이디의 등급이 3이면 = 관리자라면
+            if(data.memInfo.mem_grade == 3){
+               //location.href='./admin';
+               console.log('관리자 로그인');
+               
+               // 모르겠으면 복습하세요
+               //console.log(data);
+               //console.log(data.memInfo);
+               
+               //console.log('data의 길이', Object.keys(data).length);
+               //console.log('memInfo의 길이', Object.keys(data.memInfo).length);
+               
+               opener.document.location.href='./admin';
+         
+               // 자식창(현재 로그인 창)을 끄기
+               window.close();
+            }else{
+               // 일반회원, 업주회원이면
+               alert(data.memInfo.mem_nick+'님 반갑습니다.');
+               location.href='./main';
+            
 // 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
-					// 부모창(원래 보던 창) 새로고침
-					opener.document.location.reload();
-				
-					// 자식창(현재 로그인 창)을 끄기
-					window.close();
+               // 부모창(원래 보던 창) 새로고침
+               opener.document.location.reload();
+            
+               // 자식창(현재 로그인 창)을 끄기
+               window.close();
 // 20220122 => 그냥 main으로 때리면 안되고, 부모창의 정보가 있어야 한다.
-					
-				}
+               
+            }
             // 로그인 실패시
             }else if(data.memInfo === null){
                 alert('아이디 또는 패스워드를 확인하세요.')
@@ -368,4 +215,3 @@ $('#login').click(function(){
     });        
     </script>
 </html>
->>>>>>> 3ea421163ae36df70acac767fda3effba4653c99
