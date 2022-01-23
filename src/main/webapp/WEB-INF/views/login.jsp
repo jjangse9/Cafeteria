@@ -181,8 +181,8 @@
 					//console.log('data의 길이', Object.keys(data).length);
 					//console.log('memInfo의 길이', Object.keys(data.memInfo).length);
 					
-					opener.document.location.href='./admin'; 
-					
+					opener.document.location.href='./admin';
+			
 					// 자식창(현재 로그인 창)을 끄기
 					window.close();
 				}else{

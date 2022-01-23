@@ -1,5 +1,6 @@
 package com.cafe.teria.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.JoinMemberDTO;
 import com.cafe.teria.service.JoinMemberService;
 
@@ -33,8 +35,26 @@ public class JoinController {
 			HttpSession session
 			) 
 	{
-		
 		logger.info("관리자 로그인 성공"); 
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result = service.adminInfo();
+		
+		Object memResult = new ArrayList<JoinMemberDTO>();
+		Object cafeResult = new ArrayList<CafeDTO>();
+		
+		for (Entry<String, Object> entrySet : result.entrySet()) {
+			logger.info("받아온 값 확인 : {}", entrySet.getKey() + " : " + entrySet.getValue());
+			if(entrySet.getKey().equals("membersInfo")) {
+				memResult = entrySet.getValue();
+			}else if(entrySet.getKey().equals("cafesInfo")) {
+				cafeResult = entrySet.getValue();
+			}
+		}
+		
+		model.addAttribute("memResult", memResult);
+		model.addAttribute("cafeResult", cafeResult);
+		
 		return "admin"; 
 	}
 	
@@ -116,15 +136,6 @@ public class JoinController {
 			session.setAttribute("loginId", mem_id);
 			success.put("loginId", mem_id);
 		}
-		
-
-		/*
-		 * // 20220122 로그인 회원 아이디가 admin 일 경우 관리 페이지에서 필요한 모든 데이터를 뽑아온다.
-		 * if(mem_id.equals("admin")) {
-		 * 
-		 * HashMap<String, Object> adminResult = service.adminInfo();
-		 * model.addAttribute("adminResult", adminResult); }
-		 */
 		
 		return success;
 	}

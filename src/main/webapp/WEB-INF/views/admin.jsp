@@ -39,6 +39,7 @@
                 border-collapse: collapse;
                 width: 800px;
             }
+            
    </style>
 </head>
 <body>
@@ -65,9 +66,40 @@
 		  <div class="col-10" style="width:100%; height:auto;">
 		    <div class="tab-content" id="nav-tabContent">
 		      
-		      <!-- 회원관리 -->
+		      <!-- 회원 등급 수정 -->
 		      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
 						<table class="table" style="text-align:center;">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">회원 아이디</th>
+						      <th scope="col">닉네임</th>
+						      <th scope="col">회원등급</th>
+						      <th scope="col">업주 회원으로</th>
+						      <th scope="col">업주코드</th>
+						    </tr>
+						 	</thead>
+						  
+							<tbody>
+						 <c:forEach items="${memResult}" var="admin">
+						  
+							    <tr>
+							      <th scope="row">${admin.mem_id }</th>
+							      <td>${admin.mem_nick }</td>
+							      <td>${admin.mem_grade }</td>
+							      <td style="width:15%; padding-top:17px;">
+							      	<input type="checkbox" class="checkinfo" value="grade" >
+							      </td>
+							      <td id="bcode"></td>
+							    </tr>
+						  
+						  </c:forEach>
+							</tbody>
+						</table>
+
+		      </div>
+		      <!-- 회원 관리 -->
+		      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+					<table class="table" style="text-align:center;">
 						  <thead class="thead-dark">
 						    <tr>
 						      <th scope="col">회원 아이디</th>
@@ -78,31 +110,52 @@
 						 	</thead>
 						  
 							<tbody>
-						 <%-- <c:forEach items="${adminResult}" var="admin"> --%>
-						  <%-- <c:if test="${qst.qst_stat eq 1 }"> --%>
+						 <c:forEach items="${memResult}" var="admin">
+						  
 							    <tr>
-							      <th scope="row">${admin.membersInfo.mem_id }</th>
-							      <td>${admin.membersInfo.mem_nick }</td>
-							      <td>${admin.membersInfo.mem_grade }</td>
+							      <th scope="row">${admin.mem_id }</th>
+							      <td>${admin.mem_nick }</td>
+							      <td>${admin.mem_grade }</td>
 							      <td style="width:15%"></td>
 							    </tr>
-						  <%-- </c:if> --%>
-						  <%-- </c:forEach> --%>
+						  
+						  </c:forEach>
 							</tbody>
 						</table>
-
-		      </div>
-		      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-					<table>
-						<tr>
-							<td>안녕</td>
-							<td>하세용</td>
-						</tr>
-					</table>
+					
+					
 			 	</div>
+			 	
+			 	<!-- 글 관리 -->
 		      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-					글 관리
+					<table class="table" style="text-align:center;">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">글제목(식당)</th>
+						      <th scope="col">글내용</th>
+						      <th scope="col">별점</th>
+						      <th scope="col">가격</th>
+						      <th scope="col">작성자 아이디</th>
+						    </tr>
+						 	</thead>
+						  
+							<tbody>
+						 <c:forEach items="${cafeResult}" var="cafe">
+						  
+							    <tr>
+							      <th scope="row">${cafe.cafe_title }</th>
+							      <td>${cafe.cafe_content }</td>
+							      <td>${cafe.cafe_ratestaravg }</td>
+							      <td>${cafe.cafe_diet_price }</td>
+							      <td>${cafe.mem_id }</td>
+							    </tr>
+						  
+						  </c:forEach>
+							</tbody>
+						</table>
 				</div>
+				
+				<!-- 문의/신고 처리 -->
 		      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
 					문의/신고 처리
 				</div>
@@ -118,7 +171,26 @@
 </body>
 </html>
 <script>
-	function memPage(){
+	$('.checkinfo').click(function(){
+		console.log(this);
 		
-	};
+		console.log($(this).next().next());
+	});
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
