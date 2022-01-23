@@ -670,7 +670,7 @@
     
 /* 20220120 검색 결과 리스트 클릭 시 디테일 페이지로 이동하는 함수 추가 */
  	function showDetailCafe(idx){
-		var url = "./detail?cafe_idx="+idx;
+		var url = "./detail?idx="+idx;
 		
 		location.href = url;
 	}
