@@ -61,21 +61,29 @@ public class AdminController {
 	   }
 	
 	
-	// 20220122 update 업주코드
+	// 20220122 update 업주코드 부여
 	@RequestMapping(value = "/bcodeEdit", method = RequestMethod.GET)
-	public String bcodeEdit(
+	@ResponseBody
+	public HashMap<String, Object> bcodeEdit(
 			Model model,
-			HttpSession session
+			HttpSession session,
+			HashMap<String , Object> params
 			) {
 		logger.info("확인해보기");
 		
+		HashMap<String, Object> success = new HashMap<String, Object>();
+		
+		// 아이디 세션 받기
 		String loginId = (String) session.getAttribute("loginId");
 		model.addAttribute("loginId", loginId);
 		
-		return "bQstWriteForm";
+		// 값 잘 받아왔나 확인
+		logger.info("받아온 값 사이즈는 : {}", params.size());
+		
+		//success = service.updateBcode(params);
+		
+		return success;
 		
 	}
-   
-	
-	
+  
 }

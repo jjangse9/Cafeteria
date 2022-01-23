@@ -31,6 +31,11 @@ public class AdminService {
          return adminResult;
    }
 
+public HashMap<String, Object> updateBcode(HashMap<String, Object> params) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
       
 
       

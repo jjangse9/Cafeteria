@@ -35,8 +35,7 @@ public class JoinController {
    
    
    
-   //회원가입
-   
+   //회원가입 폼
    @RequestMapping(value = "/joinForm", method = RequestMethod.GET)
    public String joinForm(Model model) {
       logger.info("joinForm page 이동");
