@@ -163,18 +163,7 @@ public class JoinMemberService {
             return dao.mydetail(mem_id);
          }
 
-// 20220122 - 로그인 아이디가 admin일때 모든 데이터를 받아오는 서비스
-      public HashMap<String, Object> adminInfo() {
-            // 모든 관리자 데이터가 들어갈 hashmap adminResult 선언
-            HashMap<String, Object> adminResult = new HashMap<String, Object>();
-            
-            // adminResult에 회원정보 모두 담기
-            adminResult.put("membersInfo", dao.membersInfo());         // 회원들 정보
-            adminResult.put("cafesInfo", dao.cafesInfo());            // 글들 정보
-            
-            
-            return adminResult;
-      }
+
 
       
 
