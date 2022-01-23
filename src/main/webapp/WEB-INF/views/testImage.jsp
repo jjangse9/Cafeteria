@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-   
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cmmn/adminLayout}">
@@ -141,6 +140,7 @@ function previewImage(targetObj, View_area) {
 
 
 //form데이터 전송
+<<<<<<< HEAD
 function dataSubmit(replyIdx, idx) {
 	
 	var sendData = new FormData($("#addForm")[0]);
@@ -225,7 +225,7 @@ function dataSubmit(replyIdx, idx) {
 	   
        });
  
-};
+
 
 
 

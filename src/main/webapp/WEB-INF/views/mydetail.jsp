@@ -96,13 +96,18 @@
    <%-- <c:if test="${userInfo.mem_grade ne 1 }"> --%>
       <button type="button" class="btn btn-outline-info btn-sm" onclick="location.href='./myPost'">작성 글 보기</button>
    <%-- </c:if> --%>
+   
+   <%-- 업주회원이면 버튼 없음 / 업주 회원 요청 처리중 / 업주회원이면 업주 정보 보기&수정
+    --%>
+   <button type="button" class="btn btn-outline-info btn-sm" onclick="location.href='./bQstPage'">업주 회원 문의</button>
+   
    <button type="button" class="btn btn-outline-info btn-sm" onclick="location.href='./myReply'">작성 댓글 보기</button>
-   <button type="button" class="btn btn-outline-danger btn-sm">문의내역</button>
+   <button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='./qstList'">문의내역</button>
    <button type="button" class="btn btn-outline-danger btn-sm">신고내역</button>
    <button type="button" class="btn btn-outline-danger btn-sm">알림내역</button>
    <br><br>
         
-   <input type="button" value="메인으로" class="btn" onclick="location.href='main'">
+   <input type="button" value="메인으로" class="btn" onclick="location.href='./'">
    </form>
    
 <!-- 20220117 테이블 보여주기 방식SI -->
@@ -110,6 +115,3 @@
 <script>
 </script>
 </html>
-
-
-

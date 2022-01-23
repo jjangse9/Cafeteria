@@ -87,9 +87,15 @@ public class CafeService {
 		return result;
 	}
 
+<<<<<<< HEAD
 	public int addreply(HashMap<String, String> param) {
 		
 		return dao.addreply(param);
+=======
+	public void addreply(HashMap<String, String> param) {
+		
+		dao.addreply(param);
+>>>>>>> 3ea421163ae36df70acac767fda3effba4653c99
 	}
 
 	public void addRecomment(HashMap<String, String> param, String string) {
@@ -172,6 +178,7 @@ public class CafeService {
 		return dao.imgChk();
 	}
 
+<<<<<<< HEAD
 	public void imgUpload(ArrayList<HashMap<String, Object>> imgList) {
 		
 		dao.imgUpload(imgList);
@@ -200,6 +207,8 @@ public class CafeService {
 		dao.addLike(params);
 		dao.addLikeCnt(params);
 	}
+=======
+>>>>>>> 3ea421163ae36df70acac767fda3effba4653c99
 
 	
 
