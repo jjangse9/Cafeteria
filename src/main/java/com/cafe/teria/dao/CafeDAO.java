@@ -8,7 +8,8 @@ import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.RecommentDTO;
 
 public interface CafeDAO {
-
+	// 바보는 바보임
+	
 	ArrayList<CafeDTO> list();
 
 	void upHit(String cafe_idx);

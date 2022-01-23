@@ -16,13 +16,8 @@ src/main/webapp/WEB-INF/spring/root-context.xml
 src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml
 src/main/webapp/WEB-INF/views/testlist.jsp
 src/main/java/com/cafe/teria/controller/BoardController.java
-src/main/java/com/cafe/teria/controller/NoticeController.java
 src/main/java/com/cafe/teria/dao/DietDAO.java
-src/main/java/com/cafe/teria/dao/NoticeDAO.java
-src/main/java/com/cafe/teria/dao/NoticeMapper.xml
-src/main/java/com/cafe/teria/dto/NoticeDTO.java
 src/main/java/com/cafe/teria/service/DietService.java
-src/main/java/com/cafe/teria/service/NoticeService.java
 src/main/webapp/resources/css/cafe-write.css
 src/main/webapp/resources/css/summernote-lite.css
 src/main/webapp/resources/css/summernote/font/summernote.eot
@@ -32,10 +27,6 @@ src/main/webapp/resources/css/summernote/font/summernote.woff2
 src/main/webapp/resources/images/plus.png
 src/main/webapp/resources/js/jquery.twbsPagination.js
 src/main/webapp/WEB-INF/views/cafe_write.jsp
-src/main/webapp/WEB-INF/views/noticeDetail.jsp
-src/main/webapp/WEB-INF/views/noticeList.jsp
-src/main/webapp/WEB-INF/views/noticeUpdateForm.jsp
-src/main/webapp/WEB-INF/views/noticeWriteForm.jsp
 src/main/webapp/WEB-INF/views/board/board_reply.jsp
 src/main/webapp/WEB-INF/views/common/adm_main.jsp
 src/main/webapp/WEB-INF/views/common/footer.jsp
