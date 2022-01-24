@@ -1138,9 +1138,7 @@ var filterValues = [];
 		// 20220211 검색 결과 갯수도 바꾸기
 		$("#searchCnt").html(''); 
 		var filterCnt = 0;
-		
-		
-	
+			
 		// 값 만들어서 한줄씩 append
 		for(var i=0; i<Object.keys(data).length; i++){
 // 검색결과 갯수(20220122)
@@ -1221,7 +1219,7 @@ var filterValues = [];
 		if(filterDays.length == 0 & filterDiet.length == 0 & filterPrice == 5000 & filterArea == 0){
 			$('#searchCnt').html('"${keyword }" 검색결과 - 총 ${size}건( 식당 : ${newResultSize} 개 )');
 		}else{
-			$("#searchCnt").html('"${keyword }" 검색결과 - 총 ${size}건( 필터 후 식당 : '+ filterCnt +' 개 )');
+			$("#searchCnt").html('"${keyword }" 검색결과 - 총 ${size}건( 필터 후 식당 :'+ filterCnt +'개 )');
 		}
 		
 		
