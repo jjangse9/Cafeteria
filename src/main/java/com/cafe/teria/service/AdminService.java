@@ -1,7 +1,7 @@
 package com.cafe.teria.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cafe.teria.dao.AdminDAO;
-import com.cafe.teria.dao.JoinMemberDAO;
-import com.cafe.teria.dto.JoinMemberDTO;
 
 
 @Service
@@ -33,6 +31,21 @@ public class AdminService {
          
          return adminResult;
    }
+
+// 20220123 - 업주회원으로 만들기
+public HashMap<String, Object> updateBcode(String mem_id, String bcode) {
+	HashMap<String, Object> map = new HashMap<String, Object>();
+	
+	int success = dao.updateBcode(mem_id, bcode);
+	
+	if(success > 0) {
+		map.put("bcodeEdit", success);		
+	}
+	
+	return map;
+	
+}
+
 
       
 

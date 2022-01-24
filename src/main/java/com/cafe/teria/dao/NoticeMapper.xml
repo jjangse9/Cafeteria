@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<!-- 얘가 없으면 시스템에서 확인할 수 없음 -->
+<!-- 이 XML 이 어떤 interface 와 연결되는지 설정 -->
+<mapper namespace="com.cafe.teria.dao.NoticeDAO">
+
+	
+	
+	
+	 <select id="noticeList" resultType="com.cafe.teria.dto.NoticeDTO">
+       select notice_idx,notice_title,mem_id,notice_hit,notice_posttime from notice order by notice_idx desc
+    </select>
+	
+	<insert id="noticeWrite" parameterType="hashmap">	
+			insert into 
+				notice(notice_title,notice_content)
+   			values
+   			 	(#{notice_title},#{notice_content});
+	</insert>
+	
+	
+	<update id="notice_uphit">
+   		update notice set notice_hit = notice_hit+1 where notice_idx=#{param1}
+   </update>
+	
+	<select id="noticeDetail" resultType="com.cafe.teria.dto.NoticeDTO">
+   		select * from notice where notice_idx = #{param1}
+   </select>
+	
+	
+	<delete id="noticeDelete">
+   		delete from notice where notice_idx = #{param1}	
+   </delete>
+	
+	<update id="noticeUpdate" parameterType="hashmap">
+   		update notice set
+   			notice_title = #{notice_title}
+   			,notice_content = #{notice_content}
+   			where notice_idx = #{notice_idx}
+   </update>
+   
+	
+	<select id="noticeCall" resultType="com.cafe.teria.dto.NoticeDTO">
+      select mem_id, notice_idx, notice_title, notice_hit, notice_posttime from notice order by notice_idx desc
+      limit #{param1} offset #{param2}
+   </select>  
+   
+   <select id="allCount" resultType="int">
+  	 select count(notice_idx) from notice 
+   </select>
+	
+	
+	
+	
+   
+</mapper>
+   

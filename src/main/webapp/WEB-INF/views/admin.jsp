@@ -64,6 +64,12 @@
 		      
 		      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" 
 		      href="#list-settings" role="tab" aria-controls="settings">문의/신고 처리</a>
+		    
+		     <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" 
+		      href="#list-noticeWrite" role="tab" aria-controls="noticeWrite">공지 글쓰기</a>
+		    
+		    
+		    
 		    </div>
 		  </div>
 		  <div class="col-10" style="width:100%; height:auto;">
@@ -97,6 +103,7 @@
 							      
 							      <c:if test="${admin.mem_bcode ne null }">
 							      <td id="bcode">${admin.mem_bcode }</td>
+							      
 							      	</c:if>
 							      	<c:if test="${admin.mem_bcode eq null }">
 							      	<td id="bcode"></td>
@@ -171,20 +178,119 @@
 		      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
 					문의/신고 처리
 				</div>
-		    </div>
-		  </div>
-		</div>
-       
+				
+				<!-- 공지 글쓰기 -->
+				<div class="tab-pane fade" id="list-noticeWrite" role="tabpanel" aria-labelledby="list-messages-list">
+	
+        <section style="width: 100%; height: auto;" class="container">
+            <div style="width: 100%; height: auto;">
+                <div><h2>공지사항 작성하기</h2></div>
+                <div style="width: 100%; height: 3px;"></div>
+                <div style="width: 100%; height: 3px; background-color: rgb(138, 138, 138); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+                <div style="width: 100%; height: 70px;"></div>
 
-    </div>
+                <div style="display: flex;">
+                    <div style="width: 3%;"></div>
+                    <div style="width: 94%;">
+                        <div style="width: 100%; display: flex;">
+<!--식당명-->
+                            <div style="width: 40%;">
+                                
+                            </div>
+<!--목록-->  
+                            <div style="width: 60%; text-align: right;"> 
+                                <input type="button" class="btn btn-dark" onclick="location.href='./noticeList'" value="목록">
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 3px;"></div>
+                        <div style="width: 100%; height: 3px; background-color: rgb(7, 7, 7); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+<!--고객명 날짜 수정 삭제-->
+                        <div style="display: flex;">
+                            <div style="width: 2%;"></div>
+                            <div style="width: 10%;">
+                                <a name="mem_id">작성자</a>
+                                <input name="notice_idx" value="${noticeInfo.notice_idx}" style="display: none;"/>
+                            </div>
+                            <div style="width: 50%;">
+                                <a>날짜</a>
+                            </div>
+                            <div style="text-align: right; width: 36%;">
+                                
+                            </div>
+                            <div style="width: 2%;"></div>
+                        </div>
+                        <div style="width: 100%; height: 30px;"></div>
+                    </div>
+                    <div style="width: 3%;"></div>
+                </div>
 
 
+                <div style="display: flex; width: 100%; height: auto;">
+                    <div style="width: 5%; height: auto;"></div>
+                    <div style="width: 90%; height: auto;">
+                        <form action="noticeWrite" method="post">
+<!--제목-->                            
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <a>제목</a> </span>
+                                </div>
+                                
+                                <div class="form-control" style="height: auto;">
+                                    <input name="notice_title" class="form-control" type="text" value="" placeholder="제목을 입력해주세요"/>
+                                </div>
+                            </div>
+                            
+
+<!--내용-->
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <a>내용</a> </span>
+                                </div>
+                                <div class="form-control" style="height: auto;">
+                                    <textarea type="text" style="height: 190px;" class="form-control" placeholder="내용을 입력해주세요" id="comment" name="comment" cols="45" rows="8" required=""></textarea>
+                                </div>
+                            </div>
+                            <div style="width: 100%; height: 15px;"></div>
+                        
+                        
+                            <!-- 제출 버튼-->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block"> 저장  </button>
+                            </div>
+
+                                                                            
+                        </form>     
+                    </div>
+                    <div style="width: 5%; height: auto;"></div>
+                </div>
+                <div style="width: 100%; height: 60px;"></div>
+                
+
+            </div>
+            <div style="width: 100%; height: 100px;"></div>
+        </section>
+        
+        </div>
+<!-- 
+    <script>
+        
+        $(document).ready(function() { $("#content").summernote(); }) ;
+
+        /* $('#summernote').summernote('fullscreen.toggle'); */
+
+	
+
+    </script> -->
+</html>
+					
+			
       
 </body>
 </html>
 <script>
-// 업주코드가 모두 포함되어 있는 배열 생성
+	// 업주코드가 모두 포함되어 있는 배열 생성
 	var bcodeList = [];
+	
 // db 테이블에 저장하기 전에 여기 이미 있는 값인지 확인하고 보낼거에요
 
 
@@ -237,7 +343,9 @@
 	        data:{'mem_id':id,'bcode':bcode},
 	        dateType:'JSON', //hashmap 으로 보내줘야 받아올 수 있어요
 	        success:function(data){
-	        console.log("안녕하세요"+data);
+	        	alert('등록이 확정 됐습니다.');
+	        	
+	        	document.location.reload();
 	        
 	        },
 	        error:function(e){

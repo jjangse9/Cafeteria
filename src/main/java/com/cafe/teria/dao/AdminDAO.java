@@ -14,6 +14,9 @@ public interface AdminDAO {
     
       // 20220123 모든 글 불러오기
       ArrayList<CafeDTO> cafesInfo();
+
+    // 20220123 업주회원으로 만들기
+	int updateBcode(String mem_id, String bcode);
       
 
 }

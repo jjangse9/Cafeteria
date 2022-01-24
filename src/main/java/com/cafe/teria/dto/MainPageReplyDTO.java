@@ -17,10 +17,25 @@ public class MainPageReplyDTO {
 	// 반반 댓글에서 사진 보여주기 위해
 	private String replyphoto_oriname;
 	private String replyphoto_newname;
-	
-	
+
 	private String mem_id;
 	private int maxcnt;
+	
+	
+	// 20220123 답글 닉네임으로 표시!
+	private String mem_nick;
+	public String getMem_nick() {
+		return mem_nick;
+	}
+	public void setMem_nick(String mem_nick) {
+		this.mem_nick = mem_nick;
+	}
+	
+	
+	
+	
+	
+	
 	
 	public int getCafereply_idx() {
 		return cafereply_idx;

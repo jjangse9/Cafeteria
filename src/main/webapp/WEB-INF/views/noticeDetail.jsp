@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>비밀번호 변경</title>
+        <title>공지사항 상세보기</title>
         <!--부트 스트랩 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -12,13 +12,11 @@
         
         <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 
-        <link rel="stylesheet" href="resources/css/common.css" type="text/css">
+        <style>
 
-        <style></style>
+            
 
-
-
-
+        </style>
 
     </head>
     <body id="body">
@@ -106,55 +104,75 @@
         <section style="width: 100%; height: auto;" class="container">
             <div style="width: 100%; height: 100px;"></div>
             <div style="width: 100%; height: auto;">
-                <div><h2>비밀번호 변경</h2></div>
+                <div><h2>공지사항 상세보기</h2></div>
                 <div style="width: 100%; height: 3px;"></div>
                 <div style="width: 100%; height: 3px; background-color: rgb(138, 138, 138); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
                 <div style="width: 100%; height: 50px;"></div>
-                <div style="width: 100%; height: 50px;"></div>
+
+                <div style="display: flex;">
+                    <div style="width: 3%;"></div>
+                    <div style="width: 94%;">
+                        <div style="width: 100%; display: flex;">
+<!--식당명-->
+                            <div style="width: 40%;">
+                                <b><h3>${noticeInfo.notice_title}</h3></b>
+                            </div>
+<!--별점 조회순 좋아요-->  
+                            <div style="width: 60%; text-align: right;"> 
+                                <input type="button" class="btn btn-dark" onclick="location.href='./noticeList'" value="목록">
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 3px;"></div>
+                        <div style="width: 100%; height: 3px; background-color: rgb(7, 7, 7); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+<!--고객명 날짜 수정 삭제-->
+                        <div style="display: flex;">
+                            <div style="width: 2%;"></div>
+                            <div style="width: 30%;">
+                                <!-- 20220123 수정필 -->
+                                <a>${noticeInfo.mem_id }</a>
+                            </div>
+                            <div style="width: 50%;">
+                            	<!-- 20220123 수정필 -->
+                                <a>${noticeInfo.notice_posttime }</a>
+                            </div>
+                            <div style="text-align: right; width: 36%;">
+                                <a href="./noticeUpdateForm?notice_idx=${noticeInfo.notice_idx}">수정</a> <a>/</a> <a href="#" onclick="noticeDel()">삭제</a>
+                            </div>
+                            <div style="width: 2%;"></div>
+                        </div>
+                        <div style="width: 100%; height: 10px;"></div>
+                    </div>
+                    <div style="width: 3%;"></div>
+                </div>
+
+
                 <div style="display: flex; width: 100%; height: auto;">
-                    <div style="width: 20%; height: auto;"></div>
-                    <div style="width: 60%; height: auto;">
-                       
-                        <form action="pwupdate" method="post">
-                            <!--아이디-->
-                            <div class="form-group input-group" style="height: 48px;">
+                    <div style="width: 5%; height: auto;"></div>
+                    <div style="width: 90%; height: auto;">
+                        <form>
+                            <div style="width: 100%; height: 15px;"></div>
+<!--내용-->
+                            <div class="form-group input-group" style="height: 400px;">
                                 <div class="input-group-prepend">
-                                    <span for="mem_id" class="input-group-text"> <a>ID</a> </span>
+                                    <span class="input-group-text"> <a>내용</a> </span>
                                 </div>
-                                <input style="height: 48px;" class="form-control" placeholder="이메일 입력해주세요" type="text" name="mem_id" value="${userId}" readonly/>
+                                <div class="form-control" style="height: auto;">
+                                    <div style="height: 400px;" class="form-control">${noticeInfo.notice_content}</div>
+                                </div>
                             </div>
                             <div style="width: 100%; height: 15px;"></div>
-                            <!--비밀번호-->
-                            <div class="form-group input-group" style="height: 48px;">
-                                <div class="input-group-prepend">
-                                    <span for="mem_pw" class="input-group-text"> <a>PASSWORD</a> </span>
-                                </div>
-                                <input style="height: 48px;" class="form-control" placeholder="비밀번호를 입력해주세요" type="text" name="mem_pw"  value="${info.mem_pw}"/>
-                            </div>
-                            <div style="width: 100%; height: 30px;"></div>
-
-                            <!-- 제출 버튼-->
-                            <div style="display: flex; width: 100%; height: auto;" class="form-group">
-                                <div style="width: 33%;">
-                                    <button class="btn btn-outline-primary btn-block" onclick="location.href='main'" class="btn btn-primary btn-block"> 메인으로  </button>
-                                </div>
-                                <div style="width: 2%;"></div>
-                                <div style="width: 65%;">
-                                    <button type="submit" class="btn btn-primary btn-block"> 비밀번호  변경  </button>
-                                </div>
-                            </div>                                          
+                                                             
                         </form>     
                     </div>
-                    <div style="width: 20%; height: auto;"></div>
+                    <div style="width: 5%; height: auto;"></div>
                 </div>
-                <div style="width: 100%; height: 31px;"></div>
+                
+
             </div>
-            
             <div style="width: 100%; height: 150px;"></div>
         </section>
-       
 
-
+  
 
         <!--푸터-->
         <footer style="width: 100%; height: 230px; background-color: rgb(29, 29, 29);">
@@ -175,7 +193,7 @@
                         <!-- text text text -->
                         <div>
                             <p style="color: rgb(151, 151, 151);">
-                                text text text 
+                            
                             </p>
                         </div>
                     </div>
@@ -233,7 +251,24 @@
             <div style="width: 100%; height: 8%;"></div>
         </footer>
     </body>
-    <script>
-        
-    </script>
+
+
+<script>
+function noticeDel() {
+	
+	var yn = confirm("게시물을 삭제하시겠습니까?")
+
+	if(yn){
+		location.href = './noticeDelete?notice_idx=${noticeInfo.notice_idx}';
+	}
+}
+</script>
 </html>
+
+
+
+
+
+
+
+

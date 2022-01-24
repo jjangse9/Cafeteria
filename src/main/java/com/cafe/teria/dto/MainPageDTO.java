@@ -46,6 +46,22 @@ public class MainPageDTO {
 	 * 이미 DTO에 있는 필드들이나 뿌려줄 때 필요하지 않은 필드들 주석처리
 	 */
 	
+	// 20220123 - 멤버 닉네임 추가( member테이블 조인 ) => 필요없었음( 답글 닉네임이 필요 )
+	private String reply_mem_nick;
+	public String getReply_mem_nick() {
+		return reply_mem_nick;
+	}
+	public void setReply_mem_nick(String reply_mem_nick) {
+		this.reply_mem_nick = reply_mem_nick;
+	}
+	
+	
+	// 20220123
+	
+	
+	
+	
+	
 	
 	public int getCafe_idx() {
 		return cafe_idx;

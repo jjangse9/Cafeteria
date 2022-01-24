@@ -51,7 +51,7 @@
             back으로 넘길땐 파일 이름만 넘긴다
           -->
          <td colspan="2" id="image-show">
-            <img id="imageChange" src="/photo/${userInfo.icon_newname}" width="250px">
+            <img id="imageChange" src="./resources/images/${userInfo.icon_newname }" width="250px">
             <!--  파일첨부 -->
               <form name="imageUploadForm" method="post" enctype="multipart/form-data" style="height: 16px;">
                 <div>
@@ -123,7 +123,7 @@
 
    <br><br>
    <br><br>
-   <input type="button" value="메인으로" class="btn" onclick="location.href='main'"/>
+   <input type="button" value="메인으로" class="btn" onclick="location.href='./'"/>
    
 <!-- //20220117 테이블 보여주기 방식SI -->
 </body>

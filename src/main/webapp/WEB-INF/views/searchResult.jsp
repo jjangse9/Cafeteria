@@ -26,7 +26,15 @@
         <link rel="stylesheet" href="resources/css/searchPageCss2.css">
 		
         <style>
-
+			body{
+			 color:black;
+			 font-size:15px;
+			 font-family:NanumBarunGothic;
+			 }
+			 
+			li{
+			list-style : none;
+			}
         </style>
     </head>
     <body id="body">
@@ -87,7 +95,7 @@
 					
 <!-- 20220120 상태 아이콘SI --> 
 				<div class="dropdown">
-					<img src="/photo/1.png" width="50px" class="btn btn-secondary dropdown-toggle" 
+					<img src="./resources/images/1.png" width="50px" class="btn btn-secondary dropdown-toggle" 
 						style="padding:0px; margin-left:10px;" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						<a class="dropdown-item" href="./myStat">${loginId } 님</a>
@@ -152,9 +160,9 @@
                                 <div>
 <!-- 20220120 정렬기능 삽입 + script 500라인쯤 -->
                                     <select class="btn btn-outline-dark" id="sortSelect" name="sortSelect" onchange=""> <!-- onchange 함수 필요함 -->
-                                        <option value="likeSort" selected="">좋아요순</option>
-                                        <option value="viewSort">별점순</option>
-                                        <option value="starSort">평점순</option>
+                                        <option value="likeSort">좋아요순</option>
+                                        <option value="viewSort">조회순</option>
+                                        <option value="starSort">별점순</option>
                                     </select>
 <!-- 20220120 정렬기능 삽입 -->
                                 </div>
@@ -184,11 +192,11 @@
 		                    <div id="search-three-1-3-2" style="display: flex;">
 		                        <div style="width: 2%; height: auto;"></div>
 		                        <div style="cursor:pointer; width: 30%; height: auto">
-		                           <img style="width:100%; height:auto;" src="/photo/${res.bmem_image1 }"/>  
+		                           <img style="width:100%; height:auto;" src="resources/images/${res.bmem_image1 }"/>  
 		                        </div>
 		                        <div style="width: 2%; height: auto;"></div>
-		                        <div style="width: 64%; height: auto;">
-		                            <a>${res.cafe_title }</a>
+		                        <div style="width: 64%; height: auto; list-style:none;">
+		                            <a style="font-size:25px;">${res.cafe_title }</a>
 
 		                            <li>
 <!--좋아요 아이콘-->			
@@ -220,11 +228,11 @@
 		                           					<!-- 댓글이 수정된 시간이 있으면 수정시간 출력 / 없으면 작성시간-->
 		                           					<c:choose>
 														<c:when test="${res.cafereply_modtime ne null }">
-															${res.reply_mem_id } | ${res.cafereply_modtime } <br>
+															${res.cafereply_modtime } | "${res.reply_mem_nick }" 님 <br>
 															${res.cafereply_content }(수정됨) <br>
 														</c:when>
 														<c:when test="${res.cafereply_modtime eq null }">
-															${res.reply_mem_id } | ${res.cafereply_posttime } <br>
+															${res.cafereply_modtime } | "${res.reply_mem_nick }" 님 <br>
 															${res.cafereply_content } <br>
 														</c:when>
 													</c:choose>
@@ -1130,9 +1138,7 @@ var filterValues = [];
 		// 20220211 검색 결과 갯수도 바꾸기
 		$("#searchCnt").html(''); 
 		var filterCnt = 0;
-		
-		
-	
+			
 		// 값 만들어서 한줄씩 append
 		for(var i=0; i<Object.keys(data).length; i++){
 // 검색결과 갯수(20220122)
@@ -1145,11 +1151,11 @@ var filterValues = [];
 			content += '<div id="search-three-1-3-2" style="display: flex;">';
 			content += '<div style="width: 2%; height: auto;"></div>';
 			content += '<div style="cursor:pointer; width: 30%; height: auto">';
-			content += '<img style="width:100%; height:auto;" src="/photo/'+data[i].bmem_image1+'"/>';
+			content += '<img style="width:100%; height:auto;" src="resources/images/'+data[i].bmem_image1+'"/>';
 			content += '</div>';
 			content += '<div style="width: 2%; height: auto;"></div>';
 			content += '<div style="width: 64%; height: auto;">';
-			content += '<a>'+data[i].cafe_title+'</a>';
+			content += '<a style="font-size:25px;">'+data[i].cafe_title+'</a>';
 			
 			content += '<li>';
 			content += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">';
@@ -1178,10 +1184,10 @@ var filterValues = [];
 				content += '등록된 댓글이 없네요';
 			}else{										
 				if(data[i].cafereply_modtime!=null){	// 댓글이 있고, 수정날짜가 있으면
-					content += data[i].reply_mem_id+' | '+formatDate(data[i].cafereply_modtime)+'<br>';		// 수정날짜로 표시
+					content += formatDate(data[i].cafereply_modtime)+' | '+data[i].reply_mem_nick+' 님('+data[i].reply_mem_id+')<br>';
 					content += data[i].cafereply_content +'(수정됨)';
 				}else{
-					content += data[i].reply_mem_id+' | '+formatDate(data[i].cafereply_posttime)+'<br>';	// 작성날짜로 표시
+					content += formatDate(data[i].cafereply_posttime)+' | '+data[i].reply_mem_nick+' 님('+data[i].reply_mem_id+')<br>';
 					content += data[i].cafereply_content;
 				}
 			}		
@@ -1213,7 +1219,7 @@ var filterValues = [];
 		if(filterDays.length == 0 & filterDiet.length == 0 & filterPrice == 5000 & filterArea == 0){
 			$('#searchCnt').html('"${keyword }" 검색결과 - 총 ${size}건( 식당 : ${newResultSize} 개 )');
 		}else{
-			$("#searchCnt").html('"${keyword }" 검색결과 - 총 ${size}건( 필터 후 식당 : '+ filterCnt +' 개 )');
+			$("#searchCnt").html('"${keyword }" 검색결과 - 총 ${size}건( 필터 후 식당 :'+ filterCnt +'개 )');
 		}
 		
 		

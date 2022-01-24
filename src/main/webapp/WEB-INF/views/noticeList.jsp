@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>비밀번호 변경</title>
+        <title>공지사항</title>
         <!--부트 스트랩 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -12,13 +12,24 @@
         
         <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 
-        <link rel="stylesheet" href="resources/css/common.css" type="text/css">
+        
+        
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        <script src="../resources/js/jquery.twbsPagination.js"></script>
+        
+        <style>
+	        table,tr,td,th{
+                border: rgb(77, 77, 77) solid 1px;
+                border-collapse:collapse ;
+                text-align: center;
+                font-size: 17px;
+                padding: 4px;
+            }
+            th{
+                padding: 5px 10px 2px 10px;
+            }
 
-        <style></style>
-
-
-
-
+        </style>
 
     </head>
     <body id="body">
@@ -29,7 +40,7 @@
                 
                 
 <!-- 20220120 사이트 로고 연결 -> 홈페이지로SI -->
-				<a class="navbar-brand" href="#">
+				<a class="navbar-brand" href="././">
 					<!-- svg => 아이콘 -->
 					<svg style="color: rgb(255, 174, 0);" xmlns="http://www.w3.org/2000/svg" 
 								width="50px" height="50px" fill="currentColor" class="bi bi-piggy-bank-fill" viewBox="0 0 16 16"
@@ -46,34 +57,34 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarScroll">
                   <ul class="navbar-nav mr-auto my-2 my-lg-0 navbar-nav-scroll" style="max-height: 100px;"></ul>
-                  <form class="d-flex">
-                    <!-- 공지사항 -->
-                    <div class="nav-item">
-                      <a class="nav-link" href="#" style="font-size: 20px; color: black;">공지사항</a>
-                    </div>
-                    <!-- 구내식당 -->
-                    <div class="nav-item">
-                      <a class="nav-link" href="#" style="font-size: 20px; color: black;">구내식당</a>
-                    </div>
+                    <form class="d-flex">
+                        <!-- 공지사항 -->
+                        <div class="nav-item">
+                        <a class="nav-link" href="#" style="font-size: 20px; color: black;">공지사항</a>
+                        </div>
+                        <!-- 구내식당 -->
+                        <div class="nav-item">
+                        <a class="nav-link" href="#" style="font-size: 20px; color: black;">구내식당</a>
+                        </div>
                     
               
 <!-- 20220120 네비게이션 바 검색SI -->
 					<!-- 검색바 -->
-					<div class="nav-item dropdown">
+					    <div class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarScrollingDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-						<svg xmlns="http://www.w3.org/2000/svg" 
-						width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="color: black;">
-							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-						</svg>
-					</a>
-               		</form>
-					 	<form action="searchResult" method="get" name="naviSearchForm" >
-							<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-								<input class="form-control mr-2" type="search" aria-label="Search" name="keyword" placeholder="검색어 입력" value="${keyword }">
-								<button type="submit" style="margin: 0px 0px 0px 0px;" class="btn btn-danger" >Search</button>
-							</ul>
-						</form>
-					</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                            width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="color: black;">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+					    </a>
+               	    </form>
+                    <form action="searchResult" method="get" name="naviSearchForm" >
+                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                            <input class="form-control mr-2" type="search" aria-label="Search" name="keyword" placeholder="검색어 입력" value="${keyword }">
+                            <button type="submit" style="margin: 0px 0px 0px 0px;" class="btn btn-danger" >Search</button>
+                        </ul>
+                    </form>
+				</div>
 <!-- 20220120 네비게이션 바 검색SI -->					
 								
 					
@@ -95,7 +106,7 @@
 					</div>
 				</div>
  
-                    <div style="width: 100px;"></div>
+                <div style="width: 100px;"></div>
 <!-- 20220120 상태 아이콘SI -->
    
             </nav>
@@ -106,53 +117,93 @@
         <section style="width: 100%; height: auto;" class="container">
             <div style="width: 100%; height: 100px;"></div>
             <div style="width: 100%; height: auto;">
-                <div><h2>비밀번호 변경</h2></div>
+                <div><h2>공지사항</h2></div>
                 <div style="width: 100%; height: 3px;"></div>
                 <div style="width: 100%; height: 3px; background-color: rgb(138, 138, 138); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
-                <div style="width: 100%; height: 50px;"></div>
-                <div style="width: 100%; height: 50px;"></div>
-                <div style="display: flex; width: 100%; height: auto;">
-                    <div style="width: 20%; height: auto;"></div>
-                    <div style="width: 60%; height: auto;">
-                       
-                        <form action="pwupdate" method="post">
-                            <!--아이디-->
-                            <div class="form-group input-group" style="height: 48px;">
-                                <div class="input-group-prepend">
-                                    <span for="mem_id" class="input-group-text"> <a>ID</a> </span>
-                                </div>
-                                <input style="height: 48px;" class="form-control" placeholder="이메일 입력해주세요" type="text" name="mem_id" value="${userId}" readonly/>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-                            <!--비밀번호-->
-                            <div class="form-group input-group" style="height: 48px;">
-                                <div class="input-group-prepend">
-                                    <span for="mem_pw" class="input-group-text"> <a>PASSWORD</a> </span>
-                                </div>
-                                <input style="height: 48px;" class="form-control" placeholder="비밀번호를 입력해주세요" type="text" name="mem_pw"  value="${info.mem_pw}"/>
-                            </div>
-                            <div style="width: 100%; height: 30px;"></div>
+                <div style="width: 100%; height: 70px;"></div>
 
-                            <!-- 제출 버튼-->
-                            <div style="display: flex; width: 100%; height: auto;" class="form-group">
-                                <div style="width: 33%;">
-                                    <button class="btn btn-outline-primary btn-block" onclick="location.href='main'" class="btn btn-primary btn-block"> 메인으로  </button>
-                                </div>
-                                <div style="width: 2%;"></div>
-                                <div style="width: 65%;">
-                                    <button type="submit" class="btn btn-primary btn-block"> 비밀번호  변경  </button>
-                                </div>
-                            </div>                                          
-                        </form>     
+                <div style="display: flex;">
+                    <div style="width: 3%;"></div>
+                    <div style="width: 94%;">
+                        <div style="width: 100%; display: flex;">
+                            <div style="width: 40%;">                         
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 3px;"></div>
+                        <div style="width: 100%; height: 3px; background-color: rgb(7, 7, 7); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+                        <div style="width: 100%; height: 30px;"></div>
                     </div>
-                    <div style="width: 20%; height: auto;"></div>
+                    <div style="width: 3%;"></div>
                 </div>
-                <div style="width: 100%; height: 31px;"></div>
+
+
+                <div style="display: flex; width: 100%; height: auto;">
+                    <div style="width: 5%; height: auto;"></div>
+                    <div style="width: 90%; height: auto;">
+                        <div>
+
+                            <div class="frame">
+                                
+                                <div class="boardframe">
+                                    <table style="width: 100%; height: auto; font-size: 21px;">
+                                        <thead style="background-color: rgb(192, 185, 185);">
+                                            <tr>
+                                               <th style="width: 10%;">글번호</th>
+                                               <th style="width: 40%;">제목 </th>
+                                               <th style="width: 20%;">작성자</th>
+                                               <th style="width: 20%;">작성일</th>
+                                               <th style="width: 10%;">조회수</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                        <c:if test="${list eq null||size == 0 }">
+                                            <tr><td colspan="5">등록된 글이 없습니다.</td></tr>
+                                        </c:if>
+                                        <tbody id="list">
+                                        
+        
+                                        </tbody>
+                                    </table>
+                                   
+                                    <div id="paging">
+                                        <div calss="continer" style="margin-top: 10px; display:flex; justify-content:center; align-items:center;">
+                                            <div area-label="Page navigation" style="text-align:center">
+                                                    <ul class="pagination" id="pagination"></ul>
+                                                </div>
+                                        </div>
+                                    </div>             
+                               </div>
+                            </div> 
+
+                            <div style="width: 100%; height: 15px;"></div>
+                        
+                        
+                            
+                            <div style="display: flex;">
+                                <div style="width: 85%;"></div>
+                                <div style="width: 15%;">
+                                    <!-- <button class="btn btn-dark btn-block" onclick="location.href='noticeWriteForm'"> 글쓰기  </button> -->
+                                </div>
+                            </div>
+
+                                                                            
+                        </div>     
+                    </div>
+                    <div style="width: 5%; height: auto;"></div>
+                </div>
+                <div style="width: 100%; height: 60px;"></div>
+                
+
             </div>
-            
-            <div style="width: 100%; height: 150px;"></div>
+            <div style="width: 100%; height: 100px;"></div>
         </section>
-       
+        
+
+
+
+
+        
+
 
 
 
@@ -234,6 +285,96 @@
         </footer>
     </body>
     <script>
+var currPage = 1;
+var totalPage= 2;//list갯수 ~ 	
+
+
+
+
+noticeCall(currPage,15);
+
+function more(){
+  currPage++;
+ 	console.log('currPage',currPage);	
+  if(currPage>totalPage){
+	  $('button').attr('disabled',true);
+  }else{  
+  noticeCall(currPage, 15);
+  }
+}
+
+function noticeCall(page, cnt){
+  $.ajax({
+     type:'GET',
+     url:'noticeCall',
+     data:{'page':page,'cnt':cnt},
+     dataType:'JSON',
+     success:function(data){
+        console.log(data.list);
         
+        totalPage = data.pages;
+        noticeDraw(data.list);
+        
+        
+        $('#pagination').twbsPagination({
+        	startPage:currPage,//현재페이지
+        	totalPages:totalPage,//만들 수 있는 총 페이지 수
+        	visiblePages:5,//[1][2][3]....이걸 몇개까지 보여줄 것인가
+        	onPageClick:function(evt,page){//해당 페이지 번호를 클릭 했을때 일어날 일들
+        		console.log(evt);//현재 일어나는 클릭 이벤트 관련정보들
+        		console.log(page);//몇페이지를 클릭했는지에 대한 정보
+        		noticeCall(page,15);
+        	}//onPageClick:function(evt,page) 끝
+        	
+        });//$('#pagination').twbsPagination 끝
+        
+     },
+     error:function(e){
+        console.log(e);
+     }
+  });//ajax끝            
+}//function끝
+
+
+
+function noticeDraw(list){ 
+
+	
+	   var content="";
+	   
+	    list.forEach(function(item,notice_idx){//item
+			console.log('여기서 확인' 
+					+ item.notice_idx);
+	    	
+	    	
+	      var noticeTime = item.notice_posttime;
+	      console.log("A:"+noticeTime);
+	      var nodate = new Date(noticeTime);
+	      console.log("B:"+nodate);
+	       content += '<tr>';
+	       content += '<td>'+item.notice_idx+'</a></td>';
+	       content += '<td><a href="noticeDetail?notice_idx='+item.notice_idx+'">'+item.notice_title+'</td>';
+	       content += '<td>'+item.mem_id+'</td>';
+	       content += '<td>'+ nodate.getFullYear()+"-"
+	            +("0"+( nodate.getMonth()+1)).slice(-2)+"-"
+	             +("0" + nodate.getDate()).slice(-2)+" "
+	             /* +("0" +  nodate.getHours()).slice(-2)+":"
+	             +("0" +  nodate.getMinutes()).slice(-2)+":"
+	             +("0" +  nodate.getSeconds()).slice(-2)+"." */
+	       +"</td>";
+	  
+	       content += '<td>'+item.notice_hit+'</td>';
+	       content += '</tr>';
+	       
+	       console.log("아이템++++" + item);
+	         console.log("리스트+++" + list);
+	    });
+	    $('#list').empty();
+	    $('#list').append(content);
+	}
+	 
+
+
+
     </script>
 </html>

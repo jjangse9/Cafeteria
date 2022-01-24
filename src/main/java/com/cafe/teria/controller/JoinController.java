@@ -1,6 +1,5 @@
 package com.cafe.teria.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.JoinMemberDTO;
 import com.cafe.teria.service.JoinMemberService;
 
@@ -25,7 +23,6 @@ import com.cafe.teria.service.JoinMemberService;
 public class JoinController {
    
    private  Logger logger = LoggerFactory.getLogger(this.getClass());
-   
    @Autowired JoinMemberService service;
 
    
@@ -38,8 +35,7 @@ public class JoinController {
    
    
    
-   //회원가입
-   
+   //회원가입 폼
    @RequestMapping(value = "/joinForm", method = RequestMethod.GET)
    public String joinForm(Model model) {
       logger.info("joinForm page 이동");
@@ -327,10 +323,9 @@ public class JoinController {
                @RequestParam HashMap<String, String> params) {
             logger.info("수정 요청 : {}",params); // logger는 스트링 이외에는 찍어주지 않는다. (숫자 등을 찍을 때에는 다른 방법이 있다.);
             
-            
             service.pwupdate(params);
          
-            return "main";
+            return "redirect:/myStat";
          }
          
    
