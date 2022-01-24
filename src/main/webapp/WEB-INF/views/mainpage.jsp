@@ -87,7 +87,7 @@
    <!-- 로그인 / 비로그인 상태 구분 -->
    <c:choose>
       <c:when test="${loId ne null}">
-         <img src="./resources/images/${iconName }" width="100px" class="btn btn-secondary dropdown-toggle"
+         <img src="./resources/images/login.png" width="50px" class="btn btn-secondary dropdown-toggle"
             id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
            <a class="dropdown-item" href="./myStat">${loginId} 님 </a>
@@ -103,10 +103,10 @@
          </div>
       </c:when>
       <c:when test="${loId eq null }">
-         <img src="/photo/0.png" width="100px" class="btn btn-secondary dropdown-toggle"
+         <img src="./resources/images/login.png" width="50px" class="btn btn-secondary dropdown-toggle"
          id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"/>
          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" onclick='popUpLogin()'> 로그인해주세요흙흙 </a>
+            <a class="dropdown-item" onclick='popUpLogin()'> 로그인하기 </a>
 
             <!-- 
                window.location.href 입력하면 현재 URL 가져올 수 있음

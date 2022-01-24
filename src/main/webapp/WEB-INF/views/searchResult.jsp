@@ -192,7 +192,7 @@
 		                    <div id="search-three-1-3-2" style="display: flex;">
 		                        <div style="width: 2%; height: auto;"></div>
 		                        <div style="cursor:pointer; width: 30%; height: auto">
-		                           <img style="width:100%; height:auto;" src="/photo/${res.bmem_image1 }"/>  
+		                           <img style="width:100%; height:auto;" src="resources/images/${res.bmem_image1 }"/>  
 		                        </div>
 		                        <div style="width: 2%; height: auto;"></div>
 		                        <div style="width: 64%; height: auto; list-style:none;">
@@ -228,11 +228,11 @@
 		                           					<!-- 댓글이 수정된 시간이 있으면 수정시간 출력 / 없으면 작성시간-->
 		                           					<c:choose>
 														<c:when test="${res.cafereply_modtime ne null }">
-															${res.cafereply_modtime } | ${res.reply_mem_nick } 님(${res.reply_mem_id }) <br>
+															${res.cafereply_modtime } | "${res.reply_mem_nick }" 님 <br>
 															${res.cafereply_content }(수정됨) <br>
 														</c:when>
 														<c:when test="${res.cafereply_modtime eq null }">
-															${res.cafereply_modtime } | ${res.reply_mem_nick } 님(${res.reply_mem_id }) <br>
+															${res.cafereply_modtime } | "${res.reply_mem_nick }" 님 <br>
 															${res.cafereply_content } <br>
 														</c:when>
 													</c:choose>
@@ -1153,7 +1153,7 @@ var filterValues = [];
 			content += '<div id="search-three-1-3-2" style="display: flex;">';
 			content += '<div style="width: 2%; height: auto;"></div>';
 			content += '<div style="cursor:pointer; width: 30%; height: auto">';
-			content += '<img style="width:100%; height:auto;" src="/photo/'+data[i].bmem_image1+'"/>';
+			content += '<img style="width:100%; height:auto;" src="resources/images/'+data[i].bmem_image1+'"/>';
 			content += '</div>';
 			content += '<div style="width: 2%; height: auto;"></div>';
 			content += '<div style="width: 64%; height: auto;">';

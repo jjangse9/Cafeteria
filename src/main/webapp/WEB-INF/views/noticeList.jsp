@@ -40,7 +40,7 @@
                 
                 
 <!-- 20220120 사이트 로고 연결 -> 홈페이지로SI -->
-				<a class="navbar-brand" href="#">
+				<a class="navbar-brand" href="././">
 					<!-- svg => 아이콘 -->
 					<svg style="color: rgb(255, 174, 0);" xmlns="http://www.w3.org/2000/svg" 
 								width="50px" height="50px" fill="currentColor" class="bi bi-piggy-bank-fill" viewBox="0 0 16 16"

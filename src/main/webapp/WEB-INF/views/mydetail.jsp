@@ -34,7 +34,7 @@
    <tbody >
       <tr>
          <!-- <th scope="row">아이콘</th> -->
-         <td colspan="2"><img src="/photo/${userInfo.icon_newname}" width="250px"></td>
+         <td colspan="2"><img src="./resources/images/${userInfo.icon_newname }" width="250px"></td>
       </tr>
       <tr>
          <th scope="row">이메일</th>
