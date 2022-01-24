@@ -150,12 +150,41 @@ public class BoardController {
       return result;
    }
    
+   @RequestMapping(value = "/rewrite", method = RequestMethod.POST)
+   public String rewrite(Model model, @RequestParam HashMap<String, String> params) {
+      logger.info("write:{}", params);
+      service.rewrite(params);
+      
+      return "redirect:/detail?idx="+params.get("cafe_idx");
+   }
+   
+   
+   
+   @RequestMapping(value = "/cafe_new_write", method = RequestMethod.GET)
+   public String cafeNewWrite(Model model, @RequestParam HashMap<String, String> params) {
+
+      
+      return "cafe_new_write";
+   }
+   
+   
+   @RequestMapping(value = "/newWrite", method = RequestMethod.POST)
+   public String newWrite(Model model, @RequestParam HashMap<String, String> params) {
+      logger.info("write:{}", params);
+      service.newWrite(params);
+      
+      return "mainpage";
+   }
+   
+   
+   
+   
    @RequestMapping(value = "/cafe_write", method = RequestMethod.GET)
    public String write( Model model , @RequestParam("idx") String cafe_idx ) {
       logger.info("글쓰기 페이지 이동");
       
       HashMap<String, String> cafeBmem = service.cafeBmem(cafe_idx);
-      List<HashMap<String, String>>diet = service.detail(cafe_idx,"detail");//detail 이란 String값을 보낸다
+      List<HashMap<String, Object>>diet = service.detail(cafe_idx,"detail");//detail 이란 String값을 보낸다
       List<HashMap<String, String>>detail_diet = service.detail_diet(cafe_idx,"detail_diet");
       List<HashMap<String, String>> cafeReply = service.cafeReply(cafe_idx);
       List<HashMap<String, String>> recomment = service.recomment(cafe_idx);

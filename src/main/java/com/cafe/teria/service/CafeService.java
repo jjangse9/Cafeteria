@@ -27,9 +27,9 @@ public class CafeService {
 		return dao.list();
 	}
 
-	public List<HashMap<String, String>> detail(String cafe_idx, String method) {
+	public List<HashMap<String, Object>> detail(String cafe_idx, String method) {
 		
-		List<HashMap<String, String>> result = dao.detail(cafe_idx);
+		List<HashMap<String, Object>> result = dao.detail(cafe_idx);
 		
 		if(method.equals("detail")){
 			dao.upHit(cafe_idx);	//조회수 올리기			
@@ -243,6 +243,20 @@ public class CafeService {
 
 		dao.addLike(params);
 		dao.addLikeCnt(params);
+	}
+
+	public void rewrite(HashMap<String, String> params) {
+		logger.info("서비스단에 도달한 업뎃 정보 : {} " , params);
+		int result1 = dao.rewriteTitle(params);
+		int result2 = dao.rewritePrice(params);
+		int result3 = dao.rewriteName(params);
+		logger.info("1번 쿼리 : "+result1);
+		logger.info("2번 쿼리 : "+result2);
+		logger.info("3번 쿼리 : "+result3);
+	}
+
+	public void newWrite(HashMap<String, String> params) {
+		dao.newWrite(params);
 	}
 
 	

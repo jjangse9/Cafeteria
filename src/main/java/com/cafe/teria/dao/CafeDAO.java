@@ -13,7 +13,7 @@ public interface CafeDAO {
 
 	void upHit(String cafe_idx);
 
-	List<HashMap<String, String>> detail(String cafe_idx);
+	List<HashMap<String, Object>> detail(String cafe_idx);
 
 	HashMap<String, String> cafeBmem(String cafe_idx);
 
@@ -83,5 +83,15 @@ public interface CafeDAO {
 
 	   int deleteDietMenu(HashMap<String, String> allValue);
 	 //식단관련
+
+	int rewriteTitle(HashMap<String, String> params);
+
+	int rewritePrice(HashMap<String, String> params);
+
+	int rewriteName(HashMap<String, String> params);
+
+	void newWrite(HashMap<String, String> params);
+
+
 
 }

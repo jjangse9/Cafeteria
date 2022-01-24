@@ -1,5 +1,8 @@
 package com.cafe.teria.controller;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,15 +40,29 @@ public class HomeController {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/detail")
 	public String detail(Model model, @RequestParam("idx") String cafe_idx) {
 		
 		//logger.info("detail 요청 : {}",cafe_idx);
 		
 		HashMap<String, String> cafeBmem = service.cafeBmem(cafe_idx);
-		List<HashMap<String, String>>diet = service.detail(cafe_idx,"detail");
+		List<HashMap<String, Object>>diet = service.detail(cafe_idx,"detail");
 		List<HashMap<String, String>> cafeReply = service.cafeReply(cafe_idx);
 		List<HashMap<String, String>> recomment = service.recomment(cafe_idx);
+		
+		/*
+		 * LocalDate now = LocalDate.now(); Date now2 = new Date
+		 * 
+		
+		 * Date(stamp.getTime()); System.out.println(date);
+		 * 
+		 * int day = now.getMonthValue(); int day2 = date.getMonthValue();
+		 */
+		
+
+		//System.out.println("두 시간 차이 : "+(nowTime+dietTime));
+		
 		
 		
 		//System.out.println(cafeBmem);
