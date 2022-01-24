@@ -144,14 +144,14 @@ resize: none;
    <body>
    <h1>(임시)작성페이지</h1>
        <h2>
-       		<c:choose>
-				<c:when test="${cafe.cafe_title != '' || cafe.cafe_title != null}">
-					<input type="text" name="cafe_title" id="Fixed_cafe_title" value="${cafe.cafe_title}" readonly="readonly">
-				</c:when>
+             <c:choose>
+            <c:when test="${cafe.cafe_title != '' || cafe.cafe_title != null}">
+               <input type="text" name="cafe_title" id="Fixed_cafe_title" value="${cafe.cafe_title}" readonly="readonly">
+            </c:when>
                 <c:otherwise>
                    <input type="text" name="cafe_title" id="Fixed_cafe_title" value="아래 내용을 작성해주세요" readonly="readonly">
                 </c:otherwise>
-			</c:choose>
+         </c:choose>
        </h2> 
        <b>조회수 : 
        ${cafe.cafe_hit}
@@ -163,9 +163,9 @@ resize: none;
        <c:set var = "total" value = "0" />
        <c:set var = "avg" value = "0" />
        <c:forEach items="${reply}" var="rp">
-       		  
-       		<c:set var= "total" value="${total + rp.cafereply_ratestar}"/>
-       		<c:set var = "avg" value = "${avg + 1}" />
+               
+             <c:set var= "total" value="${total + rp.cafereply_ratestar}"/>
+             <c:set var = "avg" value = "${avg + 1}" />
        </c:forEach>
        <fmt:formatNumber type="number" maxFractionDigits="2"  value="${total/2/avg}" />
        </b>
@@ -373,7 +373,7 @@ resize: none;
        <br>
         
        <div class="info_frame">
-			
+         
           <table id="infotable">
              <tr>
                  <th>업체명</th>
@@ -390,12 +390,12 @@ resize: none;
                   </td>
               </tr>
               <tr>
-              	<th>업주 아이디</th>
-              	<td><input type="text" id="mem_id" name="mem_id" value="" placeholder="아이디를 입력하세요"></td>
+                 <th>업주 아이디</th>
+                 <td><input type="text" id="mem_id" name="mem_id" value="" placeholder="아이디를 입력하세요"></td>
               </tr>
               <tr>
-              	<th>업주 코드</th>
-              	<td><input type="text" id="mem_bcode" name="mem_bcode" value="" placeholder="업주 코드를 입력하세요"></td>
+                 <th>업주 코드</th>
+                 <td><input type="text" id="mem_bcode" name="mem_bcode" value="" placeholder="업주 코드를 입력하세요"></td>
               </tr>
               <tr>
                   <th>지역</th>
@@ -1074,23 +1074,23 @@ function show() {
        var bCode = document.getElementById("mem_bcode");
        
        console.log(nwf);
-   		 console.log(memId);
-    	console.log(bCode);
+          console.log(memId);
+       console.log(bCode);
        
        if(memId.value == "" || memId.value == null){
-    	   
-    	   alert("업주 회원 아이디를 등록해주세요");
-    	   nwf.mem_id.focus();
-    	   return false;
-    	   
+          
+          alert("업주 회원 아이디를 등록해주세요");
+          nwf.mem_id.focus();
+          return false;
+          
        }else if(bCode.value == "" || bCode.value  == null){
-    	   
-    	   alert("업주 코드를 등록해주세요");
-    	   nwf.mem_bcode.focus();
-    	   return false;
-    	   
+          
+          alert("업주 코드를 등록해주세요");
+          nwf.mem_bcode.focus();
+          return false;
+          
        }else{
-    	  newWriteForm.submit();
+         newWriteForm.submit();
        }
        
        

@@ -111,7 +111,7 @@ public class BoardController {
             logger.info(" has no multipartFile!");
         }
         for(int i=0; i<imgList.size(); i++) {
-        	map.put("imgList"+i, imgList.get(i));
+           map.put("imgList"+i, imgList.get(i));
         }
         //.out.println("map 정보 "+map);
         map.put("path", "/resources/img/");
