@@ -28,5 +28,23 @@
 	</update>
 
 
+<select id="qstInfo" resultType="com.cafe.teria.dto.QstDTO">
+      select *
+      from qst
+   </select>
+
+
+<select id="qstDetail" resultType="com.cafe.teria.dto.QstDTO">
+   		select * from qst where qst_idx = #{param1}
+   </select>
+
+<insert id="bQstWrite" parameterType="hashmap">	
+			insert 
+			into bmember (mem_id,bmem_address,bmem_address_detail,bmem_area_name,bmem_btime,bmem_tel_no,bmem_remark, mem_emailchk, bmem_perm_yn) 
+			values (#{mem_id}, #{bmem_address}, #{bmem_address_detail}, #{bmem_area_name}, #{bmem_btime}, #{bmem_tel_no},#{bmem_remark},1,#{bmem_perm_yn})
+</insert>
+
+
+
 
 </mapper>

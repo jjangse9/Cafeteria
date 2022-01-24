@@ -175,8 +175,30 @@
 				</div>
 				
 				<!-- 문의/신고 처리 -->
-		      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-					문의/신고 처리
+		      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-qst-list">
+					<table class="table" style="text-align:center;">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">글제목(식당)</th>
+						      <th scope="col">글내용</th>
+						      <th scope="col">작성시간</th>
+						      <th scope="col">작성자 아이디</th>
+						    </tr>
+						 	</thead>
+						  
+							<tbody>
+						 <c:forEach items="${qstResult}" var="qst">
+						  
+							    <tr>
+							      <th scope="row">${qst.qst_title }</th>
+							      <td><a href="qstDetail?qst_idx=${qst.qst_idx}">${qst.qst_content}</a></td>					
+							      <td>${qst.qst_posttime }</td>
+							      <td>${qst.mem_id }</td>
+							    </tr>
+						  
+						  </c:forEach>
+							</tbody>
+						</table>
 				</div>
 				
 				<!-- 공지 글쓰기 -->

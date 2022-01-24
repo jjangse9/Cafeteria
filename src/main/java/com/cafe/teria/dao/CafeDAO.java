@@ -83,8 +83,8 @@ public interface CafeDAO {
 	   int updateDietMenu(HashMap<String, String> value);
 
 	   int deleteDietMenu(HashMap<String, String> allValue);
-	 //식단관련
-
+	 
+	   //식단관련
 	int rewriteTitle(HashMap<String, String> params);
 
 	int rewritePrice(HashMap<String, String> params);

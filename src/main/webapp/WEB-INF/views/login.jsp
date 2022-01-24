@@ -145,7 +145,7 @@
     <script>
     /* 20220122 - 회원가입 팝업 */
     function popupJoin(){
-       javascript:void(window.open('./joinForm', '','width=800px, height=655px, top=50px, left=600px'));
+       javascript:void(window.open('./joinForm', '','width=800px, height=900px, top=50px, left=600px'));
     };
     
     

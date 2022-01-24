@@ -7,8 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cafe.teria.dao.AdminDAO;
+import com.cafe.teria.dto.QstDTO;
 
 
 @Service
@@ -27,7 +32,7 @@ public class AdminService {
          // adminResult에 회원정보 모두 담기
          adminResult.put("membersInfo", dao.membersInfo());         // 회원들 정보
          adminResult.put("cafesInfo", dao.cafesInfo());            // 글들 정보
-         
+         adminResult.put("qstInfo", dao.qstInfo()); 
          
          return adminResult;
    }
@@ -45,9 +50,18 @@ public HashMap<String, Object> updateBcode(String mem_id, String bcode) {
 	return map;
 	
 }
+public QstDTO qstDetail(String qst_idx, String string) {
+	
+	return dao.qstDetail(qst_idx);
+}
+
+public void bQstWrite(HashMap<String, String> params) {
+	
+	int row = dao.bQstWrite(params);
+	
+}
 
 
-      
 
       
 }

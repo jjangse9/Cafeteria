@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>문의하기</title>
+        <title>공지사항 상세보기</title>
         <!--부트 스트랩 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -12,11 +12,11 @@
         
         <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 
-        <style></style>
+        <style>
 
+            
 
-
-
+        </style>
 
     </head>
     <body id="body">
@@ -104,158 +104,73 @@
         <section style="width: 100%; height: auto;" class="container">
             <div style="width: 100%; height: 100px;"></div>
             <div style="width: 100%; height: auto;">
-                <div><h2>업주회원 전환요청</h2></div>
-                <div style="width: 100%; height: 3px;"></div>
-                <div style="width: 100%; height: 3px; background-color: rgb(138, 138, 138); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
-                <div style="width: 100%; height: 50px;"></div>
+                
+                
+
+                <div style="display: flex;">
+                    <div style="width: 3%;"></div>
+                    <div style="width: 94%;">
+                        <div style="width: 100%; display: flex;">
+<!--식당명-->
+                            <div style="width: 40%;">
+                                <b><h3>${qstInfo.qst_title}</h3></b>
+                            </div>
+<!--별점 조회순 좋아요-->  
+                            <div style="width: 60%; text-align: right;"> 
+                                <input type="button" class="btn btn-dark" onclick="location.href='./admin'" value="목록">
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 3px;"></div>
+                        <div style="width: 100%; height: 3px; background-color: rgb(7, 7, 7); border: 1px solid transparent; border-radius: 20px 20px 20px 20px;"></div>
+<!--고객명 날짜 수정 삭제-->
+                        <div style="display: flex;">
+                            <div style="width: 2%;"></div>
+                            <div style="width: 30%;">
+                                <!-- 20220123 수정필 -->
+                                <a>${qstInfo.mem_id }</a>
+                            </div>
+                            <div style="width: 50%;">
+                            	<!-- 20220123 수정필 -->
+                                <a>${qstInfo.qst_posttime }</a>
+                            </div>
+                            <div style="text-align: right; width: 36%;">
+                 
+                            </div>
+                            <div style="width: 2%;"></div>
+                        </div>
+                        <div style="width: 100%; height: 10px;"></div>
+                    </div>
+                    <div style="width: 3%;"></div>
+                </div>
+
+
                 <div style="display: flex; width: 100%; height: auto;">
-                    <div style="width: 20%; height: auto;"></div>
-                    <div style="width: 60%; height: auto;">
-                      
-<!-- 20220121 보낼 데이터 - 폼! -->                     
-<form action="bQstWrite" method="post">
-                            <!--아이디-->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a style="color: red;">*</a>
-                                    <a>아이디</a>
-                                    </span>
-                                </div>
-<!-- 20220121 보낼 데이터 - 1. 회원 아이디( mem_id ) -->
-<input name="mem_id" class="form-control" value="${loginId }" type="text" readonly/>
-                            </div>
+                    <div style="width: 5%; height: auto;"></div>
+                    <div style="width: 90%; height: auto;">
+                        <form>
                             <div style="width: 100%; height: 15px;"></div>
-                           
-                  
-                            <!--주소지-->
-                            <div class="form-group input-group">
+<!--내용-->
+                            <div class="form-group input-group" style="height: 400px;">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a style="color: red;">*</a><a>주소</a> </span>
-                                </div>
-<!-- 20220121 보낼 데이터 - 3. 주소지 -->                                
-<input name="bmem_address" class="form-control" placeholder="ex)서울 금천구 가산동 448 " type="text"/>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-        
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a style="color: red;">*</a><a>상세주소</a> </span>
-                                </div>
-                             
-<input name="bmem_address_detail" class="form-control" placeholder="ex)대륭테크노타운 3차 1109호" type="text"/>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>               
-                            
-                            
-                            <!--상세 주소-->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a style="color: red;">*</a>지역<a></a> </span>
-                                </div>
-<!-- 20220121 보낼 데이터 - 3. 주소지 -->                                
-<input name="bmem_area_name" class="form-control" placeholder="ex)가산구" type="text"/>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-                            
-                            
-                            <!--영업시간-->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a>영업시간</a> </span>
-                                </div>
-<!-- 20220121 보낼 데이터 - 4. 영업시간 -->
-<input name="bmem_btime" clss="form-control" placeholder="영업시간을 입력해주세요.  ex) 09:00 ~ 20:00 " type="text"/>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-                            <!--연락처-->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a style="color: red;">*</a><a>연락처</a> </span>
-                                </div>
-<!-- 20220121 보낼 데이터 - 5. 연락처 -->
-<input name="bmem_tel_no" class="form-control" placeholder="연락처를 입력해주세요.  ex) 000-0000-0000 " type="text"/>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-                            <!--기타사항-->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <a>기타사항</a> </span>
+                                    <span class="input-group-text"> <a>내용</a> </span>
                                 </div>
                                 <div class="form-control" style="height: auto;">
-<!-- 20220121 보낼 데이터 - 6. 기타사항 -->
-<textarea name="bmem_remark" type="text" style="height: 190px;" class="form-control" placeholder="기타 요구사항을 입력해주세요." id="comment" name="comment" cols="45" rows="8" required=""></textarea>
+                                    <div style="height: 400px;" class="form-control">${qstInfo.qst_content}</div>
                                 </div>
                             </div>
                             <div style="width: 100%; height: 15px;"></div>
-                            <!--대표 이미지-->
-                            
-<!-- 20220121 보낼 데이터 - 7. 대표이미지 -->
-								
-                            <!-- 이메일 수신 동의 여부-->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-								<span class="input-group-text"> <a>이메일 수신 동의 여부</a> </span>
-                                </div>
-                                <div class="form-control" style="display: flex; justify-content: center;">
-                                    <div>
-<!-- 20220121 보낼 데이터 - 8. 이메일 수신 동의 여부 -->
-<input type="radio" id="e-agree" name="mem_emailchk" value="1" checked>
-                                        <label for="e-agree">동의</label>
-                                    </div>
-                                    <div style="width: 100px;"></div>
-                                    <div>
-<input type="radio" id="e-rejection" name="mem_emailchk" value="2">
-                                        <label for="e-rejection">거부</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-                            <!--이용 약관 체크박스-->
-                            <div class="form-check" style="display: flex;justify-content: center;align-items: center;">
-                                <div>
-<!-- 20220121 보낼 데이터 - 9. 이용 약관 동의 -->                                
-<input class="form-check-input" type="checkbox" value="y" id="CheckDefault" name=bmem_perm_yn>
-                                    <label class="form-check-label" for="CheckDefault">
-                                        이용 약관 동의(필수)
-                                    </label>
-                                </div>
-                            </div>
-                            <div style="width: 100%; height: 15px;"></div>
-                            <div style="width: 100%; height: 15px;"><h5 style="text-align: center;">사이트 내에서 승인이 완료되면 정상적으로 서비스 이용이 가능합니다.</h5></div>
-                            <div style="width: 100%; height: 30px;"></div>
-
-                            <!--셀렉트 이용-->
-                            <!-- <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-building"></i> </span>
-                                </div>
-                                <select class="form-control">
-                                    <option selected=""> Select job type</option>
-                                    <option>Designer</option>
-                                    <option>Manager</option>
-                                    <option>Accaunting</option>
-                                </select>
-                            </div>  -->
-
-                            
-                            <!-- 제출 버튼-->
-                            <div class="form-group">
-<!-- 20220121 input|button type="submit" 은 form 태그를 실행시킨다 -->
-<button type="submit" class="btn btn-primary btn-block"> 신청하기 </button>
-                            </div>
-
-                                                                            
+                                                             
                         </form>     
                     </div>
-                    <div style="width: 20%; height: auto;"></div>
+                    <div style="width: 5%; height: auto;"></div>
                 </div>
-                <div style="width: 100%; height: 60px;"></div>
                 
 
             </div>
             <div style="width: 100%; height: 150px;"></div>
         </section>
 
+  
 
         <!--푸터-->
         <footer style="width: 100%; height: 230px; background-color: rgb(29, 29, 29);">
@@ -276,7 +191,7 @@
                         <!-- text text text -->
                         <div>
                             <p style="color: rgb(151, 151, 151);">
-                                text text text 
+                            
                             </p>
                         </div>
                     </div>
@@ -334,9 +249,17 @@
             <div style="width: 100%; height: 8%;"></div>
         </footer>
     </body>
-    <script>
-   
 
-    
-    </script>
+
+<script>
+
+</script>
 </html>
+
+
+
+
+
+
+
+

@@ -2,7 +2,6 @@ package com.cafe.teria.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
@@ -19,9 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cafe.teria.dto.CafeDTO;
 import com.cafe.teria.dto.JoinMemberDTO;
-import com.cafe.teria.dto.RecommentDTO;
+import com.cafe.teria.dto.NoticeDTO;
+import com.cafe.teria.dto.QstDTO;
 import com.cafe.teria.service.AdminService;
-import com.cafe.teria.service.CafeService;
 
 @Controller
 public class AdminController {
@@ -44,6 +43,7 @@ public class AdminController {
 	      
 	      Object memResult = new ArrayList<JoinMemberDTO>();
 	      Object cafeResult = new ArrayList<CafeDTO>();
+	      Object qstResult	= new ArrayList<QstDTO>();
 	      
 	      for (Entry<String, Object> entrySet : result.entrySet()) {
 	         logger.info("받아온 값 확인 : {}", entrySet.getKey() + " : " + entrySet.getValue());
@@ -51,12 +51,14 @@ public class AdminController {
 	            memResult = entrySet.getValue();
 	         }else if(entrySet.getKey().equals("cafesInfo")) {
 	            cafeResult = entrySet.getValue();
-	         }
+	         }else if(entrySet.getKey().equals("qstInfo")) {
+		            qstResult = entrySet.getValue();
+		         }
 	      }
 	      
 	      model.addAttribute("memResult", memResult);
 	      model.addAttribute("cafeResult", cafeResult);
-	      
+	      model.addAttribute("qstResult", qstResult);
 	      return "admin"; 
 	   }
 	
@@ -76,4 +78,25 @@ public class AdminController {
 		
 	}
   
+	// 20220122 update 업주코드
+	
+	@RequestMapping(value = "/qstDetail", method = RequestMethod.GET)
+	public String noticeDetail(Model model, @RequestParam String qst_idx) {
+		logger.info("detail 요청:{}", qst_idx);
+
+		QstDTO dto = service.qstDetail(qst_idx, "qstDetail");
+		model.addAttribute("qstInfo", dto);
+
+		return "qstDetail";
+	}
+   
+	@RequestMapping(value = "/bQstWrite", method = RequestMethod.POST)
+	public String bQstWrite(Model model, @RequestParam HashMap<String, String> params) {
+		logger.info("bQstWrite:{}", params);
+		service.bQstWrite(params);
+		return "redirect:/notice/noticeList";
+	}
+	
+	
+	
 }
