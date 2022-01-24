@@ -44,7 +44,7 @@
               <tr>
               <td>${mychk.cafe_modtime }</td>
               <td>${mychk.cafe_idx}</td>
-              <td>${mychk.cafe_title}</td>
+              <td><a href="./detail?idx=${mychk.cafe_idx}">${mychk.cafe_title}</a></td>
               <td>${mychk.cafe_hit}</td>
               <td>${mychk.cafe_likecnt }</td>
               </tr>
@@ -66,6 +66,11 @@
         <input type="button" value="메인으로" class="btn" onclick="location.href='./'">
         </body>
 
-
-
 </html>
+<script>
+	function detailView(){
+		console.log('메론');
+		
+		location.href="./detail?idx="+${mychk.cafe_title};
+	}
+</script>
