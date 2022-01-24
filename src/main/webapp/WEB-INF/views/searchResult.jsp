@@ -232,7 +232,7 @@
 															${res.cafereply_content }(수정됨) <br>
 														</c:when>
 														<c:when test="${res.cafereply_modtime eq null }">
-															${res.cafereply_modtime } | "${res.reply_mem_nick }" 님 <br>
+															${res.cafereply_posttime } | "${res.reply_mem_nick }" 님 <br>
 															${res.cafereply_content } <br>
 														</c:when>
 													</c:choose>
